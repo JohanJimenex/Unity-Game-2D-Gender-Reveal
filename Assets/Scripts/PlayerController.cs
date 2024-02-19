@@ -16,11 +16,8 @@ public class PlayerController : MonoBehaviour {
 
     void Update() {
 
-        if (Input.GetButtonDown("Jump")) {
+        if (Input.touchCount > 0 || Input.GetButtonDown("Jump")) {
             rb.velocity = Vector2.up * upForce;
-        }
-        else {
-            rb.velocity += Vector2.up * downForce * Time.deltaTime;
         }
 
         if (transform.position.y > 20) {
