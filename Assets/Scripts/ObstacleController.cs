@@ -24,4 +24,12 @@ public class ObstacleController : MonoBehaviour {
             Destroy(gameObject);
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("Player")) {
+            Debug.Log("Obstacle anims and destroy");
+            //TODO: Descativar collider
+            Destroy(gameObject, 1f);
+        }
+    }
 }
