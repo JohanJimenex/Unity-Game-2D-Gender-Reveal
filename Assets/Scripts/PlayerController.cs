@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
     public float upForce = 10f;
@@ -9,6 +10,7 @@ public class PlayerController : MonoBehaviour {
 
     public GameObject ground;
     private Rigidbody2D rb;
+    public Button buttonRestar;
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -35,5 +37,12 @@ public class PlayerController : MonoBehaviour {
         animator.SetTrigger("Die");
         rb.bodyType = RigidbodyType2D.Static;
         print("Game Over");
+        // Llama a la función "FunctionToCall" después de 5 segundos
+        Invoke(nameof(FunctionToCall), 1.2f);
+    }
+
+    private void FunctionToCall() {
+        GetComponent<SpriteRenderer>().enabled = false;
+        buttonRestar.gameObject.SetActive(true);
     }
 }
