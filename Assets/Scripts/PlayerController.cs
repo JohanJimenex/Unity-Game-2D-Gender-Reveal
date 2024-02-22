@@ -36,13 +36,12 @@ public class PlayerController : MonoBehaviour {
     public void IsDead() {
         animator.SetTrigger("Die");
         rb.bodyType = RigidbodyType2D.Static;
-        print("Game Over");
+        // GetComponent<SpriteRenderer>().enabled = false; //manejar en la animacion
         // Llama a la función "FunctionToCall" después de 5 segundos
-        Invoke(nameof(FunctionToCall), 1.2f);
+        Invoke(nameof(ShowGameOverScreen), 1.2f);
     }
 
-    private void FunctionToCall() {
-        GetComponent<SpriteRenderer>().enabled = false;
+    private void ShowGameOverScreen() {
         buttonRestar.gameObject.SetActive(true);
     }
 }
