@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ObstacleController : MonoBehaviour {
-    public float speed = 1f;
-    public float distance = 2.5f;
-    public float distanceToDestroy = -10f;
+
+    [SerializeField] private float speed = 1f;
+    [SerializeField] private float distance = 2.5f;
+    [SerializeField] private float distanceToDestroy = -10f;
+
     private Vector3 startPosition;
     private Transform playerTransform;
 
@@ -32,4 +34,6 @@ public class ObstacleController : MonoBehaviour {
             Destroy(gameObject, 1f);
         }
     }
+
+
 }

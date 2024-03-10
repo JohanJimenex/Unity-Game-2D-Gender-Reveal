@@ -1,20 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
-    public float upForce = 10f;
-    public float downForce = -5f;
-    public Animator animator;
 
-    public GameObject ground;
-    private Rigidbody2D rb;
-    public Button buttonRestar;
+    public bool canReciveHurt = true;
 
-    void Start() {
-        rb = GetComponent<Rigidbody2D>();
-    }
+    private int lives = 2;
+
+    [SerializeField] private float upForce = 10f;
+    [SerializeField] private float downForce = -5f;
+    [SerializeField] private Animator animator;
+    [SerializeField] private Rigidbody2D rb;
+
+    [SerializeField] private GameObject ground;
+
+    [HideInInspector] public Action<int> OnHurt { get; set; }
+    [HideInInspector] public Action<float> OnPositionYChanged { get; set; }
+    [HideInInspector] public Action<int> OnPlayerGetLive { get; set; }
+    [HideInInspector] public Action OnPlayerDied { get; set; }
 
     void Update() {
 
@@ -25,23 +31,44 @@ public class PlayerController : MonoBehaviour {
         if (transform.position.y > 20) {
             Destroy(ground);
         }
+
+        OnPositionYChanged?.Invoke(transform.position.y);
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Obstacle")) {
+        if (collision.gameObject.CompareTag("Enemy") && canReciveHurt) {
+            Hurt();
+        }
+
+        if (collision.gameObject.CompareTag("Live")) {
+            AddLive();
+        }
+    }
+
+    private void Hurt() {
+
+        lives--;
+        OnHurt?.Invoke(lives);
+
+        if (lives <= 0) {
             IsDead();
         }
     }
 
+    private void AddLive() {
+        if (lives < 2) {
+            lives++;
+            OnPlayerGetLive?.Invoke(lives);
+        }
+    }
+
     public void IsDead() {
-        animator.SetTrigger("Die");
+        animator.SetTrigger("PlayerDying");
         rb.bodyType = RigidbodyType2D.Static;
         // GetComponent<SpriteRenderer>().enabled = false; //manejar en la animacion
         // Llama a la función "FunctionToCall" después de 5 segundos
-        Invoke(nameof(ShowGameOverScreen), 1.2f);
+        OnPlayerDied?.Invoke();
     }
 
-    private void ShowGameOverScreen() {
-        buttonRestar.gameObject.SetActive(true);
-    }
+
 }

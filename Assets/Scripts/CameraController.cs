@@ -3,27 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour {
-    public Transform playerTransform;
-    public PlayerController playerScript; // Referencia al script del jugador
-    public float smoothSpeed = 0.125f; // Añade una velocidad de suavizado
+
+    public PlayerController playerController; // Referencia al script del jugador
+    private readonly float smoothSpeed = 0.125f; // Añade una velocidad de suavizado a la camara
 
     private float lastPlayerPositionY;
     private readonly float distanceToDestroy = 5f;
     private bool playerIsDead = false;
 
     void Start() {
-        lastPlayerPositionY = playerTransform.position.y + 3f; // Añade un offse textra para que la cámara no siga al jugador al inicio del juego
+
+        playerController.OnPositionYChanged += UpdateCameraPosition; // Suscríbete al evento OnPositionYChanged del script del jugador
+
+        lastPlayerPositionY = playerController.transform.position.y + 3f; // Añade un offse textra para que la cámara no siga al jugador al inicio del juego
     }
 
-    void Update() {
-        if (playerTransform.position.y > lastPlayerPositionY) {
-            Vector3 newPosition = new Vector3(transform.position.x, playerTransform.position.y, transform.position.z);
+    private void UpdateCameraPosition(float playerPositionY) {
+
+        if (playerPositionY > lastPlayerPositionY) {
+            Vector3 newPosition = new Vector3(transform.position.x, playerPositionY, transform.position.z);
             Vector3 smoothedPosition = Vector3.Lerp(transform.position, newPosition, smoothSpeed); // Usa Lerp para suavizar la transición
             transform.position = smoothedPosition;
-            lastPlayerPositionY = playerTransform.position.y;
+            lastPlayerPositionY = playerPositionY;
         }
-        if (playerTransform.position.y < transform.position.y - distanceToDestroy && !playerIsDead) {
-            playerScript.IsDead(); // Llama al método IsDead del script del jugador
+        if (playerPositionY < transform.position.y - distanceToDestroy && !playerIsDead) {
+            playerController.IsDead(); // Llama al método IsDead del script del jugador
             playerIsDead = true;
         }
     }
