@@ -39,10 +39,21 @@ public class PlayerController : MonoBehaviour {
         if (collision.gameObject.CompareTag("Enemy") && canReciveHurt) {
             Hurt();
         }
+    }
 
-        if (collision.gameObject.CompareTag("Live")) {
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.CompareTag("PowerUp")) {
+            canReciveHurt = false;
+            Invoke(nameof(EnableCanReciveHurt), 5f);
+        }
+
+        if (other.gameObject.CompareTag("Live")) {
             AddLive();
         }
+    }
+
+    private void EnableCanReciveHurt() {
+        canReciveHurt = true;
     }
 
     private void Hurt() {
@@ -69,6 +80,5 @@ public class PlayerController : MonoBehaviour {
         // Llama a la función "FunctionToCall" después de 5 segundos
         OnPlayerDied?.Invoke();
     }
-
 
 }

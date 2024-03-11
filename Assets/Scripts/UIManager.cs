@@ -25,7 +25,8 @@ public class UIManager : MonoBehaviour {
 
     private void Start() {
         playerController.OnPositionYChanged += UpdateUIScore;
-        playerController.OnHurt += UpdateHearts;
+        playerController.OnHurt += UpdateUIHearts;
+        playerController.OnPlayerGetLive += AddLive;
         playerController.OnPlayerDied += HandlePlayerDied;
     }
 
@@ -37,19 +38,19 @@ public class UIManager : MonoBehaviour {
         scoreText.text = playerPositionY.ToString("N0");
     }
 
-    void UpdateHearts(int health) {
+    void UpdateUIHearts(int lives) {
         for (int i = 0; i < hearts.Count; i++) {
-            if (i < health) {
-                hearts[i].sprite = fullHeart; // Corazón lleno
+            if (i < lives) {
+                hearts[i].sprite = emptyHeart; // Corazón vacío
             }
             else {
-                hearts[i].sprite = emptyHeart; // Corazón vacío
+                hearts[i].sprite = fullHeart; // Corazón lleno
             }
         }
     }
 
 
-    private void AddLive() {
+    private void AddLive(int lives) {
 
         // Encuentra el primer corazón vacío y cámbialo a un corazón lleno
         for (int i = 0; i < hearts.Count; i++) {

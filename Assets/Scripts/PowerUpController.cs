@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObstacleController : MonoBehaviour {
+public class PowerUpController : MonoBehaviour {
 
     [SerializeField] private float speed = 1f;
     [SerializeField] private float distance = 2.5f;
@@ -10,6 +10,8 @@ public class ObstacleController : MonoBehaviour {
 
     private Vector3 startPosition;
     private Transform playerTransform;
+
+    private float time;
 
 
     void Start() {
@@ -19,23 +21,22 @@ public class ObstacleController : MonoBehaviour {
     }
 
     void Update() {
-        float newPosition = Mathf.Sin(Time.time * speed) * distance;
-        transform.position = startPosition + new Vector3(newPosition, 0, 0);
 
-        if (transform.position.y < playerTransform.position.y + distanceToDestroy) {
+        time += Time.deltaTime;
+
+        float newPositionX = Mathf.Sin(Time.time * speed) * distance;
+        float newPositionY = Time.time * speed;
+        transform.position = startPosition + new Vector3(newPositionX, newPositionY, 0);
+
+        if (transform.position.y < playerTransform.position.y + distanceToDestroy || time > 10f) {
             Destroy(gameObject);
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other) {
+    private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("Player")) {
-            GetComponent<Collider2D>().enabled = false;
-            this.enabled = false;
-
-            //TODO: Descativar collider
-            Destroy(gameObject, 1f);
+            Destroy(gameObject);
         }
     }
-
 
 }
