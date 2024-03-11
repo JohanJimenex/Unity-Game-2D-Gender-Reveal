@@ -17,7 +17,7 @@ public class LivesSpawner : MonoBehaviour {
     void Update() {
         timeCounter += Time.deltaTime;
 
-        if (ShouldSpawn() && timeCounter >= 3f) {
+        if (ShouldSpawn() && timeCounter >= 40f) {
             SpawnLive();
             timeCounter = 0f;
         }

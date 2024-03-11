@@ -17,7 +17,7 @@ public class PowerUpSpawner : MonoBehaviour {
     void Update() {
         timeCounter += Time.deltaTime;
 
-        if (ShouldSpawn() && timeCounter >= 3f) {
+        if (ShouldSpawn() && timeCounter >= 30f) {
             SpawnPowerUp();
             timeCounter = 0f;
         }
