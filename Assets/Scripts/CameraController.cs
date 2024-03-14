@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour {
 
+    [SerializeField] private PlayerMovement playerMovement;
+
+
     public PlayerController playerController; // Referencia al script del jugador
     private readonly float smoothSpeed = 0.125f; // Añade una velocidad de suavizado a la camara
 
@@ -13,7 +16,7 @@ public class CameraController : MonoBehaviour {
 
     void Start() {
 
-        playerController.OnPositionYChanged += UpdateCameraPosition; // Suscríbete al evento OnPositionYChanged del script del jugador
+        playerMovement.OnPositionYChanged += UpdateCameraPosition; // Suscríbete al evento OnPositionYChanged del script del jugador
 
         lastPlayerPositionY = playerController.transform.position.y + 3f; // Añade un offse textra para que la cámara no siga al jugador al inicio del juego
     }

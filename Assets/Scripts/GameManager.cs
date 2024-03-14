@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void OnPlayerPositionYChanged() {
-        playerTransform.OnPositionYChanged += UpdateBestScore;
+        // playerTransform.OnPositionYChanged += UpdateBestScore;
     }
 
 

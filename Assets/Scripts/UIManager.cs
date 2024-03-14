@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour {
 
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private PlayerMovement playerMovement;
 
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI bestScoreText;
@@ -24,7 +25,8 @@ public class UIManager : MonoBehaviour {
     }
 
     private void Start() {
-        playerController.OnPositionYChanged += UpdateUIScore;
+        playerMovement.OnPositionYChanged += UpdateUIScore;
+
         playerController.OnHurt += UpdateUIHearts;
         playerController.OnPlayerGetLive += AddLive;
         playerController.OnPlayerDied += HandlePlayerDied;
