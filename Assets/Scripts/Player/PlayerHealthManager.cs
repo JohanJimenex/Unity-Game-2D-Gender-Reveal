@@ -2,12 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour {
-
-    // [SerializeField] private PlayerMovement playerMovement;
-
+public class PlayerHealthManager : MonoBehaviour {
     private int lifes = 2;
     public bool canReciveHurt = true;
 
@@ -30,7 +26,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         if (other.gameObject.CompareTag("Life")) {
-            AddLive();
+            AddLife();
         }
     }
 
@@ -48,7 +44,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void AddLive() {
+    private void AddLife() {
         if (lifes < 2) {
             lifes++;
             OnPlayerGetLive?.Invoke(lifes);
@@ -59,5 +55,4 @@ public class PlayerController : MonoBehaviour {
         rb.bodyType = RigidbodyType2D.Static;
         OnPlayerDied?.Invoke();
     }
-
 }

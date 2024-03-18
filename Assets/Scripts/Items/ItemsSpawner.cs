@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ItemsSpawner : MonoBehaviour {
 
-    [SerializeField] private Transform playerController;
+    [SerializeField] private Transform playerTransform;
     [SerializeField] private GameObject[] prefab;
     [SerializeField] private float timeToSpawn = 30f;
 
@@ -15,7 +15,7 @@ public class ItemsSpawner : MonoBehaviour {
     void Update() {
         timer += Time.deltaTime;
 
-        if (timer >= timeToSpawn && playerController.position.y > lastSpawnPosition) {
+        if (timer >= timeToSpawn && playerTransform.position.y > lastSpawnPosition) {
             SpawnItem();
             timer = 0f;
         }
@@ -25,7 +25,7 @@ public class ItemsSpawner : MonoBehaviour {
 
         GameObject randomGameObject = prefab[Random.Range(0, prefab.Length)];
 
-        Vector3 spawnPosition = new Vector3(Random.Range(-3, 3), playerController.position.y + 6f, 0);
+        Vector3 spawnPosition = new Vector3(Random.Range(-3, 3), playerTransform.position.y + 6f, 0);
         Instantiate(randomGameObject, spawnPosition, Quaternion.identity);
         lastSpawnPosition = spawnPosition.y + 10;
     }

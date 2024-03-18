@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour {
     [SerializeField] private PlayerMovement playerMovement;
 
 
-    public PlayerController playerController; // Referencia al script del jugador
+    public PlayerHealthManager playerHealthManager; // Referencia al script del jugador
     private readonly float smoothSpeed = 0.125f; // Añade una velocidad de suavizado a la camara
 
     private float lastPlayerPositionY;
@@ -18,7 +18,7 @@ public class CameraController : MonoBehaviour {
 
         playerMovement.OnPositionYChanged += UpdateCameraPosition; // Suscríbete al evento OnPositionYChanged del script del jugador
 
-        lastPlayerPositionY = playerController.transform.position.y + 3f; // Añade un offse textra para que la cámara no siga al jugador al inicio del juego
+        lastPlayerPositionY = playerHealthManager.transform.position.y + 3f; // Añade un offse textra para que la cámara no siga al jugador al inicio del juego
     }
 
     private void UpdateCameraPosition(float playerPositionY) {
@@ -30,7 +30,7 @@ public class CameraController : MonoBehaviour {
             lastPlayerPositionY = playerPositionY;
         }
         if (playerPositionY < transform.position.y - distanceToDestroy && !playerIsDead) {
-            playerController.IsDead(); // Llama al método IsDead del script del jugador
+            playerHealthManager.IsDead(); // Llama al método IsDead del script del jugador
             playerIsDead = true;
         }
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAnim : MonoBehaviour {
 
-    [SerializeField] private PlayerController playerController;
+    [SerializeField] private PlayerHealthManager playerHealthManager;
     [SerializeField] private Animator anim;
 
     void Start() {
@@ -18,8 +18,8 @@ public class PlayerAnim : MonoBehaviour {
     }
 
     private void SubscribeAndListenEvents() {
-        playerController.OnHurt += PlayHurtAnim;
-        playerController.OnPlayerDied += PlayDieAnim;
+        playerHealthManager.OnHurt += PlayHurtAnim;
+        playerHealthManager.OnPlayerDied += PlayDieAnim;
     }
 
     private void PlayHurtAnim(int lives) {

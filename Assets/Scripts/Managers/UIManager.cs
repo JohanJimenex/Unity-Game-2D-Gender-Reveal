@@ -6,8 +6,11 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
-    [SerializeField] private PlayerController playerController;
+    [Header("Player References")]
+    [SerializeField] private PlayerHealthManager playerHealthManager;
     [SerializeField] private PlayerMovement playerMovement;
+    
+    [Header("UI References")]
 
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI bestScoreText;
@@ -25,11 +28,14 @@ public class UIManager : MonoBehaviour {
     }
 
     private void Start() {
-        playerMovement.OnPositionYChanged += UpdateUIScore;
+        SubscribeAndListenEvents();
+    }
 
-        playerController.OnHurt += UpdateUIHearts;
-        playerController.OnPlayerGetLive += AddLive;
-        playerController.OnPlayerDied += HandlePlayerDied;
+    private void SubscribeAndListenEvents() {
+        playerMovement.OnPositionYChanged += UpdateUIScore;
+        playerHealthManager.OnHurt += UpdateUIHearts;
+        playerHealthManager.OnPlayerGetLive += AddLive;
+        playerHealthManager.OnPlayerDied += HandlePlayerDied;
     }
 
     private void LoadBestScore() {
@@ -45,7 +51,7 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    void UpdateUIHearts(int lives) {
+    private void UpdateUIHearts(int lives) {
         for (int i = 0; i < hearts.Count; i++) {
             if (i < lives) {
                 hearts[i].sprite = emptyHeart; // Corazón vacío
@@ -55,7 +61,6 @@ public class UIManager : MonoBehaviour {
             }
         }
     }
-
 
     private void AddLive(int lives) {
 
