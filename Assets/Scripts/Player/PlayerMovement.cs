@@ -12,7 +12,10 @@ public class PlayerMovement : MonoBehaviour {
     [HideInInspector] public Action<float> OnPositionYChanged { get; set; }
 
     void Update() {
+        Move();
+    }
 
+    private void Move() {
         if (Input.touchCount > 0 || Input.GetButtonDown("Jump")) {
             rb.velocity = Vector2.up * upForce;
         }
@@ -23,6 +26,5 @@ public class PlayerMovement : MonoBehaviour {
 
         OnPositionYChanged?.Invoke(transform.position.y);
     }
-
 
 }

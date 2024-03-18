@@ -7,9 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
-    public PlayerController playerTransform;
+    public PlayerMovement playerMovement;
 
-    // private int score;
     private int bestScore;
 
     private void Awake() {
@@ -17,22 +16,8 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
-        OnPlayerPositionYChanged();
+        playerMovement.OnPositionYChanged += UpdateBestScore;
     }
-
-    private void OnPlayerPositionYChanged() {
-        // playerTransform.OnPositionYChanged += UpdateBestScore;
-    }
-
-
-    // private void UpdateScore(float positionY) {
-
-    //     score = (int)positionY;
-
-    //     if (score > bestScore) {
-    //         UpdateBestScore();
-    //     }
-    // }
 
     private void UpdateBestScore(float playerPositionY) {
 

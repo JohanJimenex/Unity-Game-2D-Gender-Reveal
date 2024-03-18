@@ -38,6 +38,11 @@ public class UIManager : MonoBehaviour {
 
     private void UpdateUIScore(float playerPositionY) {
         scoreText.text = playerPositionY.ToString("N0");
+
+        if (playerPositionY > PlayerPrefs.GetInt("BestScore")) {
+            PlayerPrefs.SetInt("BestScore", (int)playerPositionY);
+            bestScoreText.text = playerPositionY.ToString("N0");
+        }
     }
 
     void UpdateUIHearts(int lives) {
