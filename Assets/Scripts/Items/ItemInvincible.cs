@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemInvencible : ItemBase {
+public class ItemInvincible : ItemBase {
 
-    [Header("Item Invencible")]
+    [Header("Item Invincible")]
 
     [SerializeField] private int durationInvencilityInSeconds = 5;
 
