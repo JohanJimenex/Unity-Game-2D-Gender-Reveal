@@ -8,20 +8,21 @@ public class UIManager : MonoBehaviour {
 
     [Header("Player References")]
     [SerializeField] private PlayerHealthManager playerHealthManager;
-    [SerializeField] private PlayerMovement playerMovement;
-    
-    [Header("UI References")]
+    // [SerializeField] private PlayerMovement playerMovement;
 
-    [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private TextMeshProUGUI bestScoreText;
+    [Header("UI References")]
 
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject bestScoreUI;
+
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI bestScoreText;
 
     [SerializeField] private List<Image> hearts; // Lista de corazones
     [SerializeField] private Sprite fullHeart; // Sprite de corazón lleno
     [SerializeField] private Sprite emptyHeart; // Sprite de corazón vacío
 
+    private int bestScore;
 
     private void Awake() {
         LoadBestScore();
@@ -30,30 +31,40 @@ public class UIManager : MonoBehaviour {
     private void Start() {
         SubscribeAndListenEvents();
     }
+    private void Update() {
+        KeepScoreUIUpdated();
+    }
 
     private void SubscribeAndListenEvents() {
-        playerMovement.OnPositionYChanged += UpdateUIScore;
-        playerHealthManager.OnHurt += UpdateUIHearts;
-        playerHealthManager.OnPlayerGetLive += AddLive;
+        // playerMovement.OnPositionYChanged += UpdateUIScore;
+        playerHealthManager.OnPlayerGetDamage += DecreasesUIHearts;
+        playerHealthManager.OnPlayerIncreaseLife += IncreasesUILifes;
         playerHealthManager.OnPlayerDied += HandlePlayerDied;
     }
 
     private void LoadBestScore() {
-        bestScoreText.text = PlayerPrefs.GetInt("BestScore").ToString("N0");
+        bestScore = PlayerPrefs.GetInt("BestScore");
+        UpdateBestScoreUI();
     }
 
-    private void UpdateUIScore(float playerPositionY) {
-        scoreText.text = playerPositionY.ToString("N0");
+    private void KeepScoreUIUpdated() {
 
-        if (playerPositionY > PlayerPrefs.GetInt("BestScore")) {
-            PlayerPrefs.SetInt("BestScore", (int)playerPositionY);
-            bestScoreText.text = playerPositionY.ToString("N0");
+        int score = GameManager.GetScore();
+        scoreText.text = score.ToString("N0");
+
+        if (score > bestScore) {
+            bestScore = score;
+            UpdateBestScoreUI();
         }
     }
 
-    private void UpdateUIHearts(int lives) {
+    private void UpdateBestScoreUI() {
+        bestScoreText.text = bestScore.ToString("N0");
+    }
+
+    private void DecreasesUIHearts(int lifes) {
         for (int i = 0; i < hearts.Count; i++) {
-            if (i < lives) {
+            if (i < lifes) {
                 hearts[i].sprite = emptyHeart; // Corazón vacío
             }
             else {
@@ -62,7 +73,7 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    private void AddLive(int lives) {
+    private void IncreasesUILifes(int lifes) {
 
         // Encuentra el primer corazón vacío y cámbialo a un corazón lleno
         for (int i = 0; i < hearts.Count; i++) {

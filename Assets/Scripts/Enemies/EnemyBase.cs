@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour {
 
+
+    [SerializeField] protected int damage = 1;
     [SerializeField] protected float moveSpeed = 1f;
     [SerializeField] protected float distanceRangeToMoveX = 2.5f;
     protected float distanceToDestroy = 10f;
@@ -28,6 +30,8 @@ public abstract class EnemyBase : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("Player")) {
+            MakeDamageToPlayer(other.gameObject.GetComponent<PlayerHealthManager>());
+
             GetComponent<Collider2D>().enabled = false;
             this.enabled = false;
             Destroy(gameObject, 1f);
@@ -35,4 +39,8 @@ public abstract class EnemyBase : MonoBehaviour {
     }
 
     protected abstract void Move();
+
+    private void MakeDamageToPlayer(PlayerHealthManager playerHealtManager) {
+        playerHealtManager.MakeDamage(damage);
+    }
 }

@@ -18,7 +18,7 @@ public class PlayerAnim : MonoBehaviour {
     }
 
     private void SubscribeAndListenEvents() {
-        playerHealthManager.OnHurt += PlayHurtAnim;
+        playerHealthManager.OnPlayerGetDamage += PlayHurtAnim;
         playerHealthManager.OnPlayerDied += PlayDieAnim;
     }
 

@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemController : MonoBehaviour {
+public abstract class ItemBase : MonoBehaviour {
+
+    [Header("Item Base")]
 
     [SerializeField] private float verticalSpeedY = 2f;
     [SerializeField] private float horizontalSpeedX = 2f;
@@ -39,12 +41,6 @@ public class ItemController : MonoBehaviour {
         timeToDestroyGameObject += Time.deltaTime;
 
         if (transform.position.y <= (playerTransform.position.y + distanceFromPlayerToDestroy) || timeToDestroyGameObject >= 10f) {
-            Destroy(gameObject);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.CompareTag("Player")) {
             Destroy(gameObject);
         }
     }

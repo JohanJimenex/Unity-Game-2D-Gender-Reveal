@@ -9,49 +9,40 @@ public class PlayerHealthManager : MonoBehaviour {
 
     [SerializeField] private Rigidbody2D rb;
 
-    [HideInInspector] public Action<int> OnHurt { get; set; }
-    [HideInInspector] public Action<int> OnPlayerGetLive { get; set; }
+    [HideInInspector] public Action<int> OnPlayerGetDamage { get; set; }
+    [HideInInspector] public Action<int> OnPlayerIncreaseLife { get; set; }
     [HideInInspector] public Action OnPlayerDied { get; set; }
 
-    void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Enemy") && canReciveHurt) {
-            Hurt();
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.CompareTag("PowerUp")) {
-            canReciveHurt = false;
-            Invoke(nameof(EnableCanReciveHurt), 5f);
-        }
-
-        if (other.gameObject.CompareTag("Life")) {
-            AddLife();
-        }
+    public void SetInvencible(int duration) {
+        canReciveHurt = false;
+        Invoke(nameof(EnableCanReciveHurt), duration);
     }
 
     private void EnableCanReciveHurt() {
         canReciveHurt = true;
     }
 
-    private void Hurt() {
+    public void IncreasePlayerLife(int quantity = 1) {
+        if (lifes < 2) {
+            lifes += quantity;
+        }
+        OnPlayerIncreaseLife?.Invoke(lifes);
+    }
 
-        lifes--;
-        OnHurt?.Invoke(lifes);
+    public void MakeDamage(int damage = 1) {
+
+        if (!canReciveHurt) return;
+
+        lifes -= damage;
+
+        OnPlayerGetDamage?.Invoke(lifes);
 
         if (lifes <= 0) {
-            IsDead();
+            PlayerDead();
         }
     }
 
-    private void AddLife() {
-        if (lifes < 2) {
-            lifes++;
-            OnPlayerGetLive?.Invoke(lifes);
-        }
-    }
-
-    public void IsDead() {
+    private void PlayerDead() {
         rb.bodyType = RigidbodyType2D.Static;
         OnPlayerDied?.Invoke();
     }

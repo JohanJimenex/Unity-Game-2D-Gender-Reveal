@@ -1,36 +1,49 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
-    public PlayerMovement playerMovement;
+    [SerializeField] PlayerMovement playerMovement;
 
-    private int bestScore;
+    private static int score;
+    private static int extraScore;
+    private static int bestScore;
 
     private void Awake() {
+        extraScore = 0;
         LoadBestScore();
     }
 
     private void Start() {
-        playerMovement.OnPositionYChanged += UpdateBestScore;
-    }
-
-    private void UpdateBestScore(float playerPositionY) {
-
-        if ((int)playerPositionY > bestScore) {
-            PlayerPrefs.SetInt("BestScore", (int)playerPositionY);
-        }
+        playerMovement.OnPositionYChanged += IncreaseScore;
     }
 
     private void LoadBestScore() {
         bestScore = PlayerPrefs.GetInt("BestScore");
     }
 
-    public void StartGame() {
+    private void IncreaseScore(float skore) {
+
+        score = extraScore + (int)skore;
+
+        if (score > bestScore) {
+            UpdateBestScore();
+        }
+    }
+
+    public static void AddExtraScore(int extraSkore) {
+        extraScore += extraSkore;
+    }
+
+    public static int GetScore() {
+        return score;
+    }
+
+    private void UpdateBestScore() {
+        PlayerPrefs.SetInt("BestScore", score);
+    }
+
+    public static void StartGame() {
         SceneManager.LoadScene("MainScene");
     }
 
