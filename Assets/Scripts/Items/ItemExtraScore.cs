@@ -9,7 +9,7 @@ public class ItemExtraScore : ItemBase {
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("Player")) {
-            GameManager.AddExtraScore(extraScore);
+            GameManager.IncreaseScore(extraScore);
             Destroy(gameObject);
         }
     }

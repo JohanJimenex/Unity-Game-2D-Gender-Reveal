@@ -8,9 +8,8 @@ public class ItemLife : ItemBase {
     [SerializeField] private int lifePointsToIncreases = 1;
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.CompareTag("Player")) {
-            PlayerHealthManager playerHealtManager = other.GetComponent<PlayerHealthManager>();
-            playerHealtManager.IncreasePlayerLife(lifePointsToIncreases);
+        if (other.gameObject.TryGetComponent<IIncreaseLife>(out IIncreaseLife increaseLife)) {
+            increaseLife.IncreaseLife(lifePointsToIncreases);
             Destroy(gameObject);
         }
     }

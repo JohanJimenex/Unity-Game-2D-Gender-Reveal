@@ -22,13 +22,13 @@ public class CameraController : MonoBehaviour {
     }
 
     private void UpdateCameraPosition(float playerPositionY) {
-
         if (playerPositionY > lastPlayerPositionY) {
             Vector3 newPosition = new Vector3(transform.position.x, playerPositionY, transform.position.z);
             Vector3 smoothedPosition = Vector3.Lerp(transform.position, newPosition, smoothSpeed); // Usa Lerp para suavizar la transición
             transform.position = smoothedPosition;
             lastPlayerPositionY = playerPositionY;
         }
+
         if (playerPositionY < transform.position.y - distanceToDestroy && !playerIsDead) {
             playerHealthManager.MakeDamage(100); // Llama al método IsDead del script del jugador
             playerIsDead = true;

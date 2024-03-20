@@ -28,8 +28,12 @@ public abstract class EnemyBase : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.CompareTag("Player")) {
-            MakeDamageToPlayer(other.gameObject.GetComponent<PlayerHealthManager>());
+
+
+        // MakeDamageToPlayer(other.gameObject.GetComponent<PlayerHealthManager>());
+        if (other.gameObject.TryGetComponent<IMakeDamage>(out IMakeDamage makeDamage)) {
+
+            makeDamage.MakeDamage(damage);
 
             GetComponent<Collider2D>().enabled = false;
             this.enabled = false;
@@ -39,7 +43,4 @@ public abstract class EnemyBase : MonoBehaviour {
 
     protected abstract void Move();
 
-    private void MakeDamageToPlayer(PlayerHealthManager playerHealtManager) {
-        playerHealtManager.MakeDamage(damage);
-    }
 }

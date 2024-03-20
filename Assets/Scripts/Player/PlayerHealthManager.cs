@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealthManager : MonoBehaviour {
+public class PlayerHealthManager : MonoBehaviour, IMakeDamage, IIncreaseLife {
     private int lifes = 2;
     public bool canReciveHurt = true;
 
@@ -22,14 +22,14 @@ public class PlayerHealthManager : MonoBehaviour {
         canReciveHurt = true;
     }
 
-    public void IncreasePlayerLife(int quantity = 1) {
+    public void IncreaseLife(int quantity = 1) {
         if (lifes < 2) {
             lifes += quantity;
         }
         OnPlayerIncreaseLife?.Invoke(lifes);
     }
 
-    public void MakeDamage(int damage = 1) {
+    public void MakeDamage(int damage) {
 
         if (!canReciveHurt) return;
 
@@ -46,4 +46,5 @@ public class PlayerHealthManager : MonoBehaviour {
         rb.bodyType = RigidbodyType2D.Static;
         OnPlayerDied?.Invoke();
     }
+
 }
