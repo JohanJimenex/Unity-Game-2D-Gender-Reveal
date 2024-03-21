@@ -9,9 +9,9 @@ public class EnemySpawner : MonoBehaviour {
 
     [SerializeField] private GameObject[] enemyListPrefab;
 
-    public float spawnHeight = 10f;
-    public float horizontalRangeToInstanciate = 2.5f;
-    public float distanceFromPlayerToSpawnY = -2f;
+    [SerializeField] private float spawnHeight = 10f;
+    [SerializeField] private float horizontalRangeToInstanciate = 2.5f;
+    [SerializeField] private float distanceFromPlayerToSpawnY = -2f;
 
     private float lastSpawnPositionY;
 

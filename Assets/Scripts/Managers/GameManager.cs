@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour {
 
         if (instance == null) {
             instance = this;
-            // DontDestroyOnLoad(gameObject);
         }
         else {
             Destroy(gameObject);
@@ -44,11 +43,11 @@ public class GameManager : MonoBehaviour {
         };
     }
 
-    public static void IncreaseScore(float skore) {
+    public static void IncreaseScore(int skore) {
 
         skore *= multiplierScoreBy;
 
-        score += (int)skore;
+        score += skore;
 
         if (score > bestScore) {
             UpdateBestScore();

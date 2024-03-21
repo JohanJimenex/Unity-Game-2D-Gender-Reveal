@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerHealthManager : MonoBehaviour, IMakeDamage, IIncreaseLife {
     private int lifes = 2;
-    public bool canReciveHurt = true;
+    public bool canReciveDamage = true;
 
     [SerializeField] private Rigidbody2D rb;
 
@@ -14,12 +14,12 @@ public class PlayerHealthManager : MonoBehaviour, IMakeDamage, IIncreaseLife {
     [HideInInspector] public Action OnPlayerDied { get; set; }
 
     public void SetInvencible(int duration) {
-        canReciveHurt = false;
+        canReciveDamage = false;
         Invoke(nameof(EnableCanReciveHurt), duration);
     }
 
     private void EnableCanReciveHurt() {
-        canReciveHurt = true;
+        canReciveDamage = true;
     }
 
     public void IncreaseLife(int quantity = 1) {
@@ -31,7 +31,7 @@ public class PlayerHealthManager : MonoBehaviour, IMakeDamage, IIncreaseLife {
 
     public void MakeDamage(int damage) {
 
-        if (!canReciveHurt) return;
+        if (!canReciveDamage) return;
 
         lifes -= damage;
 
