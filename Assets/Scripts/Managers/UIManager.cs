@@ -63,8 +63,9 @@ public class UIManager : MonoBehaviour {
     }
 
     private void DecreasesUIHearts(int lifes) {
+
         for (int i = 0; i < hearts.Count; i++) {
-            if (i < lifes) {
+            if (i + 1 > lifes) {
                 hearts[i].sprite = emptyHeart; // Corazón vacío
             }
             else {

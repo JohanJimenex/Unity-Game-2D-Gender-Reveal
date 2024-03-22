@@ -35,6 +35,8 @@ public class PlayerHealthManager : MonoBehaviour, IMakeDamage, IIncreaseLife {
 
         lifes -= damage;
 
+        Handheld.Vibrate();
+
         OnPlayerGetDamage?.Invoke(lifes);
 
         if (lifes <= 0) {
@@ -45,6 +47,12 @@ public class PlayerHealthManager : MonoBehaviour, IMakeDamage, IIncreaseLife {
     private void PlayerDead() {
         rb.bodyType = RigidbodyType2D.Static;
         OnPlayerDied?.Invoke();
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.TryGetComponent<IMakeDamage>(out IMakeDamage makeDamage)) {
+            OnPlayerGetDamage?.Invoke(lifes);
+        }
     }
 
 }

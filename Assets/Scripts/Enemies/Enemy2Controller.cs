@@ -8,8 +8,6 @@ public class Enemy2Controller : EnemyBase {
     private float timeToMove = 2f;
 
     protected override void Update() {
-        base.Update();
-
         timeToMove -= Time.deltaTime;
 
         if (timeToMove <= 0) {
@@ -31,5 +29,4 @@ public class Enemy2Controller : EnemyBase {
             direction *= -1;
         }
     }
-
 }

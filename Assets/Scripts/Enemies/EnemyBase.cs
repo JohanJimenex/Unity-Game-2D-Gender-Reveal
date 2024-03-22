@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum DestroyFrom {
+    TOP = 1,
+    BOTTOM = -1,
+}
+
 public abstract class EnemyBase : MonoBehaviour, IMakeDamage {
 
     [SerializeField] protected int enemyAttackForce = 1;
@@ -10,6 +15,10 @@ public abstract class EnemyBase : MonoBehaviour, IMakeDamage {
     [SerializeField] protected float moveSpeed = 1f;
     [SerializeField] protected float distanceRangeToMoveX = 2.5f;
     [SerializeField] protected int scorePointsValue = 10;
+
+    [Header("Destroy Options")]
+    [SerializeField] protected bool canBeDestroyedWithoutDamage = false;
+    [SerializeField] protected private DestroyFrom destroyFrom;
 
     protected float distanceFromPlayerToDestroy = 10f;
     protected Vector3 startPosition;
@@ -21,6 +30,7 @@ public abstract class EnemyBase : MonoBehaviour, IMakeDamage {
     }
 
     protected virtual void Update() {
+        Move();
         DestroyGameObjectIfFarFromPlayer();
     }
 
@@ -31,13 +41,18 @@ public abstract class EnemyBase : MonoBehaviour, IMakeDamage {
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
+        MakeDamageToOther(other);
+    }
 
+    private void MakeDamageToOther(Collision2D other) {
         if (other.gameObject.TryGetComponent<IMakeDamage>(out IMakeDamage makeDamage)) {
 
-            makeDamage.MakeDamage(enemyAttackForce);
+            if (canBeDestroyedWithoutDamage && other.transform.position.y <
+                (transform.position.y * (float)DestroyFrom.TOP)) {
+                return;
+            }
 
-            GetComponent<Collider2D>().enabled = false;
-            this.enabled = false;
+            makeDamage.MakeDamage(enemyAttackForce);
         }
     }
 
@@ -52,6 +67,8 @@ public abstract class EnemyBase : MonoBehaviour, IMakeDamage {
 
     private void EnemyDead() {
         GameManager.IncreaseScore(scorePointsValue);
+        GetComponent<Collider2D>().enabled = false;
+        this.enabled = false; //desactivo el script para que no se mueva
         Destroy(gameObject, 1f);
     }
 }
