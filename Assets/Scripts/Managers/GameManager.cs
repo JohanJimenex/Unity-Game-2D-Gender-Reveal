@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour {
 
     private static int score;
     private static int bestScore;
+    private static int extraScore;
     private static int multiplierScoreBy = 1;
+
     private static GameManager instance;
 
     private void Awake() {
@@ -35,6 +37,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void SubscribeAndListenToEvent() {
+
         playerMovement.OnPositionYChanged += (positionY) => {
 
             if (positionY > score) {
@@ -49,13 +52,17 @@ public class GameManager : MonoBehaviour {
 
         score += skore;
 
-        if (score > bestScore) {
+        if (score + extraScore > bestScore) {
             UpdateBestScore();
         }
     }
 
+    public static void AddExtraScore(int extraSkore) {
+        extraScore += extraSkore;
+    }
+
     public static int GetScore() {
-        return score;
+        return score + extraScore;
     }
 
     public static void MultiplyScoreBy(int multiplier, int durationInSeconds) {

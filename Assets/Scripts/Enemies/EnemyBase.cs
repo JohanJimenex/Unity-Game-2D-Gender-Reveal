@@ -66,9 +66,9 @@ public abstract class EnemyBase : MonoBehaviour, IMakeDamage {
     }
 
     private void EnemyDead() {
-        GameManager.IncreaseScore(scorePointsValue);
+        GameManager.AddExtraScore(scorePointsValue);
         GetComponent<Collider2D>().enabled = false;
-        this.enabled = false; //desactivo el script para que no se mueva
+        this.enabled = false; //desactivo el script para que no se mueva el enemigo
         Destroy(gameObject, 1f);
     }
 }

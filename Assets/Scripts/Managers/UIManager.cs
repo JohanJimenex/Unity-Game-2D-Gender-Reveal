@@ -8,7 +8,6 @@ public class UIManager : MonoBehaviour {
 
     [Header("Player References")]
     [SerializeField] private PlayerHealthManager playerHealthManager;
-    // [SerializeField] private PlayerMovement playerMovement;
 
     [Header("UI References")]
 
@@ -31,6 +30,7 @@ public class UIManager : MonoBehaviour {
     private void Start() {
         SubscribeAndListenEvents();
     }
+    
     private void Update() {
         KeepScoreUIUpdated();
     }
