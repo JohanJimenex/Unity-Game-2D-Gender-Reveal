@@ -7,8 +7,8 @@ public class PlayerAttack : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D other) {
 
-        if (other.gameObject.TryGetComponent<IMakeDamage>(out IMakeDamage makeDamage)) {
-            makeDamage.MakeDamage(playerAttackForce);
+        if (other.gameObject.TryGetComponent<IDamageReceiver>(out IDamageReceiver makeDamage)) {
+            makeDamage.ReceiveDamage(playerAttackForce);
         }
     }
 

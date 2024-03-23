@@ -58,7 +58,7 @@ public class CameraController : MonoBehaviour {
         }
 
         if (playerPositionY < transform.position.y - distanceToDestroy && !playerIsDead) {
-            playerHealthManager.MakeDamage(100); // Llama al método IsDead del script del jugador
+            playerHealthManager.ReceiveDamage(100); // Llama al método IsDead del script del jugador
             playerIsDead = true;
         }
     }

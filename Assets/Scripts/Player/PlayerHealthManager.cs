@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealthManager : MonoBehaviour, IMakeDamage, IIncreaseLife {
+public class PlayerHealthManager : MonoBehaviour, IDamageReceiver, ILifeIncreaser {
     private int lifes = 2;
     public bool canReciveDamage = true;
 
@@ -29,7 +29,7 @@ public class PlayerHealthManager : MonoBehaviour, IMakeDamage, IIncreaseLife {
         OnPlayerIncreaseLife?.Invoke(lifes);
     }
 
-    public void MakeDamage(int damage) {
+    public void ReceiveDamage(int damage) {
 
         if (!canReciveDamage) return;
 
@@ -50,7 +50,7 @@ public class PlayerHealthManager : MonoBehaviour, IMakeDamage, IIncreaseLife {
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.TryGetComponent<IMakeDamage>(out IMakeDamage makeDamage)) {
+        if (other.gameObject.TryGetComponent<IDamageReceiver>(out IDamageReceiver makeDamage)) {
             OnPlayerGetDamage?.Invoke(lifes);
         }
     }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemExtraScore : ItemBase {
+public class ItemExtraScore : AbstractItemBase {
 
     [Header("Item Extra Score")]
     [SerializeField] private int extraScore = 20;

@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum DestroyFrom {
+public enum CanBeDestroyFrom {
     TOP = 1,
     BOTTOM = -1,
 }
 
-public abstract class EnemyBase : MonoBehaviour, IMakeDamage {
+public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
 
     [SerializeField] protected int enemyAttackForce = 1;
     [SerializeField] protected int enemyLifePoints = 1;
@@ -18,7 +18,7 @@ public abstract class EnemyBase : MonoBehaviour, IMakeDamage {
 
     [Header("Destroy Options")]
     [SerializeField] protected bool canBeDestroyedWithoutDamage = false;
-    [SerializeField] protected private DestroyFrom destroyFrom;
+    [SerializeField] protected private CanBeDestroyFrom canBeDestroyFrom;
 
     protected float distanceFromPlayerToDestroy = 10f;
     protected Vector3 startPosition;
@@ -34,7 +34,7 @@ public abstract class EnemyBase : MonoBehaviour, IMakeDamage {
         DestroyGameObjectIfFarFromPlayer();
     }
 
-    private void DestroyGameObjectIfFarFromPlayer() {
+    protected void DestroyGameObjectIfFarFromPlayer() {
         if (playerTransform.position.y > (startPosition.y + distanceFromPlayerToDestroy)) {
             Destroy(gameObject);
         }
@@ -45,20 +45,30 @@ public abstract class EnemyBase : MonoBehaviour, IMakeDamage {
     }
 
     private void MakeDamageToOther(Collision2D other) {
-        if (other.gameObject.TryGetComponent<IMakeDamage>(out IMakeDamage makeDamage)) {
+        if (other.gameObject.TryGetComponent<IDamageReceiver>(out IDamageReceiver makeDamage)) {
 
             if (canBeDestroyedWithoutDamage && other.transform.position.y <
-                (transform.position.y * (float)DestroyFrom.TOP)) {
+                (transform.position.y * (float)CanBeDestroyFrom.TOP)) {
                 return;
             }
 
-            makeDamage.MakeDamage(enemyAttackForce);
+            makeDamage.ReceiveDamage(enemyAttackForce);
+        }
+    }
+    
+    private float direction = 1.0f;
+
+    protected virtual void Move() {
+
+        float movement = direction * moveSpeed * Time.deltaTime;
+        transform.Translate(movement, 0, 0);
+
+        if (Mathf.Abs(transform.position.x - startPosition.x) >= distanceRangeToMoveX) {
+            direction *= -1;
         }
     }
 
-    protected abstract void Move();
-
-    public void MakeDamage(int damage) {
+    public void ReceiveDamage(int damage) {
         enemyLifePoints -= damage;
         if (enemyLifePoints <= 0) {
             EnemyDead();

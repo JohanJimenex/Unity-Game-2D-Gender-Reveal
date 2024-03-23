@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ItemBase : MonoBehaviour {
+[RequireComponent(typeof(BoxCollider2D))]
+public abstract class AbstractItemBase : MonoBehaviour {
 
     [Header("Item Base")]
 

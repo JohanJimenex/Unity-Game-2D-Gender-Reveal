@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class EnemySpawner : MonoBehaviour {
+public class EnemiesSpawner : MonoBehaviour {
 
     public Transform playerTransform;
 
-    [SerializeField] private GameObject[] enemyListPrefab;
+    [SerializeField] private GameObject[] enemiesPrefabs;
 
     [SerializeField] private float spawnHeight = 10f;
     [SerializeField] private float horizontalRangeToInstanciate = 2.5f;
@@ -18,7 +18,7 @@ public class EnemySpawner : MonoBehaviour {
     void Update() {
 
         if (ShouldSpawn()) {
-            SpawnObstacle(enemyListPrefab[Random.Range(0, enemyListPrefab.Length)]);
+            SpawnObstacle(enemiesPrefabs[Random.Range(0, enemiesPrefabs.Length)]);
         }
     }
 

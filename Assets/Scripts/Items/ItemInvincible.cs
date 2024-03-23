@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemInvincible : ItemBase {
+public class ItemInvincible : AbstractItemBase {
 
     [Header("Item Invincible")]
 
-    [SerializeField] private int durationInvencilityInSeconds = 5;
+    [SerializeField] private int effectDurationInSeconds = 5;
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("Player")) {
             PlayerHealthManager playerHealtManager = other.GetComponent<PlayerHealthManager>();
-            playerHealtManager.SetInvencible(durationInvencilityInSeconds);
+            playerHealtManager.SetInvencible(effectDurationInSeconds);
             Destroy(gameObject);
         }
     }

@@ -20,9 +20,18 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Move() {
 
+        // ================== Keyboard Controls ==================
+
         if (Input.GetButtonDown("Jump")) {
             rb.velocity = Vector2.up * upForce;
         }
+
+        if (Input.GetKeyDown(KeyCode.S) && isDownDashActive) {
+            rb.velocity = Vector2.down * upForce;
+            Invoke(nameof(StopDownForce), 0.3f);
+        }
+
+        // ================== Touch Controls ==================
 
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) {
             startTouchPosition = Input.GetTouch(0).position;
@@ -32,7 +41,7 @@ public class PlayerMovement : MonoBehaviour {
 
             endTouchPosition = Input.GetTouch(0).position;
 
-            if (endTouchPosition.y < startTouchPosition.y && ) {
+            if (endTouchPosition.y < startTouchPosition.y && isDownDashActive) {
                 rb.velocity = Vector2.down * upForce;
                 Invoke(nameof(StopDownForce), 0.3f);
             }
@@ -43,7 +52,18 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void StopDownForce() {
-        // rb.velocity = Vector2.up * 3;
+        rb.velocity = Vector2.up * 3;
+    }
+
+    private bool isDownDashActive = false;
+
+    public void ActiveDownDash(int durationInSeconds) {
+        isDownDashActive = true;
+        Invoke(nameof(DeactivateDownDash), durationInSeconds);
+    }
+
+    private void DeactivateDownDash() {
+        isDownDashActive = false;
     }
 
     private void EmitPlayerPositionY() {
@@ -58,7 +78,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D other) {
 
-        if (other.gameObject.TryGetComponent(out IMakeDamage makeDamage) && other.transform.position.y < transform.position.y) {
+        if (other.gameObject.TryGetComponent(out IDamageReceiver makeDamage) && other.transform.position.y < transform.position.y) {
             rb.velocity = Vector2.up * upForce;
         }
     }

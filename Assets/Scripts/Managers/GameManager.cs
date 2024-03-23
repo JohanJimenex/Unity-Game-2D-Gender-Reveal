@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public static void StartGame() {
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("GameScene");
     }
 
 }
