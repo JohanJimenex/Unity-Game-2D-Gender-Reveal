@@ -7,8 +7,7 @@ public class PlayerAnim : MonoBehaviour {
     [SerializeField] private PlayerHealthManager playerHealthManager;
     [SerializeField] private Animator anim;
 
-    private bool isDownDashActive = false;
-
+    private readonly bool isDownDashActive = false;
 
     void Start() {
         SubscribeAndListenEvents();
@@ -71,21 +70,20 @@ public class PlayerAnim : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other) {
 
-
-        if (other.CompareTag("Ground")) {
-
-            anim.SetBool("On Ground", true);
-            // anim.SetTrigger("Land");
-        }
-        // if (other.CompareTag("Coin")) {
-        //     uiAnim.SetTrigger("Collect");
-        // }
-
         // if (other.CompareTag("Enemy")) {
         //     uiAnim.SetTrigger("Scary");
         // }
 
+        // if (other.CompareTag("Coin")) {
+        //     uiAnim.SetTrigger("Collect");
+        // }
+
     }
 
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("Ground")) {
+            anim.SetBool("On Ground", true);
+        }
+    }
 
 }

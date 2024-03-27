@@ -25,18 +25,21 @@ class LandingPlatformController : MonoBehaviour {
         if (transform.position.x > 2.5f) {
             direction = -1.0f;
         }
+        else if (transform.position.x < -2.5f) {
+            direction = 1.0f;
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("Player")) {
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("Player") && other.transform.position.y > transform.position.y) {
             moveSpeed = 0;
             GameManager.AddExtraScore(extraScorePointToGive);
             playerHealthManager.IncreaseLife(lifePointsToHealth);
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other) {
-        if (other.CompareTag("Player")) {
+    private void OnCollisionExit2D(Collision2D other) {
+        if (other.gameObject.CompareTag("Player") && other.transform.position.y > transform.position.y) {
             Destroy(gameObject, 1f);
         }
     }
