@@ -6,22 +6,23 @@ public class StopperEnemyController : AbstractEnemyBase {
 
     [Header("Stopper Enemy Options")]
 
-    [SerializeField] private float timeToMove = 2f;
+    [SerializeField] private float timeToWaitForMove = 2f;
 
     protected override void Update() {
 
-        timeToMove -= Time.deltaTime;
+        timeToWaitForMove -= Time.deltaTime;
 
-        if (timeToMove <= 0) {
+        if (timeToWaitForMove >= 0) {
             Move();
-            Invoke(nameof(ResetTimeToMove), 2f);
+        }
+
+        if (timeToWaitForMove < -2) {
+            timeToWaitForMove = 2f;
         }
 
         DestroyGameObjectIfFarFromPlayer();
     }
 
-    private void ResetTimeToMove() {
-        timeToMove = 2f;
-    }
+
 
 }
