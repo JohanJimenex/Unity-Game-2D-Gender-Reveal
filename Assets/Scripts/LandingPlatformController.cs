@@ -5,7 +5,7 @@ class LandingPlatformController : MonoBehaviour {
     [Header("Landing Platform Options")]
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private int lifePointsToHealth = 2;
-    [SerializeField] private int extraScorePointToGive = 10;
+    [SerializeField] private int extraScorePointToGive = 50;
 
     private PlayerHealthManager playerHealthManager;
 
