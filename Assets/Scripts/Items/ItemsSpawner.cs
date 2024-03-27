@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class ItemsSpawner : MonoBehaviour {
 
-    [SerializeField] private Transform playerTransform;
     [SerializeField] private GameObject[] prefab;
+
+    [SerializeField] private Transform playerTransform;
     [SerializeField] private float timeToSpawn = 30f;
 
     private float timer = 0f;

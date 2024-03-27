@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class EnemiesSpawner : MonoBehaviour {
 
-    public Transform playerTransform;
 
     [SerializeField] private GameObject[] enemiesPrefabs;
+
+    [SerializeField] private Transform playerTransform;
 
     [SerializeField] private float spawnHeight = 10f;
     [SerializeField] private float horizontalRangeToInstanciate = 2.5f;
@@ -17,16 +18,16 @@ public class EnemiesSpawner : MonoBehaviour {
 
     void Update() {
 
-        if (ShouldSpawn()) {
-            SpawnObstacle(enemiesPrefabs[Random.Range(0, enemiesPrefabs.Length)]);
+        if (CanSpawn()) {
+            SpawnEnemy(enemiesPrefabs[Random.Range(0, enemiesPrefabs.Length)]);
         }
     }
 
-    private bool ShouldSpawn() {
+    private bool CanSpawn() {
         return (playerTransform.position.y - lastSpawnPositionY) >= distanceFromPlayerToSpawnY;
     }
 
-    private void SpawnObstacle(GameObject enemyPrefab) {
+    private void SpawnEnemy(GameObject enemyPrefab) {
 
         float randomPositionX = Random.Range(-horizontalRangeToInstanciate, horizontalRangeToInstanciate);
         Vector3 spawnPosition = new Vector3(randomPositionX, playerTransform.position.y + spawnHeight, 0);
