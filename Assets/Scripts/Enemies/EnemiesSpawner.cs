@@ -6,7 +6,8 @@ using UnityEngine;
 public class EnemiesSpawner : MonoBehaviour {
 
 
-    [SerializeField] private GameObject[] enemiesPrefabs;
+    [SerializeField] private GameObject[] easyEnemiesPrefabs;
+    [SerializeField] private GameObject[] hardEnemiesPrefabs;
 
     [SerializeField] private Transform playerTransform;
 
@@ -16,10 +17,29 @@ public class EnemiesSpawner : MonoBehaviour {
 
     private float lastSpawnPositionY;
 
+    private float difficultyIncreaseHeight = 100f;
+    private float hardesEnemiesPropability = 0;
+
     void Update() {
 
         if (CanSpawn()) {
-            SpawnEnemy(enemiesPrefabs[Random.Range(0, enemiesPrefabs.Length)]);
+
+            if (Random.Range(0, 100) < hardesEnemiesPropability) {
+                SpawnEnemy(hardEnemiesPrefabs[Random.Range(0, hardEnemiesPrefabs.Length)]);
+            }
+            else {
+                SpawnEnemy(easyEnemiesPrefabs[Random.Range(0, easyEnemiesPrefabs.Length)]);
+            }
+        }
+
+        UpdateDifficultyPropability();
+    }
+
+    private void UpdateDifficultyPropability() {
+
+        if (playerTransform.position.y >= difficultyIncreaseHeight) {
+            difficultyIncreaseHeight += 50f;
+            hardesEnemiesPropability += 5f;
         }
     }
 
