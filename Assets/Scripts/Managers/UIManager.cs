@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private Sprite fullHeart; // Sprite de corazón lleno
     [SerializeField] private Sprite emptyHeart; // Sprite de corazón vacío
 
+    [SerializeField] private GameObject screenBorderDamage;
+
     private int bestScore;
 
     private void Awake() {
@@ -30,7 +32,7 @@ public class UIManager : MonoBehaviour {
     private void Start() {
         SubscribeAndListenEvents();
     }
-    
+
     private void Update() {
         KeepScoreUIUpdated();
     }
@@ -38,6 +40,7 @@ public class UIManager : MonoBehaviour {
     private void SubscribeAndListenEvents() {
         // playerMovement.OnPositionYChanged += UpdateUIScore;
         playerHealthManager.OnPlayerGetDamage += DecreasesUIHearts;
+        playerHealthManager.OnPlayerGetDamage += ShowScreenBorderIndicator;
         playerHealthManager.OnPlayerIncreaseLife += IncreasesUILifes;
         playerHealthManager.OnPlayerDied += HandlePlayerDied;
     }
@@ -96,5 +99,14 @@ public class UIManager : MonoBehaviour {
 
     private void ShowBestScorePanel() {
         bestScoreUI.SetActive(true);
+    }
+
+    private void ShowScreenBorderIndicator(int _) {
+        screenBorderDamage.SetActive(true);
+        Invoke(nameof(DisableScreenBorderIndicator), 0.5f);
+    }
+
+    private void DisableScreenBorderIndicator() {
+        screenBorderDamage.SetActive(false);
     }
 }

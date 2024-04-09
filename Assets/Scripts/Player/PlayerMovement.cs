@@ -19,9 +19,11 @@ public class PlayerMovement : MonoBehaviour {
     private Vector2 startTouchPosition, endTouchPosition;
 
     private void Move() {
+
         if (transform.position.x <= -1f) {
             transform.position = new Vector2(-1f, transform.position.y);
         }
+
         if (transform.position.x >= 1f) {
             transform.position = new Vector2(1f, transform.position.y);
         }
@@ -39,12 +41,13 @@ public class PlayerMovement : MonoBehaviour {
 
         //move to the left
         if (Input.GetKeyDown(KeyCode.A)) {
-            rb.velocity = Vector2.left * moveForce;
+            rb.velocity = new Vector2(-1 * moveForce, 1 * 2);
+
         }
 
         //move to the rigth
         if (Input.GetKeyDown(KeyCode.D)) {
-            rb.velocity = Vector2.right * moveForce;
+            rb.velocity = new Vector2(1 * moveForce, 1 * 2);
         }
 
 
@@ -55,6 +58,7 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) {
+
             endTouchPosition = Input.GetTouch(0).position;
 
             if (endTouchPosition.y < startTouchPosition.y && isDownDashActive) {
@@ -64,18 +68,19 @@ public class PlayerMovement : MonoBehaviour {
             else if (endTouchPosition.y >= startTouchPosition.y) {
                 rb.velocity = Vector2.up * moveForce;
             }
+            
 
             if (endTouchPosition.x + 100 < startTouchPosition.x) {
                 // rb.velocity = Vector2.left * moveForce * Time.deltaTime;
-                rb.velocity = Vector2.left * moveForce;
+                rb.velocity = new Vector2(-1 * moveForce, 1 * 2);
             }
             else if (endTouchPosition.x - 100 > startTouchPosition.x) {
                 // rb.velocity = Vector2.right * moveForce * Time.deltaTime;
-                rb.velocity = Vector2.right * moveForce;
+                rb.velocity = new Vector2(1 * moveForce, 1 * 2);
+
             }
 
         }
-
 
         if (Input.touchCount > 0) {
             Touch touch = Input.GetTouch(0);
@@ -98,7 +103,6 @@ public class PlayerMovement : MonoBehaviour {
 
     private bool isDragging = false;
     private Vector2 currentTouchPosition;
-
 
     private void StopDownForce() {
         rb.velocity = Vector2.up * 3;
