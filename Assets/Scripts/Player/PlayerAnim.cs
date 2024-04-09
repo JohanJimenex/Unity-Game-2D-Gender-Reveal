@@ -7,7 +7,7 @@ public class PlayerAnim : MonoBehaviour {
     [SerializeField] private PlayerHealthManager playerHealthManager;
     [SerializeField] private Animator anim;
 
-    private readonly bool isDownDashActive = false;
+    private bool isDownDashActive = false;
 
     void Start() {
         SubscribeAndListenEvents();
@@ -24,10 +24,21 @@ public class PlayerAnim : MonoBehaviour {
         }
 
         if (Input.GetKeyDown(KeyCode.S) && isDownDashActive) {
-            anim.SetBool("Go Down", true);
-
+            anim.SetBool("Dash Down", true);
+            Debug.Log("Dash Down");
             Invoke(nameof(StopGoDownAnim), 0.3f);
         }
+
+        //move to the left
+        if (Input.GetKeyDown(KeyCode.A)) {
+            anim.SetTrigger("Move Left");
+        }
+
+        //move to the rigth
+        if (Input.GetKeyDown(KeyCode.D)) {
+            anim.SetTrigger("Move Right");
+        }
+
 
         // ================== Touch Controls ==================
 
@@ -40,32 +51,48 @@ public class PlayerAnim : MonoBehaviour {
             endTouchPosition = Input.GetTouch(0).position;
 
             if (endTouchPosition.y < startTouchPosition.y && isDownDashActive) {
-                anim.SetBool("Go Down", true);
-
+                anim.SetBool("Dash Down", true);
                 Invoke(nameof(StopGoDownAnim), 0.3f);
             }
-            else {
+            else if (endTouchPosition.y >= startTouchPosition.y) {
                 anim.SetTrigger("Float Up");
                 anim.SetBool("On Ground", false);
             }
+
+            if (endTouchPosition.x + 100 < startTouchPosition.x) {
+                anim.SetTrigger("Move Left");
+            }
+            else if (endTouchPosition.x - 100 > startTouchPosition.x) {
+                anim.SetTrigger("Move Right");
+            }
+
         }
     }
 
     private void StopGoDownAnim() {
-        anim.SetBool("Go Down", false);
+        anim.SetBool("Dash Down", false);
     }
 
     private void SubscribeAndListenEvents() {
-        playerHealthManager.OnPlayerGetDamage += PlayHurtAnim;
+        playerHealthManager.OnPlayerGetDamage += PlayerGetDamage;
         playerHealthManager.OnPlayerDied += PlayDieAnim;
     }
 
-    private void PlayHurtAnim(int lives) {
-        anim.SetTrigger("Hurt");
+    private void PlayerGetDamage(int _) {
+        anim.SetTrigger("Get Damage");
     }
 
     private void PlayDieAnim() {
         anim.SetTrigger("Die");
+    }
+
+    public void ActiveDownDash(int durationInSeconds) {
+        isDownDashActive = true;
+        Invoke(nameof(DeactivateDownDash), durationInSeconds);
+    }
+
+    private void DeactivateDownDash() {
+        isDownDashActive = false;
     }
 
     private void OnTriggerEnter2D(Collider2D other) {

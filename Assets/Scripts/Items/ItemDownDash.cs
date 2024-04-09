@@ -12,6 +12,9 @@ public class ItemDownDash : AbstractItemBase {
         if (other.CompareTag("Player")) {
             PlayerMovement playerMovement = other.GetComponent<PlayerMovement>();
             playerMovement.ActiveDownDash(effectDurationInSeconds);
+
+            PlayerAnim playerAnim = other.GetComponent<PlayerAnim>();
+            playerAnim.ActiveDownDash(effectDurationInSeconds);
             Destroy(gameObject);
         }
     }
