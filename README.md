@@ -17,7 +17,8 @@ Este es un emocionante proyecto de juego móvil desarrollado en Unity, donde el 
 
 ## Capturas de Pantalla 📸
 
-Inserta aquí algunas capturas de pantalla del juego para dar una idea visual de la jugabilidad y los gráficos impresionantes que ofrece Go Up.
+![image](https://github.com/JohanJimenex/Unity-Game-2D-Gender-Reveal/assets/48848092/4baa5cde-9b66-4d46-937a-68d590a6dec2)
+
 
 ## Instalación 📲
 
