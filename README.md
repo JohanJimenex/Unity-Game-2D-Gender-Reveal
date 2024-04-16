@@ -1,7 +1,3 @@
-¡Claro! Aquí tienes un ejemplo de cómo podría ser tu `readme.md`:
-
----
-
 # Unity Mobile Video Game - Go Up
 
 ¡Bienvenido a **Go Up**!
