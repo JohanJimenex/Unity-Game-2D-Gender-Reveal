@@ -6,7 +6,6 @@ public class CameraController : MonoBehaviour {
 
     [SerializeField] private PlayerMovement playerMovement;
 
-
     [SerializeField] private PlayerHealthManager playerHealthManager; // Referencia al script del jugador
     private readonly float smoothSpeed = 0.125f; // Añade una velocidad de suavizado a la camara
 
