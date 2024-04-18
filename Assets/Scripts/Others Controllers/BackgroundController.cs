@@ -19,10 +19,6 @@ public class BackgroundController : MonoBehaviour {
         initialVerticalSpeed = verticalSpeed;
     }
 
-    private void Update() {
-        // AddExtraVerticalSpeed();
-    }
-
     private float tempPositionY = 0;
 
     private void AddExtraVerticalSpeed(float positionY = 0) {
@@ -46,12 +42,20 @@ public class BackgroundController : MonoBehaviour {
         transform.Translate(new Vector3(horizontalSpeed, verticalSpeed, transform.position.z) * Time.deltaTime);
 
         if (transform.position.y <= -16) {
-            RepositionBackground();
+            RepositionYBackground();
+        }
+
+        if (transform.position.x <= -7) {
+            RepositionXBackground();
         }
     }
 
-    private void RepositionBackground() {
+    private void RepositionYBackground() {
         transform.position = new Vector3(cameraTransform.position.x, 16, transform.position.z);
+    }
+
+    private void RepositionXBackground() {
+        transform.position = new Vector3(7, transform.position.y, transform.position.z);
     }
 
 }
