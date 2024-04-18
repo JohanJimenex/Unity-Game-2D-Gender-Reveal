@@ -8,12 +8,21 @@ public class MeshRendererController : MonoBehaviour {
     [SerializeField] private Vector2 offset = new Vector2(0, 0);
     [SerializeField] private MeshRenderer meshRenderer;
 
-    private void LateUpdate() {
-        transform.position = new Vector3(cameraTransform.position.x, cameraTransform.position.y, transform.position.z);
+    private void Update() {
+        MoveMainTextureOffset();
     }
 
-    private void Update() {
-        meshRenderer.material.mainTextureOffset = new Vector2(offset.x, offset.y) * Time.time;
+    private void MoveMainTextureOffset() {
+        meshRenderer.material.mainTextureOffset += new Vector2(offset.x, offset.y) * Time.deltaTime;
+        // meshRenderer.material.mainTextureOffset = new Vector2(offset.x, offset.y) * Time.time;
+    }
+
+    private void LateUpdate() {
+        MoveGameObjectPosition();
+    }
+
+    private void MoveGameObjectPosition() {
+        transform.position = new Vector3(cameraTransform.position.x, cameraTransform.position.y, transform.position.z);
     }
 
 }
