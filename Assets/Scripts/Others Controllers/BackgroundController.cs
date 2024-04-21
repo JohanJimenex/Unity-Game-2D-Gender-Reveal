@@ -6,7 +6,6 @@ public class BackgroundController : MonoBehaviour {
 
     [Header("Dependecies")]
     [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private Transform cameraTransform;
 
     [Header("Background Speed")]
     [SerializeField] private float verticalSpeed = -0.10f;
@@ -28,13 +27,13 @@ public class BackgroundController : MonoBehaviour {
         initialVerticalSpeed = verticalSpeed;
     }
 
-    private void Update() {
+    private void LateUpdate() {
         TranslateBackgroundPosition();
         HandleScreenLimits();
     }
 
     private void TranslateBackgroundPosition() {
-        transform.Translate(new Vector3(horizontalSpeed, verticalSpeed, transform.position.z) * Time.deltaTime);
+        transform.Translate(new Vector3(horizontalSpeed, verticalSpeed, 0) * Time.deltaTime);
     }
 
     private void HandleScreenLimits() {
@@ -42,18 +41,16 @@ public class BackgroundController : MonoBehaviour {
         if (transform.position.x < -maxLimitX) {
             transform.position = new Vector3(repositionX, transform.position.y, transform.position.z);
         }
-
-        if (transform.position.x > maxLimitX) {
+        else if (transform.position.x > maxLimitX) {
             transform.position = new Vector3(-repositionX, transform.position.y, transform.position.z);
         }
 
         if (transform.position.y < -maxLimitY) {
             transform.position = new Vector3(transform.position.x, repositionY, transform.position.z);
         }
-
-        if (transform.position.y > maxLimitY) {
-            transform.position = new Vector3(transform.position.x, -repositionY, transform.position.z);
-        }
+        // if (transform.position.y > maxLimitY) {
+        //     transform.position = new Vector3(transform.position.x, -repositionY, transform.position.z);
+        // }
 
     }
 
@@ -61,9 +58,13 @@ public class BackgroundController : MonoBehaviour {
 
     private void AddExtraVerticalSpeed(float positionY = 0) {
 
+        if (extraVerticalSpeed == 0) {
+            return;
+        }
+
         if (positionY >= tempPositionY) {
-            verticalSpeed = extraVerticalSpeed;
             tempPositionY = positionY;
+            verticalSpeed = extraVerticalSpeed;
         }
         else {
             verticalSpeed = initialVerticalSpeed;

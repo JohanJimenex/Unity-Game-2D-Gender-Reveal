@@ -76,7 +76,7 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
     }
 
     private void EnemyDead() {
-        GameManager.AddExtraScore(scorePointsValue);
+        GameManager.IncreaseScore(scorePointsValue);
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false; //desactivo el script para que no se mueva el enemigo
         Destroy(gameObject, 1f);

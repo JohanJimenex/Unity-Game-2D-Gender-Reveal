@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour {
     void Update() {
         Move();
         EmitPlayerPositionY();
-        DeadIfPlayerFalls();
+        DestroyGround();
     }
 
     private Vector2 startTouchPosition, endTouchPosition;
@@ -123,7 +123,7 @@ public class PlayerMovement : MonoBehaviour {
         OnPositionYChanged?.Invoke(transform.position.y);
     }
 
-    private void DeadIfPlayerFalls() {
+    private void DestroyGround() {
         if (transform.position.y > 20) {
             Destroy(ground);
         }

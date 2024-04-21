@@ -33,7 +33,7 @@ class LandingPlatformController : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("Player") && other.transform.position.y > transform.position.y) {
             moveSpeed = 0;
-            GameManager.AddExtraScore(extraScorePointToGive);
+            GameManager.IncreaseScore(extraScorePointToGive);
             playerHealthManager.IncreaseLife(lifePointsToHealth);
         }
     }
