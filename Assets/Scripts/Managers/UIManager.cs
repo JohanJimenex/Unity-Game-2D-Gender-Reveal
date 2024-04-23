@@ -17,7 +17,8 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI bestScoreText;
 
-    [SerializeField] private List<Image> hearts; // Lista de corazones
+    [SerializeField] private Slider oxygenSlider;
+    // [SerializeField] private List<Image> hearts; // Lista de corazones
     // [SerializeField] private Sprite fullHeart; // Sprite de corazón lleno
     // [SerializeField] private Sprite emptyHeart; // Sprite de corazón vacío
 
@@ -39,7 +40,7 @@ public class UIManager : MonoBehaviour {
 
     private void SubscribeAndListenEvents() {
         // playerMovement.OnPositionYChanged += UpdateUIScore;
-        playerHealthManager.OnPlayerGetDamage += DecreasesUIHearts;
+        playerHealthManager.OnPlayerGetDamage += DecreasesUIlifes;
         playerHealthManager.OnPlayerGetDamage += ShowScreenBorderIndicator;
         playerHealthManager.OnPlayerIncreaseLife += IncreasesUILifes;
         playerHealthManager.OnPlayerDied += HandlePlayerDied;
@@ -65,33 +66,36 @@ public class UIManager : MonoBehaviour {
         bestScoreText.text = bestScore.ToString("N0");
     }
 
-    private void DecreasesUIHearts(int lifes) {
+    private void DecreasesUIlifes(int lifes) {
+        oxygenSlider.value -= lifes;
 
-        for (int i = 0; i < hearts.Count; i++) {
-            if (i + 1 > lifes) {
-                hearts[i].color = new Color(1, 1, 1, 0.03f);
-            }
-            // else {
-            //     hearts[i].color = new Color(1, 1, 1, 1f);
-            // }
-        }
+        // for (int i = 0; i < hearts.Count; i++) {
+        //     if (i + 1 > lifes) {
+        //         hearts[i].color = new Color(1, 1, 1, 0.03f);
+        //     }
+        //     // else {
+        //     //     hearts[i].color = new Color(1, 1, 1, 1f);
+        //     // }
+        // }
     }
 
     private void IncreasesUILifes(int lifesPointsToIncrease) {
 
+        oxygenSlider.value += lifesPointsToIncrease;
+
         // Encuentra el primer corazón vacío y cámbialo a un corazón lleno
-        for (int i = 0; i < hearts.Count; i++) {
+        // for (int i = 0; i < hearts.Count; i++) {
 
-            // if (hearts[i].sprite == emptyHeart) {
-            //     hearts[i].sprite = fullHeart;
-            //     break;
-            // }
+        //     // if (hearts[i].sprite == emptyHeart) {
+        //     //     hearts[i].sprite = fullHeart;
+        //     //     break;
+        //     // }
 
-            if (hearts[i].color.a < 1f) {
-                hearts[i].color = new Color(1, 1, 1, 1f);
-                break;
-            }
-        }
+        //     if (hearts[i].color.a < 1f) {
+        //         hearts[i].color = new Color(1, 1, 1, 1f);
+        //         break;
+        //     }
+        // }
     }
 
     private void HandlePlayerDied() {

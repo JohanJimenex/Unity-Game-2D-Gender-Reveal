@@ -25,7 +25,6 @@ public class PlayerAnim : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.S) && isDownDashActive) {
             anim.SetBool("Dash Down", true);
-            Debug.Log("Dash Down");
             Invoke(nameof(StopGoDownAnim), 0.3f);
         }
 

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum CanBeDestroyFrom {
-    TOP = 1,
-    BOTTOM = -1,
+    NoWhere = 0,
+    Top = 1,
+    Bottom = -1,
 }
 
 public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
@@ -17,7 +18,7 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
     [SerializeField] protected int scorePointsValue = 10;
 
     [Header("Destroy Options")]
-    [SerializeField] protected bool canBeDestroyedWithoutDamage = false;
+    // [SerializeField] protected bool canBeDestroyedWithoutDamage = false;
     [SerializeField] protected private CanBeDestroyFrom canBeDestroyFrom;
 
     protected float distanceFromPlayerToDestroy = 10f;
@@ -34,28 +35,6 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
         DestroyGameObjectIfFarFromPlayer();
     }
 
-    protected void DestroyGameObjectIfFarFromPlayer() {
-        if (playerTransform.position.y > (startPosition.y + distanceFromPlayerToDestroy)) {
-            Destroy(gameObject);
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D other) {
-        MakeDamageToOther(other);
-    }
-
-    private void MakeDamageToOther(Collision2D other) {
-        if (other.gameObject.TryGetComponent<IDamageReceiver>(out IDamageReceiver makeDamage)) {
-
-            if (canBeDestroyedWithoutDamage && other.transform.position.y <
-                (transform.position.y * (float)CanBeDestroyFrom.TOP)) {
-                return;
-            }
-
-            makeDamage.ReceiveDamage(enemyAttackForce);
-        }
-    }
-    
     private float direction = 1.0f;
 
     protected virtual void Move() {
@@ -65,6 +44,22 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
 
         if (Mathf.Abs(transform.position.x - startPosition.x) >= distanceRangeToMoveX) {
             direction *= -1;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+
+        if ((canBeDestroyFrom == CanBeDestroyFrom.Top && other.GetContact(0).normal.y < 0) ||
+            (canBeDestroyFrom == CanBeDestroyFrom.Bottom && other.GetContact(0).normal.y > 0)) {
+            return;
+        }
+
+        MakeDamageToOther(other);
+    }
+
+    private void MakeDamageToOther(Collision2D other) {
+        if (other.gameObject.TryGetComponent<IDamageReceiver>(out IDamageReceiver makeDamage)) {
+            makeDamage.ReceiveDamage(enemyAttackForce);
         }
     }
 
@@ -81,4 +76,11 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
         this.enabled = false; //desactivo el script para que no se mueva el enemigo
         Destroy(gameObject, 1f);
     }
+
+    protected void DestroyGameObjectIfFarFromPlayer() {
+        if (playerTransform.position.y > (startPosition.y + distanceFromPlayerToDestroy)) {
+            Destroy(gameObject);
+        }
+    }
+
 }

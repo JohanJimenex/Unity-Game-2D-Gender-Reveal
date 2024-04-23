@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerHealthManager : MonoBehaviour, IDamageReceiver, ILifeIncreaser {
-    private int lifes = 2;
-    public bool canReciveDamage = true;
 
+    [SerializeField] private int lifes;
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private bool canReciveDamage = true;
 
     [HideInInspector] public Action<int> OnPlayerGetDamage { get; set; }
     [HideInInspector] public Action<int> OnPlayerIncreaseLife { get; set; }
@@ -37,7 +37,7 @@ public class PlayerHealthManager : MonoBehaviour, IDamageReceiver, ILifeIncrease
 
         Handheld.Vibrate();
 
-        OnPlayerGetDamage?.Invoke(lifes);
+        OnPlayerGetDamage?.Invoke(damage);
 
         if (lifes <= 0) {
             PlayerDead();
@@ -47,12 +47,6 @@ public class PlayerHealthManager : MonoBehaviour, IDamageReceiver, ILifeIncrease
     private void PlayerDead() {
         rb.bodyType = RigidbodyType2D.Static;
         OnPlayerDied?.Invoke();
-    }
-
-    private void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.TryGetComponent<IDamageReceiver>(out IDamageReceiver makeDamage)) {
-            OnPlayerGetDamage?.Invoke(lifes);
-        }
     }
 
 }
