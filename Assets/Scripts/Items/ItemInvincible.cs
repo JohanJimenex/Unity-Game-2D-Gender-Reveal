@@ -8,11 +8,11 @@ public class ItemInvincible : AbstractItemBase {
 
     [SerializeField] private int effectDurationInSeconds = 5;
 
-    private void OnTriggerEnter2D(Collider2D other) {
+    private new void OnTriggerEnter2D(Collider2D other) {
+        base.OnTriggerEnter2D(other);
         if (other.gameObject.CompareTag("Player")) {
             PlayerHealthManager playerHealtManager = other.GetComponent<PlayerHealthManager>();
             playerHealtManager.SetInvencible(effectDurationInSeconds);
-            Destroy(gameObject);
         }
     }
 }

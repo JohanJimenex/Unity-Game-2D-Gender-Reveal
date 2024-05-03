@@ -7,10 +7,10 @@ class ItemMultiplyScore : AbstractItemBase {
     [SerializeField] private int multiplierScoreBy = 2;
     [SerializeField] private int effectDurationInSeconds = 5;
 
-    private void OnTriggerEnter2D(Collider2D other) {
+    private new void OnTriggerEnter2D(Collider2D other) {
+        base.OnTriggerEnter2D(other);
         if (other.CompareTag("Player")) {
             GameManager.MultiplyScoreBy(multiplierScoreBy, effectDurationInSeconds);
-            Destroy(gameObject);
         }
     }
 

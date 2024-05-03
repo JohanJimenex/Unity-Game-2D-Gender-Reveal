@@ -7,10 +7,11 @@ public class ItemExtraScore : AbstractItemBase {
     [Header("Item Extra Score")]
     [SerializeField] private int extraScore = 20;
 
-    private void OnTriggerEnter2D(Collider2D other) {
+    private new void OnTriggerEnter2D(Collider2D other) {
+        base.OnTriggerEnter2D(other);
+        
         if (other.gameObject.CompareTag("Player")) {
             GameManager.IncreaseScore(extraScore);
-            Destroy(gameObject);
         }
     }
 

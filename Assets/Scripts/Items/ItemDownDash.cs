@@ -8,14 +8,17 @@ public class ItemDownDash : AbstractItemBase {
 
     [SerializeField] private int effectDurationInSeconds = 15;
 
-    private void OnTriggerEnter2D(Collider2D other) {
+
+    private new void OnTriggerEnter2D(Collider2D other) {
+
+        base.OnTriggerEnter2D(other);
+
         if (other.CompareTag("Player")) {
             PlayerMovement playerMovement = other.GetComponent<PlayerMovement>();
             playerMovement.ActiveDownDash(effectDurationInSeconds);
 
             PlayerAnim playerAnim = other.GetComponent<PlayerAnim>();
             playerAnim.ActiveDownDash(effectDurationInSeconds);
-            Destroy(gameObject);
         }
     }
 

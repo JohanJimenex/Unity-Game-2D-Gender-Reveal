@@ -27,7 +27,7 @@ public class ItemsSpawner : MonoBehaviour {
         GameObject randomGameObject = prefab[Random.Range(0, prefab.Length)];
 
         Vector3 spawnPosition = new Vector3(Random.Range(-3, 3), playerTransform.position.y + 6f, 0);
-        Instantiate(randomGameObject, spawnPosition, Quaternion.identity);
+        Instantiate(randomGameObject, spawnPosition, randomGameObject.transform.rotation);
         lastSpawnPosition = spawnPosition.y + 10;
     }
 

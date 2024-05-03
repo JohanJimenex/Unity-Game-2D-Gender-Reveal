@@ -16,10 +16,13 @@ public abstract class AbstractItemBase : MonoBehaviour {
     private float timeToDestroyGameObject;
     private readonly float distanceFromPlayerToDestroy = -10f;
     private Transform playerTransform;
+    private GameObject itemEffectPrefab;
+
 
     void Start() {
         verticalDirection = Random.Range(-1, 1) == 0 ? -1 : 1;
         playerTransform = GameObject.FindWithTag("Player").transform;
+        itemEffectPrefab = transform.GetChild(0).gameObject;
     }
 
     void Update() {
@@ -44,6 +47,21 @@ public abstract class AbstractItemBase : MonoBehaviour {
         if (transform.position.y <= (playerTransform.position.y + distanceFromPlayerToDestroy) || timeToDestroyGameObject >= 10f) {
             Destroy(gameObject);
         }
+    }
+
+    protected void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag("Player")) {
+            ActiveItemEffect();
+        }
+    }
+
+    private void ActiveItemEffect() {
+        itemEffectPrefab.SetActive(true);
+        verticalDirection = 0;
+        horizontalDirection = 0;
+        GetComponent<BoxCollider2D>().enabled = false;
+        GetComponent<SpriteRenderer>().enabled = false;
+        Destroy(gameObject, 2f);
     }
 
 }
