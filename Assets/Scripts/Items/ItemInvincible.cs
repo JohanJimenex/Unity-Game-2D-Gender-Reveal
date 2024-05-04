@@ -14,7 +14,7 @@ public class ItemInvincible : AbstractItemBase {
             PlayerHealthManager playerHealtManager = other.GetComponent<PlayerHealthManager>();
             playerHealtManager.SetInvencible(effectDurationInSeconds);
             PlayerAnim playerAnim = other.GetComponent<PlayerAnim>();
-            playerAnim.ActiveParticleEffect(effectDurationInSeconds, Color.yellow);
+            playerAnim.ActiveInvincibleEffect(effectDurationInSeconds);
         }
     }
 }

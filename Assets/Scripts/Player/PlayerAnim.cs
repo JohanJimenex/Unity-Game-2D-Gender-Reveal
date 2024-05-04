@@ -98,7 +98,17 @@ public class PlayerAnim : MonoBehaviour {
         isDownDashActive = false;
     }
 
-    public void ActiveParticleEffect(int durationInSeconds, Color? color = null) {
+    public void ActiveInvincibleEffect(int durationInSeconds) {
+        spriteRenderer.material.color = Color.yellow;
+        ActiveParticleEffect(durationInSeconds, Color.yellow);
+        Invoke(nameof(DeactivateInvincibleEffect), durationInSeconds);
+    }
+
+    private void DeactivateInvincibleEffect() {
+        spriteRenderer.material.color = Color.white;
+    }
+
+    private void ActiveParticleEffect(int durationInSeconds, Color? color = null) {
         var main = particlesEffect.main;
         main.startColor = color ?? Color.white;
         particlesEffect.Play();
