@@ -8,7 +8,6 @@ public class ItemDownDash : AbstractItemBase {
 
     [SerializeField] private int effectDurationInSeconds = 15;
 
-
     private new void OnTriggerEnter2D(Collider2D other) {
 
         base.OnTriggerEnter2D(other);

@@ -27,10 +27,10 @@ class LandingPlatformController : MonoBehaviour {
     private void Move() {
         transform.Translate(Vector2.right * direction * moveSpeed * Time.deltaTime);
 
-        if (transform.position.x > 2.5f) {
+        if (transform.position.x > 1.34f) {
             direction = -1.0f;
         }
-        else if (transform.position.x < -2.5f) {
+        else if (transform.position.x < -1.34f) {
             direction = 1.0f;
         }
     }

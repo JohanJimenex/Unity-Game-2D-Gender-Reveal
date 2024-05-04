@@ -6,12 +6,16 @@ public class PlayerAnim : MonoBehaviour {
 
     [SerializeField] private PlayerHealthManager playerHealthManager;
     [SerializeField] private Animator anim;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private ParticleSystem particlesEffect;
+
 
     private bool isDownDashActive = false;
 
     void Start() {
         SubscribeAndListenEvents();
     }
+
     private Vector2 startTouchPosition, endTouchPosition;
 
     void Update() {
@@ -37,7 +41,6 @@ public class PlayerAnim : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.D)) {
             anim.SetTrigger("Move Right");
         }
-
 
         // ================== Touch Controls ==================
 
@@ -88,10 +91,22 @@ public class PlayerAnim : MonoBehaviour {
     public void ActiveDownDash(int durationInSeconds) {
         isDownDashActive = true;
         Invoke(nameof(DeactivateDownDash), durationInSeconds);
+        ActiveParticleEffect(durationInSeconds, new Color(0.7721053f, 0.514151f, 1, 1));
     }
 
     private void DeactivateDownDash() {
         isDownDashActive = false;
+    }
+
+    public void ActiveParticleEffect(int durationInSeconds, Color? color = null) {
+        var main = particlesEffect.main;
+        main.startColor = color ?? Color.white;
+        particlesEffect.Play();
+        Invoke(nameof(DeactivateParticleEffect), durationInSeconds);
+    }
+
+    private void DeactivateParticleEffect() {
+        particlesEffect.Stop();
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
