@@ -18,11 +18,9 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI bestScoreText;
 
     [SerializeField] private Slider oxygenSlider;
-    // [SerializeField] private List<Image> hearts; // Lista de corazones
-    // [SerializeField] private Sprite fullHeart; // Sprite de corazón lleno
-    // [SerializeField] private Sprite emptyHeart; // Sprite de corazón vacío
-
     [SerializeField] private GameObject screenBorderDamage;
+
+    [SerializeField] private TextMeshProUGUI extraScoreText;
 
     private int bestScore;
 
@@ -68,34 +66,10 @@ public class UIManager : MonoBehaviour {
 
     private void DecreasesUIlifes(int lifes) {
         oxygenSlider.value -= lifes;
-
-        // for (int i = 0; i < hearts.Count; i++) {
-        //     if (i + 1 > lifes) {
-        //         hearts[i].color = new Color(1, 1, 1, 0.03f);
-        //     }
-        //     // else {
-        //     //     hearts[i].color = new Color(1, 1, 1, 1f);
-        //     // }
-        // }
     }
 
     private void IncreasesUILifes(int lifesPointsToIncrease) {
-
         oxygenSlider.value += lifesPointsToIncrease;
-
-        // Encuentra el primer corazón vacío y cámbialo a un corazón lleno
-        // for (int i = 0; i < hearts.Count; i++) {
-
-        //     // if (hearts[i].sprite == emptyHeart) {
-        //     //     hearts[i].sprite = fullHeart;
-        //     //     break;
-        //     // }
-
-        //     if (hearts[i].color.a < 1f) {
-        //         hearts[i].color = new Color(1, 1, 1, 1f);
-        //         break;
-        //     }
-        // }
     }
 
     private void HandlePlayerDied() {
@@ -118,5 +92,15 @@ public class UIManager : MonoBehaviour {
 
     private void DisableScreenBorderIndicator() {
         screenBorderDamage.SetActive(false);
+    }
+
+    public void ShowExtraScore(int extraScore) {
+        extraScoreText.text = $"+{extraScore}";
+        extraScoreText.gameObject.SetActive(true);
+        Invoke(nameof(HideExtraScore), 1.5f);
+    }
+
+    private void HideExtraScore() {
+        extraScoreText.gameObject.SetActive(false);
     }
 }

@@ -16,13 +16,10 @@ public abstract class AbstractItemBase : MonoBehaviour {
     private float timeToDestroyGameObject;
     private readonly float distanceFromPlayerToDestroy = -10f;
     private Transform playerTransform;
-    private GameObject itemEffectPrefab;
 
-
-    void Start() {
+    protected void Start() {
         verticalDirection = Random.Range(-1, 1) == 0 ? -1 : 1;
         playerTransform = GameObject.FindWithTag("Player").transform;
-        itemEffectPrefab = transform.GetChild(0).gameObject;
     }
 
     void Update() {
@@ -56,7 +53,6 @@ public abstract class AbstractItemBase : MonoBehaviour {
     }
 
     private void ActiveItemEffect() {
-        itemEffectPrefab.SetActive(true);
         verticalDirection = 0;
         horizontalDirection = 0;
         GetComponent<BoxCollider2D>().enabled = false;
