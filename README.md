@@ -19,7 +19,8 @@ Este es un emocionante proyecto de juego móvil desarrollado en Unity, donde el 
 
 ![image](https://github.com/JohanJimenex/Unity-Game-2D-Gender-Reveal/assets/48848092/4baa5cde-9b66-4d46-937a-68d590a6dec2)
 ![image](https://github.com/JohanJimenex/Unity-Game-2D-Gender-Reveal/assets/48848092/7a3c00d4-a56c-4796-808e-2304909ca1f4)
-![image](image.png)
+![image](https://github.com/JohanJimenex/Unity-Game-2D-Gender-Reveal/assets/48848092/4a494ec6-01f2-44d4-9690-726e706b3b55)
+
 
 
 
