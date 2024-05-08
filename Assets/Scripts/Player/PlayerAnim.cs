@@ -77,15 +77,11 @@ public class PlayerAnim : MonoBehaviour {
 
     private void SubscribeAndListenEvents() {
         playerHealthManager.OnPlayerGetDamage += PlayerGetDamage;
-        playerHealthManager.OnPlayerDied += PlayDieAnim;
+        // playerHealthManager.OnPlayerDied += PlayDieAnim;
     }
 
     private void PlayerGetDamage(int _) {
         anim.SetTrigger("Get Damage");
-    }
-
-    private void PlayDieAnim() {
-        anim.SetTrigger("Die");
     }
 
     public void ActiveDownDash(int durationInSeconds) {
@@ -136,5 +132,7 @@ public class PlayerAnim : MonoBehaviour {
             anim.SetBool("On Ground", true);
         }
     }
+
+    
 
 }

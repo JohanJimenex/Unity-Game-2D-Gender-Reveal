@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
     private static int score;
     private static int bestScore;
     private static int multiplierScoreBy = 1;
-
+    //Singleton, para cuando se reinicia la escena
     private static GameManager instance;
 
     private void Awake() {

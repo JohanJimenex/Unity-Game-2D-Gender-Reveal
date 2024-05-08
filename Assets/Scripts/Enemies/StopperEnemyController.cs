@@ -5,7 +5,7 @@ using UnityEngine;
 public class StopperEnemyController : AbstractEnemyBase {
 
     [Header("Stopper Enemy Options")]
-
+    [Tooltip("Time to wait before moving again in seconds.")]
     [SerializeField] private float timeToWaitForMove = 2f;
 
     protected override void Update() {
@@ -13,16 +13,15 @@ public class StopperEnemyController : AbstractEnemyBase {
         timeToWaitForMove -= Time.deltaTime;
 
         if (timeToWaitForMove >= 0) {
-            Move();
+            base.Move();
         }
 
         if (timeToWaitForMove < -2) {
             timeToWaitForMove = 2f;
         }
 
-        DestroyGameObjectIfFarFromPlayer();
+        base.FlipSprite();
+        base.DestroyGameObjectIfFarFromPlayer();
     }
-
-
 
 }

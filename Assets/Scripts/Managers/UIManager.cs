@@ -10,7 +10,6 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private PlayerHealthManager playerHealthManager;
 
     [Header("UI References")]
-
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject bestScoreUI;
 
@@ -30,6 +29,7 @@ public class UIManager : MonoBehaviour {
 
     private void Start() {
         SubscribeAndListenEvents();
+        oxygenSlider.maxValue = playerHealthManager.MaxLifes;
     }
 
     private void Update() {

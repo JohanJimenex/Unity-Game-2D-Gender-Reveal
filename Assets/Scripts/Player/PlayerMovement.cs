@@ -3,12 +3,22 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
+    [Header("Dependencies")]
+    [SerializeField] private GameObject ground;
+    [SerializeField] private PlayerHealthManager playerHealthManager;
+    [Header("Movement Settings")]
     [SerializeField] private float moveForce = 10f;
     [SerializeField] private Rigidbody2D rb;
 
-    [SerializeField] private GameObject ground;
-
     [HideInInspector] public Action<float> OnPositionYChanged { get; set; }
+
+    private void Start() {
+        playerHealthManager.OnPlayerDied += DisableScript;
+    }
+
+    private void DisableScript() {
+        this.enabled = false;
+    }
 
     void Update() {
         Move();
@@ -17,6 +27,8 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private Vector2 startTouchPosition, endTouchPosition;
+    private bool isDragging = false;
+    private Vector2 currentTouchPosition;
 
     private void Move() {
 
@@ -68,7 +80,7 @@ public class PlayerMovement : MonoBehaviour {
             else if (endTouchPosition.y >= startTouchPosition.y) {
                 rb.velocity = Vector2.up * moveForce;
             }
-            
+
 
             if (endTouchPosition.x + 100 < startTouchPosition.x) {
                 // rb.velocity = Vector2.left * moveForce * Time.deltaTime;
@@ -100,9 +112,6 @@ public class PlayerMovement : MonoBehaviour {
         }
 
     }
-
-    private bool isDragging = false;
-    private Vector2 currentTouchPosition;
 
     private void StopDownForce() {
         rb.velocity = Vector2.up * 3;

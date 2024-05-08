@@ -6,12 +6,19 @@ using UnityEngine;
 public class PlayerHealthManager : MonoBehaviour, IDamageReceiver, ILifeIncreaser {
 
     [SerializeField] private int lifes;
-    [SerializeField] private Rigidbody2D rb;
+
     [SerializeField] private bool canReciveDamage = true;
 
     [HideInInspector] public Action<int> OnPlayerGetDamage { get; set; }
     [HideInInspector] public Action<int> OnPlayerIncreaseLife { get; set; }
     [HideInInspector] public Action OnPlayerDied { get; set; }
+
+    private int maxLifes;
+    public int MaxLifes { get { return lifes; } }
+
+    private void Start() {
+        maxLifes = lifes;
+    }
 
     public void SetInvencible(int duration) {
         canReciveDamage = false;
@@ -23,10 +30,10 @@ public class PlayerHealthManager : MonoBehaviour, IDamageReceiver, ILifeIncrease
     }
 
     public void IncreaseLife(int quantity = 1) {
-        if (lifes < 2) {
+        if (lifes < maxLifes) {
             lifes += quantity;
+            OnPlayerIncreaseLife?.Invoke(lifes);
         }
-        OnPlayerIncreaseLife?.Invoke(lifes);
     }
 
     public void ReceiveDamage(int damage) {
@@ -45,7 +52,6 @@ public class PlayerHealthManager : MonoBehaviour, IDamageReceiver, ILifeIncrease
     }
 
     private void PlayerDead() {
-        rb.bodyType = RigidbodyType2D.Static;
         OnPlayerDied?.Invoke();
     }
 
