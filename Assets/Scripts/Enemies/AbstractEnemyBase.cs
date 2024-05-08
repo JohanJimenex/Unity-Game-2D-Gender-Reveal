@@ -35,6 +35,7 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
 
     protected virtual void Update() {
         Move();
+        FlipSprite();
         DestroyGameObjectIfFarFromPlayer();
     }
 
@@ -77,8 +78,19 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
         GameManager.IncreaseScore(scorePointsValue);
         GetComponent<Collider2D>().enabled = false;
         uiManager.ShowExtraScore(scorePointsValue);
-        this.enabled = false; //desactivo el script para que no se mueva el enemigo
+        // this.enabled = false; //desactivo el script para que no se mueva el enemigo
+        moveSpeed = 0;
+        GetComponent<Animator>().SetTrigger("Dead");
         Destroy(gameObject, 1f);
+    }
+
+    protected void FlipSprite() {
+        if (direction > 0) {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+        else {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
     }
 
     protected void DestroyGameObjectIfFarFromPlayer() {
