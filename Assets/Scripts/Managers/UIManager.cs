@@ -128,6 +128,11 @@ public class UIManager : MonoBehaviour {
     public void GetInputText() {
         string inputText = nameInput.text;
         int score = PlayerPrefs.GetInt("BestScore");
+
+        if (inputText.Length > 13) {
+            inputText = inputText.Substring(0, 13);
+        }
+
         firebaseConnection.WriteNewLeaderOnDB(inputText, score);
         GetLeaderboard();
     }
@@ -144,16 +149,12 @@ public class UIManager : MonoBehaviour {
     }
 
     private void UpdateLeaderboardUI() {
-        
+
         leadersNameUI.text = "";
         leaderScoreUI.text = "";
         int counter = 1;
 
         foreach (Leaderboard leader in leaderboard) {
-
-            if (leader.name.Length > 13) {
-                leader.name = leader.name.Substring(0, 13);
-            }
 
             leadersNameUI.text += $"{counter}  {leader.name.ToUpper()} \n";
 
