@@ -144,7 +144,9 @@ public class UIManager : MonoBehaviour {
     }
 
     private void UpdateLeaderboardUI() {
-
+        
+        leadersNameUI.text = "";
+        leaderScoreUI.text = "";
         int counter = 1;
 
         foreach (Leaderboard leader in leaderboard) {
