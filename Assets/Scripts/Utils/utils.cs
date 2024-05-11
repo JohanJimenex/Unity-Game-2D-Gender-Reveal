@@ -1,0 +1,125 @@
+
+
+using System.Collections.Generic;
+
+public static class Utils {
+
+    public static string FilterBadWords(string inputText) {
+        // Lista de palabras malas
+        List<string> badWords = new List<string> {
+            "mmg",
+            "puta",
+            "pene",
+            "guebo",
+            "guevo",
+            "toto",
+            "verga",
+            "culo",
+            "maldit",
+            "idiota",
+            "estupido",
+            "pendej",
+            "cabron",
+            "gilipoll",
+            "coño",
+            "marico",
+            "marica",
+            "orto",
+            "chupa",
+            "mamañema",
+            "mamaguevo",
+            "mamagüevo",
+            "mamagüebo",
+            "bugarron",
+            "mamabibin",
+            "mierda",
+            "singa",
+            "ñema",
+            "grano",
+            "guev",
+            "gueb",
+            "chinga",
+            "puto",
+            "pinche",
+            "pudrete",
+            "púdrete",
+            "chupa",
+            "imbecil",
+            "imbécil",
+            "concha",
+            "polla",
+            "coger",
+            "abanto", "abrazafarolas", "adufe", "alcornoque", "alfeñique", "andurriasmo", "arrastracueros", "artabán", "atarre", "baboso", "barrabás", "barriobajero", "bebecharcos", "bellaco", "belloto", "berzotas", "besugo", "bobalicón", "bocabuzón", "bocachancla", "bocallanta", "boquimuelle", "borrico", "botarate", "brasas", "cabestro", "cabezaalberca", "cabezabuque", "cachibache", "cafre", "cagalindes", "cagarruta", "calambuco", "calamidad", "caldúo", "calientahielos", "calzamonas", "cansalmas", "cantamañanas", "capullo", "caracaballo", "caracartón", "caraculo", "caraflema", "carajaula", "carajote", "carapapa", "carapijo", "cazurro", "cebollino", "cenizo", "cenutrio", "ceporro", "cernícalo", "charrán", "chiquilicuatre", "chirimbaina", "chupacables", "chupasangre", "chupóptero", "cierrabares", "cipote", "comebolsas", "comechapas", "comeflores", "comestacas", "cretino", "cuerpoescombro", "culopollo", "descerebrado", "desgarracalzas", "dondiego", "donnadie", "echacantos", "ejarramantas", "energúmeno", "esbaratabailes", "escolimoso", "escornacabras", "estulto", "fanfosquero", "fantoche", "fariseo", "filimincias", "foligoso", "fulastre", "ganapán", "ganapio", "gandúl", "gañán", "gaznápiro", "gilipuertas", "giraesquinas", "gorrino", "gorrumino", "guitarro", "gurriato", "habahelá", "huelegateras", "huevón", "lamecharcos", "lameculos", "lameplatos", "lechuguino", "lerdo", "letrín", "lloramigas", "longanizas", "lumbreras", "maganto", "majadero", "malasangre", "malasombra", "malparido", "mameluco", "mamporrero", "manegueta", "mangarrán", "mangurrián", "mastuerzo", "matacandiles", "meapilas", "melón", "mendrugo", "mentecato", "mequetrefe", "merluzo", "metemuertos", "metijaco", "mindundi", "morlaco", "morroestufa", "muerdesartenes", "orate", "ovejo", "pagafantas", "palurdo", "pamplinas", "panarra", "panoli", "papafrita", "papanatas", "papirote", "paquete", "pardillo", "parguela", "pasmarote", "pasmasuegras", "pataliebre", "patán", "pavitonto", "pazguato", "pecholata", "pedorro", "peinabombillas", "peinaovejas", "pelagallos", "pelagambas", "pelagatos", "pelatigres", "pelazarzas", "pelele", "pelma", "percebe", "perrocostra", "perroflauta", "peterete", "petimetre", "picapleitos", "pichabrava", "pillavispas", "piltrafa", "pinchauvas", "pintamonas", "piojoso", "pitañoso", "pitofloro", "plomo", "pocasluces", "pollopera", "quitahipos", "rastrapajo", "rebañasandías", "revientabaules", "ríeleches", "robaperas", "sabandija", "sacamuelas", "sanguijuela", "sinentraero", "sinsustancia", "sonajas", "sonso", "soplagaitas", "soplaguindas", "sosco", "tagarote", "tarado", "tarugo", "tiralevitas", "tocapelotas", "tocho", "tolai", "tontaco", "tontucio", "tordo", "tragaldabas", "tuercebotas", "tunante", "zamacuco", "zambombo", "zampabollos", "zamugo", "zángano", "zarrapastroso", "zascandil", "zopenco", "zoquete", "zote", "zullenco", "zurcefrenillos",
+            "arse",
+            "arsehead",
+            "arsehole",
+            "ass",
+            "asshole",
+            "bastard",
+            "bitch",
+            "bloody",
+            "bollocks",
+            "brotherfucker",
+            "bugger",
+            "bullshit",
+            "child-fucker",
+            "christ on a bike",
+            "christ on a cracker",
+            "cock",
+            "cocksucker",
+            "crap",
+            "cunt",
+            "damn",
+            "damn it",
+            "dick",
+            "dickhead",
+            "dyke",
+            "fatherfucker",
+            "frigger",
+            "fuck",
+            "goddamn",
+            "godsdamn",
+            "hell",
+            "holy shit",
+            "horseshit",
+            "in shit",
+            "jesus christ",
+            "jesus fuck",
+            "jesus h. christ",
+            "jesus harold christ",
+            "jesus, mary and joseph",
+            "jesus wept",
+            "kike",
+            "motherfucker",
+            "nigga",
+            "nigra",
+            "pigfucker",
+            "piss",
+            "prick",
+            "pussy",
+            "shit",
+            "shit ass",
+            "shite",
+            "sisterfucker",
+            "slut",
+            "son of a whore",
+            "son of a bitch",
+            "spastic",
+            "sweet jesus",
+            "turd",
+            "twat",
+            "wanker"
+
+             };
+
+        // Reemplazar cada palabra mala con asteriscos
+        foreach (string badWord in badWords) {
+            if (inputText.ToLower().Contains(badWord)) {
+                inputText = inputText.Replace(badWord, new string('*', badWord.Length));
+            }
+        }
+
+        return inputText;
+    }
+
+}

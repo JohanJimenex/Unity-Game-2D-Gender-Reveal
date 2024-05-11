@@ -26,4 +26,4 @@ Este es un emocionante proyecto de juego móvil desarrollado en Unity, donde el 
 
 ## Instalación 📲
 
-Para jugar a **Go Up**, simplemente descarga el archivo APK desde [este enlace](#) e instálalo en tu dispositivo Android. ¡Prepárate para la aventura ascendente!
+Para jugar a **Nolan's Galaxy**, simplemente descargalo desde la tienda AppStore o PlayStore desde [este enlace](#) e instálalo en tu dispositivo mobil. ¡Prepárate para la aventura ascendente!

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
@@ -126,12 +127,8 @@ public class UIManager : MonoBehaviour {
     }
 
     public void GetInputText() {
-        string inputText = nameInput.text;
+        string inputText = Utils.FilterBadWords(nameInput.text);
         int score = PlayerPrefs.GetInt("BestScore");
-
-        if (inputText.Length > 13) {
-            inputText = inputText.Substring(0, 13);
-        }
 
         firebaseConnection.WriteNewLeaderOnDB(inputText, score);
         GetLeaderboard();
@@ -156,7 +153,9 @@ public class UIManager : MonoBehaviour {
 
         foreach (Leaderboard leader in leaderboard) {
 
-            leadersNameUI.text += $"{counter}  {leader.name.ToUpper()} \n";
+            String counterString = counter > 3 ? counter.ToString() : "  ";
+
+            leadersNameUI.text += $"{counterString}  {leader.name.ToUpper()} \n";
 
             if (leader.score > 999999) {
                 leader.score = 999999;
