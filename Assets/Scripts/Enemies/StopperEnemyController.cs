@@ -6,18 +6,25 @@ public class StopperEnemyController : AbstractEnemyBase {
 
     [Header("Stopper Enemy Options")]
     [Tooltip("Time to wait before moving again in seconds.")]
-    [SerializeField] private float timeToWaitForMove = 2f;
+    [SerializeField] private float timeToWaitForMove;
+
+    private float counter;
+
+    private new void Start() {
+        base.Start();
+        counter = timeToWaitForMove;
+    }
 
     protected override void Update() {
 
-        timeToWaitForMove -= Time.deltaTime;
+        counter -= Time.deltaTime;
 
-        if (timeToWaitForMove >= 0) {
+        if (counter >= 0) {
             base.Move();
         }
 
-        if (timeToWaitForMove < -2) {
-            timeToWaitForMove = 2f;
+        if (counter < -timeToWaitForMove) {
+            counter = timeToWaitForMove;
         }
 
         base.FlipSprite();

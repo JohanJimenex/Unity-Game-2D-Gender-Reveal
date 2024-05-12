@@ -23,11 +23,10 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
 
     private UIManager uiManager;
 
-    protected float distanceFromPlayerToDestroy = 10f;
     protected Vector3 startPosition;
     protected Transform playerTransform;
 
-    void Start() {
+    protected void Start() {
         startPosition = transform.position;
         playerTransform = GameObject.FindWithTag("Player").transform;
         uiManager = GameObject.FindFirstObjectByType<UIManager>();
@@ -94,7 +93,10 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
     }
 
     protected void DestroyGameObjectIfFarFromPlayer() {
-        if (playerTransform.position.y > (startPosition.y + distanceFromPlayerToDestroy)) {
+
+        float distanceFromPlayerToDestroy = 10f;
+
+        if (playerTransform.position.y > (transform.position.y + distanceFromPlayerToDestroy)) {
             Destroy(gameObject);
         }
     }

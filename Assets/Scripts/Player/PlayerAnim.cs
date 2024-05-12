@@ -8,7 +8,7 @@ public class PlayerAnim : MonoBehaviour {
     [SerializeField] private Animator anim;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private ParticleSystem particlesEffect;
-
+    [SerializeField] private GameObject smokePropulsionEffect;
 
     private bool isDownDashActive = false;
 
@@ -58,7 +58,7 @@ public class PlayerAnim : MonoBehaviour {
             }
             else if (endTouchPosition.y >= startTouchPosition.y) {
                 anim.SetTrigger("Float Up");
-                anim.SetBool("On Ground", false);
+                InstanciateSmokePropulsion();
             }
 
             if (endTouchPosition.x + 100 < startTouchPosition.x) {
@@ -69,6 +69,11 @@ public class PlayerAnim : MonoBehaviour {
             }
 
         }
+    }
+
+    private void InstanciateSmokePropulsion() {
+        GameObject smoke = Instantiate(smokePropulsionEffect, transform.position, Quaternion.identity);
+        Destroy(smoke, 3f);
     }
 
     private void StopGoDownAnim() {
@@ -129,10 +134,10 @@ public class PlayerAnim : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("Ground")) {
-            anim.SetBool("On Ground", true);
+            anim.SetTrigger("On Ground");
         }
     }
 
-    
+
 
 }

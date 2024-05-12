@@ -29,11 +29,11 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private GameObject leaderboardPanel;
     [SerializeField] private TextMeshProUGUI leadersNameUI;
     [SerializeField] private TextMeshProUGUI leaderScoreUI;
-    [SerializeField] private GameObject setBestScorePanel;
+    [SerializeField] private GameObject newWorldRecord;
     [SerializeField] private TMP_InputField nameInput;
 
     private int bestScore;
-    private List<Leaderboard> leaderboard;
+    private List<User> users;
 
     private void Awake() {
         LoadBestScore();
@@ -84,19 +84,10 @@ public class UIManager : MonoBehaviour {
         oxygenSlider.value += lifesPointsToIncrease;
     }
 
-    private async void OnPlayerDied() {
-
-        leaderboard = await firebaseConnection.GetLeaderboardFromDB();
-
-        foreach (Leaderboard leader in leaderboard) {
-            if (PlayerPrefs.GetInt("BestScore") > leader.score) {
-                setBestScorePanel.SetActive(true);
-                break;
-            }
-        }
-
+    private void OnPlayerDied() {
         Invoke(nameof(ShowGameOverPanel), 1.2f);
         Invoke(nameof(ShowBestScoreText), 1.2f);
+        Invoke(nameof(ShowNewWorldRecordPanel), 1.2f);
     }
 
     private void ShowGameOverPanel() {
@@ -126,11 +117,37 @@ public class UIManager : MonoBehaviour {
         extraScoreText.gameObject.SetActive(false);
     }
 
-    public void GetInputText() {
+    string userId;
+
+    private async void ShowNewWorldRecordPanel() {
+        users = await firebaseConnection.GetLeaderboardFromDB();
+        users.Reverse();
+
+        if (users.Count < 30) {
+            newWorldRecord.SetActive(true);
+            return;
+        }
+
+        foreach (User user in users) {
+            if (GameManager.GetScore() > user.data.score) {
+                userId = user.firebaseId;
+                newWorldRecord.SetActive(true);
+                break;
+            }
+        }
+    }
+
+    public async void GetInputText() {
         string inputText = Utils.FilterBadWords(nameInput.text);
-        int score = PlayerPrefs.GetInt("BestScore");
+        int score = GameManager.GetScore();
 
         firebaseConnection.WriteNewLeaderOnDB(inputText, score);
+
+        if (userId != null) {
+            await firebaseConnection.DeleteRecord(userId);
+            userId = null;
+        }
+
         GetLeaderboard();
     }
 
@@ -141,7 +158,7 @@ public class UIManager : MonoBehaviour {
 
     public async void GetLeaderboard() {
         loadingPanel.SetActive(true);
-        leaderboard = await firebaseConnection.GetLeaderboardFromDB();
+        users = await firebaseConnection.GetLeaderboardFromDB();
         UpdateLeaderboardUI();
     }
 
@@ -151,17 +168,17 @@ public class UIManager : MonoBehaviour {
         leaderScoreUI.text = "";
         int counter = 1;
 
-        foreach (Leaderboard leader in leaderboard) {
+        foreach (User leader in users) {
 
             String counterString = counter > 3 ? counter.ToString() : "  ";
 
-            leadersNameUI.text += $"{counterString}  {leader.name.ToUpper()} \n";
+            leadersNameUI.text += $"{counterString}  {leader.data.name.ToUpper()} \n";
 
-            if (leader.score > 999999) {
-                leader.score = 999999;
+            if (leader.data.score > 999999) {
+                leader.data.score = 999999;
             }
 
-            leaderScoreUI.text += leader.score.ToString("N0") + "\n";
+            leaderScoreUI.text += leader.data.score.ToString("N0") + "\n";
 
             counter++;
         }

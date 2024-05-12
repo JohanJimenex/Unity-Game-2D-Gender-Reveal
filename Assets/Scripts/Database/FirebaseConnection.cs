@@ -4,6 +4,7 @@ using UnityEngine;
 
 using Firebase.Database;
 using System.Threading.Tasks;
+using System;
 
 public class FirebaseConnection : MonoBehaviour {
 
@@ -16,7 +17,7 @@ public class FirebaseConnection : MonoBehaviour {
 
     public async void WriteNewLeaderOnDB(string name, int score) {
 
-        Leaderboard user = new Leaderboard(name, score);
+        Data user = new Data(name, score);
 
         string json = JsonUtility.ToJson(user);
 
@@ -30,18 +31,29 @@ public class FirebaseConnection : MonoBehaviour {
         await newLeader.SetRawJsonValueAsync(json);
     }
 
-    public async Task<List<Leaderboard>> GetLeaderboardFromDB() {
+    public async Task<List<User>> GetLeaderboardFromDB() {
 
         var dataSnapshot = await databaseReference.Child("leaders").OrderByChild("score").GetValueAsync();
 
-        List<Leaderboard> leaders = new List<Leaderboard>();
+        List<User> users = new List<User>();
 
         foreach (var child in dataSnapshot.Children) {
-            leaders.Add(JsonUtility.FromJson<Leaderboard>(child.GetRawJsonValue()));
+            Data leaderboard = JsonUtility.FromJson<Data>(child.GetRawJsonValue());
+            users.Add(new User(child.Key, leaderboard));
         }
+        // Because Firebase returns in ascending order
+        users.Reverse();
+        return users;
+    }
 
-        leaders.Reverse(); // Because Firebase returns in ascending order
-        return leaders;
+    public async Task DeleteRecord(string recordKey) {
+        Debug.Log(recordKey);
+        try {
+            await databaseReference.Child("leaders").Child(recordKey).RemoveValueAsync();
+        }
+        catch (Exception ex) {
+            Debug.LogError("Error al eliminar registro: " + ex.Message);
+        }
     }
 }
 

@@ -1,8 +1,8 @@
-public class Leaderboard {
+public class Data {
     public string name;
     public int score;
 
-    public Leaderboard(string name, int score) {
+    public Data(string name, int score) {
         this.name = name;
         this.score = score;
     }
