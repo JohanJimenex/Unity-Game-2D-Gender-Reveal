@@ -120,7 +120,7 @@ public class UIManager : MonoBehaviour {
     string userId;
 
     private async void ShowNewWorldRecordPanel() {
-        users = await firebaseConnection.GetLeaderboardFromDB();
+        users = await firebaseConnection.ReadRecords();
         users.Reverse();
 
         if (users.Count < 30) {
@@ -141,7 +141,7 @@ public class UIManager : MonoBehaviour {
         string inputText = Utils.FilterBadWords(nameInput.text);
         int score = GameManager.GetScore();
 
-        firebaseConnection.WriteNewLeaderOnDB(inputText, score);
+        firebaseConnection.WriteRecord(inputText, score);
 
         if (userId != null) {
             await firebaseConnection.DeleteRecord(userId);
@@ -152,13 +152,13 @@ public class UIManager : MonoBehaviour {
     }
 
     private void WriteNewLeader(String name, int score) {
-        firebaseConnection.WriteNewLeaderOnDB(name, score);
+        firebaseConnection.WriteRecord(name, score);
         GetLeaderboard();
     }
 
     public async void GetLeaderboard() {
         loadingPanel.SetActive(true);
-        users = await firebaseConnection.GetLeaderboardFromDB();
+        users = await firebaseConnection.ReadRecords();
         UpdateLeaderboardUI();
     }
 

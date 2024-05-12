@@ -15,7 +15,7 @@ public class FirebaseConnection : MonoBehaviour {
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
-    public async void WriteNewLeaderOnDB(string name, int score) {
+    public async void WriteRecord(string name, int score) {
 
         Data user = new Data(name, score);
 
@@ -31,7 +31,7 @@ public class FirebaseConnection : MonoBehaviour {
         await newLeader.SetRawJsonValueAsync(json);
     }
 
-    public async Task<List<User>> GetLeaderboardFromDB() {
+    public async Task<List<User>> ReadRecords() {
 
         var dataSnapshot = await databaseReference.Child("leaders").OrderByChild("score").GetValueAsync();
 
@@ -47,7 +47,6 @@ public class FirebaseConnection : MonoBehaviour {
     }
 
     public async Task DeleteRecord(string recordKey) {
-        Debug.Log(recordKey);
         try {
             await databaseReference.Child("leaders").Child(recordKey).RemoveValueAsync();
         }
