@@ -25,8 +25,10 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
 
     protected Vector3 startPosition;
     protected Transform playerTransform;
+    private float direction;
 
     protected void Start() {
+        direction = Random.Range(0, 2) == 0 ? -1 : 1;
         startPosition = transform.position;
         playerTransform = GameObject.FindWithTag("Player").transform;
         uiManager = GameObject.FindFirstObjectByType<UIManager>();
@@ -38,7 +40,6 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
         DestroyGameObjectIfFarFromPlayer();
     }
 
-    private float direction = 1.0f;
 
     protected virtual void Move() {
 

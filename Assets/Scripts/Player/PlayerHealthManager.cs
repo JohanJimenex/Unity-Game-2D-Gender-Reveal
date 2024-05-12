@@ -20,7 +20,7 @@ public class PlayerHealthManager : MonoBehaviour, IDamageReceiver, ILifeIncrease
         maxLifes = lifes;
     }
 
-    public void SetInvencible(int duration) {
+    public void SetInvencible(float duration) {
         canReciveDamage = false;
         Invoke(nameof(EnableCanReciveHurt), duration);
     }

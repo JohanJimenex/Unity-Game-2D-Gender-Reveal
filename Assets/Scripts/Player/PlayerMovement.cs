@@ -47,6 +47,7 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         if (Input.GetKeyDown(KeyCode.S) && isDownDashActive) {
+            playerHealthManager.SetInvencible(0.4f);
             rb.velocity = Vector2.down * moveForce;
             Invoke(nameof(StopDownForce), 0.3f);
         }
