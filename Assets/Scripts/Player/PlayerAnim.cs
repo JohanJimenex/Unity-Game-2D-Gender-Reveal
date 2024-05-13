@@ -25,6 +25,7 @@ public class PlayerAnim : MonoBehaviour {
         if (Input.GetButtonDown("Jump")) {
             anim.SetTrigger("Float Up");
             anim.SetBool("On Ground", false);
+            InstanciateSmokePropulsion();
         }
 
         if (Input.GetKeyDown(KeyCode.S) && isDownDashActive) {
