@@ -24,7 +24,6 @@ public class PlayerAnim : MonoBehaviour {
 
         if (Input.GetButtonDown("Jump")) {
             anim.SetTrigger("Float Up");
-            anim.SetBool("On Ground", false);
             InstanciateSmokePropulsion();
         }
 
@@ -135,7 +134,8 @@ public class PlayerAnim : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("Ground")) {
-            anim.SetTrigger("On Ground");
+            AudioManager.instance.PlaySoundFx("Player Landing");
+            anim.SetTrigger("Player Landing");
         }
     }
 
