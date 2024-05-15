@@ -49,6 +49,7 @@ public abstract class AbstractItemBase : MonoBehaviour {
     protected void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
             ActiveItemEffect();
+            AudioManager.instance.PlaySoundFx("Power Up");
         }
     }
 

@@ -120,6 +120,8 @@ public class UIManager : MonoBehaviour {
     string userId;
 
     private async void ShowNewWorldRecordPanel() {
+
+        AudioManager.instance.PlaySoundFx("Applause");
         users = await firebaseConnection.ReadRecords();
         users.Reverse();
 
@@ -138,8 +140,12 @@ public class UIManager : MonoBehaviour {
     }
 
     public async void GetInputText() {
-        string inputText = Utils.FilterBadWords(nameInput.text);
+        string inputText = Utils.FilterBadWords(nameInput.text).Trim();
         int score = GameManager.GetScore();
+
+        if (inputText.Length == 0) {
+            inputText = "unknown";
+        }
 
         firebaseConnection.WriteRecord(inputText, score);
 

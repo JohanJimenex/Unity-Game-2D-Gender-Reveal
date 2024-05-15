@@ -24,22 +24,29 @@ public class PlayerAnim : MonoBehaviour {
 
         if (Input.GetButtonDown("Jump")) {
             anim.SetTrigger("Float Up");
+            AudioManager.instance.PlaySoundFx("Air Pressure Release");
+
             InstanciateSmokePropulsion();
         }
 
         if (Input.GetKeyDown(KeyCode.S) && isDownDashActive) {
             anim.SetBool("Dash Down", true);
+            AudioManager.instance.PlaySoundFx("Dash");
             Invoke(nameof(StopGoDownAnim), 0.3f);
         }
 
         //move to the left
         if (Input.GetKeyDown(KeyCode.A)) {
             anim.SetTrigger("Move Left");
+            AudioManager.instance.PlaySoundFx("Air Pressure Release 2");
+            InstanciateSmokePropulsion(90, 0.40f);
         }
 
         //move to the rigth
         if (Input.GetKeyDown(KeyCode.D)) {
             anim.SetTrigger("Move Right");
+            AudioManager.instance.PlaySoundFx("Air Pressure Release 2");
+            InstanciateSmokePropulsion(-90, 0.40f);
         }
 
         // ================== Touch Controls ==================
@@ -52,27 +59,34 @@ public class PlayerAnim : MonoBehaviour {
 
             endTouchPosition = Input.GetTouch(0).position;
 
-            if (endTouchPosition.y < startTouchPosition.y && isDownDashActive) {
+            if (endTouchPosition.x + 100 < startTouchPosition.x) {
+                anim.SetTrigger("Move Left");
+                AudioManager.instance.PlaySoundFx("Air Pressure Release 2");
+                InstanciateSmokePropulsion(90, 0.40f);
+            }
+            else if (endTouchPosition.x - 100 > startTouchPosition.x) {
+                anim.SetTrigger("Move Right");
+                AudioManager.instance.PlaySoundFx("Air Pressure Release 2");
+                InstanciateSmokePropulsion(-90, 0.40f);
+            }
+            else if (endTouchPosition.y < startTouchPosition.y && isDownDashActive) {
                 anim.SetBool("Dash Down", true);
+                AudioManager.instance.PlaySoundFx("Dash");
                 Invoke(nameof(StopGoDownAnim), 0.3f);
             }
             else if (endTouchPosition.y >= startTouchPosition.y) {
                 anim.SetTrigger("Float Up");
+                AudioManager.instance.PlaySoundFx("Air Pressure Release");
                 InstanciateSmokePropulsion();
-            }
-
-            if (endTouchPosition.x + 100 < startTouchPosition.x) {
-                anim.SetTrigger("Move Left");
-            }
-            else if (endTouchPosition.x - 100 > startTouchPosition.x) {
-                anim.SetTrigger("Move Right");
             }
 
         }
     }
 
-    private void InstanciateSmokePropulsion() {
+    private void InstanciateSmokePropulsion(float rotation = 0, float scale = 1f) {
         GameObject smoke = Instantiate(smokePropulsionEffect, transform.position, Quaternion.identity);
+        smoke.transform.rotation = Quaternion.Euler(0, 0, rotation);
+        smoke.transform.localScale = new Vector3(scale, scale, scale);
         Destroy(smoke, 3f);
     }
 
@@ -87,6 +101,7 @@ public class PlayerAnim : MonoBehaviour {
 
     private void PlayerGetDamage(int _) {
         anim.SetTrigger("Get Damage");
+        AudioManager.instance.PlaySoundFx("Hurt");
     }
 
     public void ActiveDownDash(int durationInSeconds) {

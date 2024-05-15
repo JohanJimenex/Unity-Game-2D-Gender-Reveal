@@ -81,6 +81,7 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
         // this.enabled = false; //desactivo el script para que no se mueva el enemigo
         moveSpeed = 0;
         GetComponent<Animator>().SetTrigger("Dead");
+        AudioManager.instance.PlaySoundFx("Explosion");
         Destroy(gameObject, 1f);
     }
 

@@ -13,13 +13,13 @@ public class AudioManager : MonoBehaviour {
     [SerializeField] private Dictionary<string, AudioClip> soundsFxAudioClipDictionary;
     [SerializeField] private Dictionary<string, AudioClip> soundtracksAudioClipDictionary;
 
-    //Singleton Pattern
-    public static AudioManager instance;
-
     void Start() {
         ApplySingletonPattern();
         CreateAudioClipDictionary();
     }
+
+    //Singleton Pattern
+    public static AudioManager instance;
 
     private void ApplySingletonPattern() {
         if (instance == null) {
