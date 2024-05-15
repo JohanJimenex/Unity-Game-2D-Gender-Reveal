@@ -96,7 +96,7 @@ public class PlayerAnim : MonoBehaviour {
 
     private void SubscribeAndListenEvents() {
         playerHealthManager.OnPlayerGetDamage += PlayerGetDamage;
-        // playerHealthManager.OnPlayerDied += PlayDieAnim;
+        playerHealthManager.OnPlayerDied += HandlePlayerDied;
     }
 
     private void PlayerGetDamage(int _) {
@@ -152,6 +152,11 @@ public class PlayerAnim : MonoBehaviour {
             AudioManager.instance.PlaySoundFx("Player Landing");
             anim.SetTrigger("Player Landing");
         }
+    }
+
+    private void HandlePlayerDied() {
+        // anim.SetTrigger("Player Died");
+        this.enabled = false;
     }
 
 

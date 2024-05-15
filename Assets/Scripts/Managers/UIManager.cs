@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private GameObject leaderboardPanel;
     [SerializeField] private TextMeshProUGUI leadersNameUI;
     [SerializeField] private TextMeshProUGUI leaderScoreUI;
-    [SerializeField] private GameObject newWorldRecord;
+    [SerializeField] private GameObject newWorldRecordPanel;
     [SerializeField] private TMP_InputField nameInput;
 
     private int bestScore;
@@ -87,7 +87,7 @@ public class UIManager : MonoBehaviour {
     private void OnPlayerDied() {
         Invoke(nameof(ShowGameOverPanel), 1.2f);
         Invoke(nameof(ShowBestScoreText), 1.2f);
-        Invoke(nameof(ShowNewWorldRecordPanel), 1.2f);
+        Invoke(nameof(CheckWorldRecord), 1.2f);
     }
 
     private void ShowGameOverPanel() {
@@ -119,24 +119,27 @@ public class UIManager : MonoBehaviour {
 
     string userId;
 
-    private async void ShowNewWorldRecordPanel() {
+    private async void CheckWorldRecord() {
 
         AudioManager.instance.PlaySoundFx("Applause");
         users = await firebaseConnection.ReadRecords();
         users.Reverse();
 
         if (users.Count < 30) {
-            newWorldRecord.SetActive(true);
+            newWorldRecordPanel.SetActive(true);
             return;
         }
 
         foreach (User user in users) {
             if (GameManager.GetScore() > user.data.score) {
                 userId = user.firebaseId;
-                newWorldRecord.SetActive(true);
+                newWorldRecordPanel.SetActive(true);
                 break;
             }
         }
+
+        nameInput.Select();
+        nameInput.ActivateInputField();
     }
 
     public async void GetInputText() {
