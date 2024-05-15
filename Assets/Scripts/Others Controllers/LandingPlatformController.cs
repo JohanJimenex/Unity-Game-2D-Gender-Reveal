@@ -51,6 +51,7 @@ class LandingPlatformController : MonoBehaviour {
             GameManager.IncreaseScore(extraScorePointToGive);
             playerHealthManager.IncreaseLife(lifePointsToHealth);
             anim.SetBool("PlayerIsOn", true);
+            AudioManager.instance.PlaySoundFx("Power Up");
         }
     }
 

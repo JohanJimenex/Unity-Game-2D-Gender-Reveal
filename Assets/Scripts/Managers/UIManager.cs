@@ -121,23 +121,27 @@ public class UIManager : MonoBehaviour {
 
     private async void CheckWorldRecord() {
 
-        AudioManager.instance.PlaySoundFx("Applause");
         users = await firebaseConnection.ReadRecords();
         users.Reverse();
 
         if (users.Count < 30) {
-            newWorldRecordPanel.SetActive(true);
+            ShowNewWorldRecordPanel();
             return;
         }
 
         foreach (User user in users) {
             if (GameManager.GetScore() > user.data.score) {
                 userId = user.firebaseId;
-                newWorldRecordPanel.SetActive(true);
+                ShowNewWorldRecordPanel();
                 break;
             }
         }
 
+    }
+
+    private void ShowNewWorldRecordPanel() {
+        AudioManager.instance.PlaySoundFx("Applause");
+        newWorldRecordPanel.SetActive(true);
         nameInput.Select();
         nameInput.ActivateInputField();
     }

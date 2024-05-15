@@ -15,7 +15,8 @@ public class AudioManager : MonoBehaviour {
 
     void Start() {
         ApplySingletonPattern();
-        CreateAudioClipDictionary();
+        CreateAudioClipDictionaries();
+        SelectRandomMusic();
     }
 
     //Singleton Pattern
@@ -24,13 +25,14 @@ public class AudioManager : MonoBehaviour {
     private void ApplySingletonPattern() {
         if (instance == null) {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else {
             Destroy(gameObject);
         }
     }
 
-    private void CreateAudioClipDictionary() {
+    private void CreateAudioClipDictionaries() {
         soundsFxAudioClipDictionary = new Dictionary<string, AudioClip>();
 
         foreach (AudioClip sountrack in soundstracksAudioClips) {
@@ -40,6 +42,11 @@ public class AudioManager : MonoBehaviour {
         foreach (AudioClip soundFx in soundsFxAudioClips) {
             soundsFxAudioClipDictionary.Add(soundFx.name, soundFx);
         }
+    }
+
+    private void SelectRandomMusic() {
+        int randomIndex = Random.Range(0, soundstracksAudioClips.Count);
+        PlaySountrack(soundstracksAudioClips[randomIndex].name);
     }
 
     public void PlaySountrack(string name) {
