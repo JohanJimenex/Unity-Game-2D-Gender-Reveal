@@ -124,7 +124,7 @@ public class UIManager : MonoBehaviour {
         users = await firebaseConnection.ReadRecords();
         users.Reverse();
 
-        if (users.Count < 30) {
+        if (users.Count < 35) {
             ShowNewWorldRecordPanel();
             return;
         }
