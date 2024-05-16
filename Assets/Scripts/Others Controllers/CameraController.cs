@@ -7,15 +7,15 @@ public class CameraController : MonoBehaviour {
     [SerializeField] private PlayerMovement playerMovement;
 
     [SerializeField] private PlayerHealthManager playerHealthManager; // Referencia al script del jugador
-    private readonly float smoothSpeed = 0.125f; // Añade una velocidad de suavizado a la camara
+    // private readonly float smoothSpeed = 1f; // Añade una velocidad de suavizado a la camara
 
-    private float lastPlayerPositionY;
+    private float lastPlayerPositionY=0;
     private readonly float distanceToDestroy = 5f;
     private bool playerIsDead = false;
 
     void Start() {
         SubcribeAndListenToEvents();
-        lastPlayerPositionY = playerMovement.transform.position.y + 3f; // Añade un offse textra para que la cámara no siga al jugador al inicio del juego
+        // lastPlayerPositionY = playerMovement.transform.position.y; // Añade un offse textra para que la cámara no siga al jugador al inicio del juego
     }
 
     private void SubcribeAndListenToEvents() {
@@ -50,11 +50,13 @@ public class CameraController : MonoBehaviour {
 
     private void FollowThePlayerPosition(float playerPositionY) {
         if (playerPositionY > lastPlayerPositionY) {
-            Vector3 newPosition = new Vector3(transform.position.x, playerPositionY, transform.position.z);
-            Vector3 smoothedPosition = Vector3.Lerp(transform.position, newPosition, smoothSpeed); // Usa Lerp para suavizar la transición
-            transform.position = smoothedPosition;
+            //     Vector3 newPosition = new Vector3(transform.position.x, playerPositionY, transform.position.z);
+            //     Vector3 smoothedPosition = Vector3.Lerp(transform.position, newPosition, smoothSpeed); // Usa Lerp para suavizar la transición
+            //     transform.position = smoothedPosition;
+            transform.position = new Vector3(transform.position.x, playerPositionY, transform.position.z);
             lastPlayerPositionY = playerPositionY;
         }
+
 
         if (playerPositionY < transform.position.y - distanceToDestroy && !playerIsDead) {
             playerHealthManager.ReceiveDamage(100); // Llama al método IsDead del script del jugador

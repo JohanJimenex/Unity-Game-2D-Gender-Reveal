@@ -6,6 +6,7 @@ public class AudioManager : MonoBehaviour {
 
     [SerializeField] private AudioSource soundstrackAudioSource;
     [SerializeField] private List<AudioClip> soundstracksAudioClips;
+    private List<AudioClip> soundstracksAudioClipsBackUp;
 
     [SerializeField] private AudioSource soundsFXAudioSource;
     [SerializeField] private List<AudioClip> soundsFxAudioClips;
@@ -14,9 +15,16 @@ public class AudioManager : MonoBehaviour {
     [SerializeField] private Dictionary<string, AudioClip> soundtracksAudioClipDictionary;
 
     void Start() {
+        soundstracksAudioClipsBackUp = new List<AudioClip>(soundstracksAudioClips);
         ApplySingletonPattern();
         CreateAudioClipDictionaries();
         SelectRandomMusic();
+    }
+
+    private void Update() {
+        if (!soundstrackAudioSource.isPlaying) {
+            SelectRandomMusic();
+        }
     }
 
     //Singleton Pattern
@@ -46,7 +54,14 @@ public class AudioManager : MonoBehaviour {
 
     private void SelectRandomMusic() {
         int randomIndex = Random.Range(0, soundstracksAudioClips.Count);
+
         PlaySountrack(soundstracksAudioClips[randomIndex].name);
+
+        soundstracksAudioClips.RemoveAt(randomIndex);
+
+        if (soundstracksAudioClips.Count == 0) {
+            soundstracksAudioClips = soundstracksAudioClipsBackUp;
+        }
     }
 
     public void PlaySountrack(string name) {
