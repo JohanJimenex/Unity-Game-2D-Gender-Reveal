@@ -48,7 +48,7 @@ class LandingPlatformController : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("Player")) {
             moveSpeed = 0;
-            GameManager.IncreaseScore(extraScorePointToGive);
+            GameManager.instance.IncreaseScore(extraScorePointToGive);
             playerHealthManager.IncreaseLife(lifePointsToHealth);
             anim.SetBool("PlayerIsOn", true);
             AudioManager.instance.PlaySoundFx("Power Up");

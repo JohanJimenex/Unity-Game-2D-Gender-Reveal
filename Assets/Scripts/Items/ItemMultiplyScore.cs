@@ -10,7 +10,8 @@ class ItemMultiplyScore : AbstractItemBase {
     private new void OnTriggerEnter2D(Collider2D other) {
         base.OnTriggerEnter2D(other);
         if (other.CompareTag("Player")) {
-            GameManager.MultiplyScoreBy(multiplierScoreBy, effectDurationInSeconds);
+            GameManager.instance.MultiplyScoreBy(multiplierScoreBy, effectDurationInSeconds);
+            UIManager.instance.ShowX2Text(effectDurationInSeconds);
         }
     }
 

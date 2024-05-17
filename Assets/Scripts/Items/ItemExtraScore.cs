@@ -15,7 +15,7 @@ public class ItemExtraScore : AbstractItemBase {
         int extraScore = GetRandomScorePoints();
 
         if (other.gameObject.CompareTag("Player")) {
-            GameManager.IncreaseScore(extraScore);
+            GameManager.instance.IncreaseScore(extraScore);
             UIManager.instance.ShowExtraScore(extraScore);
         }
     }

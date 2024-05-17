@@ -7,11 +7,11 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] PlayerMovement playerMovement;
 
-    private static int score;
-    private static int bestScore;
-    private static int multiplierScoreBy = 1;
+    private int score;
+    private int bestScore;
+    private int multiplierScoreBy = 1;
     //Singleton, para cuando se reinicia la escena
-    private static GameManager instance;
+    public static GameManager instance;
 
     private void Awake() {
 
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour {
         };
     }
 
-    public static void IncreaseScore(int skore) {
+    public void IncreaseScore(int skore) {
 
         skore *= multiplierScoreBy;
 
@@ -59,11 +59,11 @@ public class GameManager : MonoBehaviour {
     }
 
 
-    public static int GetScore() {
+    public int GetScore() {
         return score;
     }
 
-    public static void MultiplyScoreBy(int multiplier, int durationInSeconds) {
+    public void MultiplyScoreBy(int multiplier, int durationInSeconds) {
         multiplierScoreBy = multiplier;
         instance.Invoke(nameof(ResetMultiplierScore), durationInSeconds);
 
@@ -73,11 +73,11 @@ public class GameManager : MonoBehaviour {
         multiplierScoreBy = 1;
     }
 
-    private static void UpdateBestScore() {
+    private void UpdateBestScore() {
         PlayerPrefs.SetInt("BestScore", score);
     }
 
-    public static void StartGame() {
+    public void StartGame() {
         SceneManager.LoadScene("GameScene");
     }
 

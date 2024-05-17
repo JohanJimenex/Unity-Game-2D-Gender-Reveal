@@ -17,12 +17,13 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private GameObject bestScoreUI;
 
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI extraScoreText;
+    [SerializeField] private TextMeshProUGUI x2Text;
     [SerializeField] private TextMeshProUGUI bestScoreText;
 
     [SerializeField] private Slider oxygenSlider;
     [SerializeField] private GameObject screenBorderDamage;
 
-    [SerializeField] private TextMeshProUGUI extraScoreText;
     [SerializeField] private GameObject loadingPanel;
 
     [Header("Leaderboard UI")]
@@ -74,7 +75,7 @@ public class UIManager : MonoBehaviour {
 
     private void KeepScoreUIUpdated() {
 
-        int score = GameManager.GetScore();
+        int score = GameManager.instance.GetScore();
         scoreText.text = score.ToString("N0");
 
         if (score > bestScore) {
@@ -128,6 +129,15 @@ public class UIManager : MonoBehaviour {
         extraScoreText.gameObject.SetActive(false);
     }
 
+    public void ShowX2Text(float longTime) {
+        x2Text.gameObject.SetActive(true);
+        Invoke(nameof(HideX2Text), longTime);
+    }
+
+    private void HideX2Text() {
+        x2Text.gameObject.SetActive(false);
+    }
+
     string userId;
 
     private async void CheckWorldRecord() {
@@ -141,7 +151,7 @@ public class UIManager : MonoBehaviour {
         }
 
         foreach (User user in users) {
-            if (GameManager.GetScore() > user.data.score) {
+            if (GameManager.instance.GetScore() > user.data.score) {
                 userId = user.firebaseId;
                 ShowNewWorldRecordPanel();
                 break;
@@ -159,7 +169,7 @@ public class UIManager : MonoBehaviour {
 
     public async void GetInputText() {
         string inputText = Utils.FilterBadWords(inputField.text).Trim();
-        int score = GameManager.GetScore();
+        int score = GameManager.instance.GetScore();
 
         if (inputText.Length == 0) {
             inputText = "unknown";

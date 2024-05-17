@@ -72,7 +72,7 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
     }
 
     private void EnemyDead() {
-        GameManager.IncreaseScore(scorePointsValue);
+        GameManager.instance.IncreaseScore(scorePointsValue);
         GetComponent<Collider2D>().enabled = false;
         UIManager.instance.ShowExtraScore(scorePointsValue);
         moveSpeed = 0;
