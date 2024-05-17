@@ -7,7 +7,8 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private GameObject ground;
     [SerializeField] private PlayerHealthManager playerHealthManager;
     [Header("Movement Settings")]
-    [SerializeField] private float moveForce = 10f;
+    [SerializeField] private float jumpForce = 6f;
+    [SerializeField] private float moveXForce = 4f;
     [SerializeField] private Rigidbody2D rb;
 
     [HideInInspector] public Action<float> OnPositionYChanged { get; set; }
@@ -43,24 +44,24 @@ public class PlayerMovement : MonoBehaviour {
         // ================== Keyboard Controls ==================
 
         if (Input.GetButtonDown("Jump")) {
-            rb.velocity = Vector2.up * moveForce;
+            rb.velocity = Vector2.up * jumpForce;
         }
 
         if (Input.GetKeyDown(KeyCode.S) && isDownDashActive) {
             playerHealthManager.SetInvencible(0.4f);
-            rb.velocity = Vector2.down * moveForce;
+            rb.velocity = Vector2.down * jumpForce;
             Invoke(nameof(StopDownForce), 0.3f);
         }
 
         //move to the left
         if (Input.GetKeyDown(KeyCode.A)) {
-            rb.velocity = new Vector2(-1 * moveForce, 1 * 2);
+            rb.velocity = new Vector2(-1 * moveXForce, 1 * 2);
 
         }
 
         //move to the rigth
         if (Input.GetKeyDown(KeyCode.D)) {
-            rb.velocity = new Vector2(1 * moveForce, 1 * 2);
+            rb.velocity = new Vector2(1 * moveXForce, 1 * 2);
         }
 
 
@@ -75,21 +76,21 @@ public class PlayerMovement : MonoBehaviour {
             endTouchPosition = Input.GetTouch(0).position;
 
             if (endTouchPosition.y < startTouchPosition.y && isDownDashActive) {
-                rb.velocity = Vector2.down * moveForce;
+                rb.velocity = Vector2.down * jumpForce;
                 Invoke(nameof(StopDownForce), 0.3f);
             }
             else if (endTouchPosition.y >= startTouchPosition.y) {
-                rb.velocity = Vector2.up * moveForce;
+                rb.velocity = Vector2.up * jumpForce;
             }
 
 
             if (endTouchPosition.x + 100 < startTouchPosition.x) {
                 // rb.velocity = Vector2.left * moveForce * Time.deltaTime;
-                rb.velocity = new Vector2(-1 * moveForce, 1 * 2);
+                rb.velocity = new Vector2(-1 * moveXForce, 1 * 2);
             }
             else if (endTouchPosition.x - 100 > startTouchPosition.x) {
                 // rb.velocity = Vector2.right * moveForce * Time.deltaTime;
-                rb.velocity = new Vector2(1 * moveForce, 1 * 2);
+                rb.velocity = new Vector2(1 * moveXForce, 1 * 2);
 
             }
 
@@ -142,7 +143,7 @@ public class PlayerMovement : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D other) {
 
         if (other.gameObject.TryGetComponent(out IDamageReceiver makeDamage) && other.transform.position.y < transform.position.y) {
-            rb.velocity = Vector2.up * moveForce;
+            rb.velocity = Vector2.up * jumpForce;
         }
     }
 }
