@@ -30,12 +30,23 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI leadersNameUI;
     [SerializeField] private TextMeshProUGUI leaderScoreUI;
     [SerializeField] private GameObject newWorldRecordPanel;
-    [SerializeField] private TMP_InputField nameInput;
+    [SerializeField] private TMP_InputField inputField;
+    [SerializeField] private GameObject MusicPlayerUI;
 
     private int bestScore;
     private List<User> users;
 
+    public static UIManager instance;
+
     private void Awake() {
+        //Singleton
+        if (instance == null) {
+            instance = this;
+        }
+        else {
+            Destroy(this.gameObject);
+        }
+
         LoadBestScore();
     }
 
@@ -142,12 +153,12 @@ public class UIManager : MonoBehaviour {
     private void ShowNewWorldRecordPanel() {
         AudioManager.instance.PlaySoundFx("Applause");
         newWorldRecordPanel.SetActive(true);
-        nameInput.Select();
-        nameInput.ActivateInputField();
+        inputField.Select();
+        inputField.ActivateInputField();
     }
 
     public async void GetInputText() {
-        string inputText = Utils.FilterBadWords(nameInput.text).Trim();
+        string inputText = Utils.FilterBadWords(inputField.text).Trim();
         int score = GameManager.GetScore();
 
         if (inputText.Length == 0) {
@@ -183,7 +194,7 @@ public class UIManager : MonoBehaviour {
 
         foreach (User leader in users) {
 
-            String counterString = counter > 3 ? counter.ToString() : "  ";
+            string counterString = counter > 3 ? counter.ToString() : "  ";
 
             leadersNameUI.text += $"{counterString}  {leader.data.name.ToUpper()} \n";
 
@@ -198,6 +209,16 @@ public class UIManager : MonoBehaviour {
 
         loadingPanel.SetActive(false);
         leaderboardPanel.SetActive(true);
+    }
+
+    public void ShowMusicPlayerUI(string musicName) {
+        MusicPlayerUI.GetComponentInChildren<TextMeshProUGUI>().text = musicName;
+        MusicPlayerUI.SetActive(true);
+        Invoke(nameof(HideMusicPlayerUI), 4f);
+    }
+
+    private void HideMusicPlayerUI() {
+        MusicPlayerUI.SetActive(false);
     }
 
 }
