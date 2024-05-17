@@ -18,7 +18,10 @@ public class AudioManager : MonoBehaviour {
         soundstracksAudioClipsBackUp = new List<AudioClip>(soundstracksAudioClips);
         ApplySingletonPattern();
         CreateAudioClipDictionaries();
-        SelectRandomMusic();
+        if (instance == null) {
+            SelectRandomMusic();
+        }
+
     }
 
     private void Update() {
@@ -67,6 +70,7 @@ public class AudioManager : MonoBehaviour {
     public void PlaySountrack(string name) {
         soundstrackAudioSource.clip = soundsFxAudioClipDictionary[name];
         soundstrackAudioSource.Play();
+        UIManager.instance.ShowMusicPlayerUI(name);
     }
 
     public void PlaySoundFx(string name) {

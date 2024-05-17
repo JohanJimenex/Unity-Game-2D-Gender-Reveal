@@ -4,13 +4,9 @@ using UnityEngine;
 
 public class ItemExtraScore : AbstractItemBase {
 
-    [Header("Item Extra Score")]
-
-    private UIManager uIManager;
-
     private new void Start() {
         base.Start();
-        uIManager = FindFirstObjectByType<UIManager>();
+
     }
 
     private new void OnTriggerEnter2D(Collider2D other) {
@@ -20,7 +16,7 @@ public class ItemExtraScore : AbstractItemBase {
 
         if (other.gameObject.CompareTag("Player")) {
             GameManager.IncreaseScore(extraScore);
-            uIManager.ShowExtraScore(extraScore);
+            UIManager.instance.ShowExtraScore(extraScore);
         }
     }
 

@@ -21,8 +21,6 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
     // [SerializeField] protected bool canBeDestroyedWithoutDamage = false;
     [SerializeField] protected private CanBeDestroyFrom canBeDestroyFrom;
 
-    private UIManager uiManager;
-
     protected Vector3 startPosition;
     protected Transform playerTransform;
     private float direction;
@@ -31,7 +29,6 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
         direction = Random.Range(0, 2) == 0 ? -1 : 1;
         startPosition = transform.position;
         playerTransform = GameObject.FindWithTag("Player").transform;
-        uiManager = GameObject.FindFirstObjectByType<UIManager>();
     }
 
     protected virtual void Update() {
@@ -77,8 +74,7 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
     private void EnemyDead() {
         GameManager.IncreaseScore(scorePointsValue);
         GetComponent<Collider2D>().enabled = false;
-        uiManager.ShowExtraScore(scorePointsValue);
-        // this.enabled = false; //desactivo el script para que no se mueva el enemigo
+        UIManager.instance.ShowExtraScore(scorePointsValue);
         moveSpeed = 0;
         GetComponent<Animator>().SetTrigger("Dead");
         AudioManager.instance.PlaySoundFx("Explosion");
