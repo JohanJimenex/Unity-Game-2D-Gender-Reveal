@@ -13,7 +13,8 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
     [SerializeField] protected int enemyAttackForce = 1;
     [SerializeField] protected int enemyLifePoints = 1;
 
-    [SerializeField] protected float moveSpeed = 1f;
+    [SerializeField] protected float moveXSpeed = 1f;
+    [SerializeField] protected float moveYSpeed = 0f; 
     [SerializeField] protected float distanceRangeToMoveX = 2.5f;
     [SerializeField] protected int scorePointsValue = 10;
 
@@ -37,15 +38,22 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
         DestroyGameObjectIfFarFromPlayer();
     }
 
-
     protected virtual void Move() {
 
-        float movement = direction * moveSpeed * Time.deltaTime;
-        transform.Translate(movement, 0, 0);
+        // float movementX = direction * moveXSpeed * Time.deltaTime;
+        // float movementY = direction * moveYSpeed * Time.deltaTime;
 
-        if (Mathf.Abs(transform.position.x - startPosition.x) >= distanceRangeToMoveX) {
-            direction *= -1;
+        Vector3 movement = new Vector3(direction * moveXSpeed, moveYSpeed, 0) * Time.deltaTime;
+
+        transform.Translate(movement);
+
+        if (Mathf.Abs(transform.position.x) > distanceRangeToMoveX) {
+            direction = direction == 1f ? -1f : 1f;
         }
+
+        // if (Mathf.Abs(transform.position.x - startPosition.x) >= distanceRangeToMoveX) {
+        //     direction *= -1;
+        // }
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
@@ -75,7 +83,7 @@ public abstract class AbstractEnemyBase : MonoBehaviour, IDamageReceiver {
         GameManager.instance.IncreaseScore(scorePointsValue);
         GetComponent<Collider2D>().enabled = false;
         UIManager.instance.ShowExtraScore(scorePointsValue);
-        moveSpeed = 0;
+        moveXSpeed = 0;
         GetComponent<Animator>().SetTrigger("Dead");
         AudioManager.instance.PlaySoundFx("Explosion");
         Destroy(gameObject, 1f);

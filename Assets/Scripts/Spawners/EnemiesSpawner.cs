@@ -9,6 +9,7 @@ public class EnemiesSpawner : MonoBehaviour {
     [SerializeField] private Transform playerTransform;
     [SerializeField] private GameObject[] easyEnemiesPrefabs;
     [SerializeField] private GameObject[] hardEnemiesPrefabs;
+    [SerializeField] private GameObject[] descentEnemiesPrefabs;
 
     [Header("Settings")]
     [SerializeField] private float horizontalRangeToInstanciate = 2.5f;
@@ -18,6 +19,7 @@ public class EnemiesSpawner : MonoBehaviour {
 
     private float heightGoalToIncreaseDifficulty = 100f;
     private float hardesEnemiesPropability = 0;
+    private float descentEnemiesPropability = 10;
 
     void Update() {
 
@@ -28,6 +30,10 @@ public class EnemiesSpawner : MonoBehaviour {
             }
             else {
                 SpawnEnemy(easyEnemiesPrefabs[Random.Range(0, easyEnemiesPrefabs.Length)]);
+            }
+
+            if (Random.Range(0, 100) < descentEnemiesPropability && Random.Range(0, 100) < 50) {
+                ShowAlert(descentEnemiesPrefabs[Random.Range(0, descentEnemiesPrefabs.Length)]);
             }
         }
 
@@ -44,6 +50,11 @@ public class EnemiesSpawner : MonoBehaviour {
         if (playerTransform.position.y >= heightGoalToIncreaseDifficulty) {
             heightGoalToIncreaseDifficulty += 50f;
             hardesEnemiesPropability += 15f;
+            descentEnemiesPropability += 1f;
+        }
+
+        if (descentEnemiesPropability > 50) {
+            descentEnemiesPropability = 80;
         }
     }
 
@@ -57,5 +68,18 @@ public class EnemiesSpawner : MonoBehaviour {
         if (distanceFromPlayerToSpawnY > -7f) {
             distanceFromPlayerToSpawnY -= 0.05f;
         }
+    }
+
+    private void ShowAlert(GameObject objectToSpawn) {
+        float randomPositionX = Random.Range(-horizontalRangeToInstanciate, horizontalRangeToInstanciate);
+        Vector3 spawnPosition = new Vector3(randomPositionX, playerTransform.position.y + positionToSpawnInY, 0);
+        UIManager.instance.ShowAlertImage(spawnPosition);
+        // Invoke(nameof(SpawDescendEnemy), 1.5f);
+        StartCoroutine(SpawDescendEnemy(objectToSpawn, spawnPosition));
+    }
+
+    private IEnumerator SpawDescendEnemy(GameObject objectToSpawn, Vector3 spawnPosition) {
+        yield return new WaitForSeconds(1.5f);
+        Instantiate(objectToSpawn, spawnPosition, Quaternion.identity);
     }
 }
