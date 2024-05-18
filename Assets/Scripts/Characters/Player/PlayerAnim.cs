@@ -9,6 +9,7 @@ public class PlayerAnim : MonoBehaviour {
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private ParticleSystem particlesEffect;
     [SerializeField] private GameObject smokePropulsionEffect;
+    [SerializeField] private GameObject shield;
 
     private bool isDownDashActive = false;
 
@@ -26,7 +27,7 @@ public class PlayerAnim : MonoBehaviour {
             anim.SetTrigger("Float Up");
             AudioManager.instance.PlaySoundFx("Air Pressure Release");
 
-            InstanciateSmokePropulsion();
+            InstantiateSmokePropulsion();
         }
 
         if (Input.GetKeyDown(KeyCode.S) && isDownDashActive) {
@@ -39,14 +40,14 @@ public class PlayerAnim : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.A)) {
             anim.SetTrigger("Move Left");
             AudioManager.instance.PlaySoundFx("Air Pressure Release 2");
-            InstanciateSmokePropulsion(90, 0.40f);
+            InstantiateSmokePropulsion(90, 0.40f);
         }
 
         //move to the rigth
         if (Input.GetKeyDown(KeyCode.D)) {
             anim.SetTrigger("Move Right");
             AudioManager.instance.PlaySoundFx("Air Pressure Release 2");
-            InstanciateSmokePropulsion(-90, 0.40f);
+            InstantiateSmokePropulsion(-90, 0.40f);
         }
 
         // ================== Touch Controls ==================
@@ -62,12 +63,12 @@ public class PlayerAnim : MonoBehaviour {
             if (endTouchPosition.x + 100 < startTouchPosition.x) {
                 anim.SetTrigger("Move Left");
                 AudioManager.instance.PlaySoundFx("Air Pressure Release 2");
-                InstanciateSmokePropulsion(90, 0.40f);
+                InstantiateSmokePropulsion(90, 0.40f);
             }
             else if (endTouchPosition.x - 100 > startTouchPosition.x) {
                 anim.SetTrigger("Move Right");
                 AudioManager.instance.PlaySoundFx("Air Pressure Release 2");
-                InstanciateSmokePropulsion(-90, 0.40f);
+                InstantiateSmokePropulsion(-90, 0.40f);
             }
             else if (endTouchPosition.y < startTouchPosition.y && isDownDashActive) {
                 anim.SetBool("Dash Down", true);
@@ -77,13 +78,13 @@ public class PlayerAnim : MonoBehaviour {
             else if (endTouchPosition.y >= startTouchPosition.y) {
                 anim.SetTrigger("Float Up");
                 AudioManager.instance.PlaySoundFx("Air Pressure Release");
-                InstanciateSmokePropulsion();
+                InstantiateSmokePropulsion();
             }
 
         }
     }
 
-    private void InstanciateSmokePropulsion(float rotation = 0, float scale = 1f) {
+    private void InstantiateSmokePropulsion(float rotation = 0, float scale = 1f) {
         GameObject smoke = Instantiate(smokePropulsionEffect, transform.position, Quaternion.identity);
         smoke.transform.rotation = Quaternion.Euler(0, 0, rotation);
         smoke.transform.localScale = new Vector3(scale, scale, scale);
@@ -115,13 +116,18 @@ public class PlayerAnim : MonoBehaviour {
     }
 
     public void ActiveInvincibleEffect(int durationInSeconds) {
-        spriteRenderer.material.color = Color.yellow;
-        ActiveParticleEffect(durationInSeconds, Color.yellow);
-        Invoke(nameof(DeactivateInvincibleEffect), durationInSeconds);
+        shield.SetActive(true);
+        ActiveParticleEffect(durationInSeconds, Color.white);
+        Invoke(nameof(ShowShieldOff), durationInSeconds - 3f);
     }
 
-    private void DeactivateInvincibleEffect() {
-        spriteRenderer.material.color = Color.white;
+    private void ShowShieldOff() {
+        shield.GetComponent<Animator>().SetTrigger("Shield Off");
+        Invoke(nameof(DeactivateShield), 3f);
+    }
+
+    private void DeactivateShield() {
+        shield.SetActive(false);
     }
 
     private void ActiveParticleEffect(int durationInSeconds, Color? color = null) {
