@@ -18,6 +18,7 @@ public class ItemDownDash : AbstractItemBase {
 
             PlayerAnim playerAnim = other.GetComponent<PlayerAnim>();
             playerAnim.ActiveDownDash(effectDurationInSeconds);
+            UIManager.instance.ShowSwipeDownIndicator();
         }
     }
 

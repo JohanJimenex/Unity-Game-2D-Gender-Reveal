@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private FirebaseConnection firebaseConnection;
 
     [Header("UI References")]
+    [SerializeField] private GameObject alertImage;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject bestScoreUI;
 
@@ -25,6 +26,8 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private GameObject screenBorderDamage;
 
     [SerializeField] private GameObject loadingPanel;
+    [SerializeField] private GameObject MusicPlayerUI;
+    [SerializeField] private GameObject swipeDownIndicator;
 
     [Header("Leaderboard UI")]
     [SerializeField] private GameObject leaderboardPanel;
@@ -32,7 +35,7 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI leaderScoreUI;
     [SerializeField] private GameObject newWorldRecordPanel;
     [SerializeField] private TMP_InputField inputField;
-    [SerializeField] private GameObject MusicPlayerUI;
+
 
     private int bestScore;
     private List<User> users;
@@ -221,6 +224,13 @@ public class UIManager : MonoBehaviour {
         leaderboardPanel.SetActive(true);
     }
 
+    public void ShowAlertImage(Vector3 position) {
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(position);
+        alertImage.transform.position = new Vector3(screenPosition.x, alertImage.transform.position.y, 0);
+        alertImage.GetComponent<Animator>().SetTrigger("Alert On");
+        AudioManager.instance.PlaySoundFx("Alert");
+    }
+
     public void ShowMusicPlayerUI(string musicName) {
         MusicPlayerUI.GetComponentInChildren<TextMeshProUGUI>().text = musicName;
         MusicPlayerUI.SetActive(true);
@@ -231,4 +241,19 @@ public class UIManager : MonoBehaviour {
         MusicPlayerUI.SetActive(false);
     }
 
+    private bool firstTimeUsingSwipeDown = true;
+
+    public void ShowSwipeDownIndicator() {
+
+        if (!firstTimeUsingSwipeDown) {
+            return;
+        }
+        swipeDownIndicator.SetActive(true);
+        Invoke(nameof(HideSwipeDownIndicator), 2.8f);
+        firstTimeUsingSwipeDown = false;
+    }
+
+    private void HideSwipeDownIndicator() {
+        swipeDownIndicator.SetActive(false);
+    }
 }
