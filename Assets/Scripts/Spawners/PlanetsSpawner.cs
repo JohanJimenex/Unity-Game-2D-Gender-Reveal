@@ -38,9 +38,9 @@ public class PlanetsSpawner : MonoBehaviour {
 
         Vector3 spawnPosition = new Vector3(1.5f, CameraGameObject.transform.position.y + 6f, 0);
 
-        GameObject spawnedObject = Instantiate(randomGameObject, spawnPosition, Quaternion.identity);
+        Instantiate(randomGameObject, spawnPosition, Quaternion.identity, CameraGameObject.transform);
 
-        spawnedObject.transform.SetParent(CameraGameObject.transform);
+        // spawnedObject.transform.SetParent(CameraGameObject.transform);
 
         lastSpawnPosition = spawnPosition.y + 10;
 
