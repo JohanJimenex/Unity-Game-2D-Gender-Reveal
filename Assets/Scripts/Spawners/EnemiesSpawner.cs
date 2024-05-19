@@ -15,8 +15,7 @@ public class EnemiesSpawner : MonoBehaviour {
     [SerializeField] private float horizontalRangeToInstanciate = 2.5f;
     [SerializeField] private float distanceFromPlayerToSpawnY = -2f;
 
-    private float positionToSpawnInY = 10f;
-
+    private readonly float positionToSpawnInY = 10f;
     private float heightGoalToIncreaseDifficulty = 100f;
     private float hardesEnemiesPropability = 0;
     private float descentEnemiesPropability = 10;

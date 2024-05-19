@@ -5,14 +5,15 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour {
 
     [SerializeField] private AudioSource soundstrackAudioSource;
-    [SerializeField] private List<AudioClip> soundstracksAudioClips;
-    private List<AudioClip> soundstracksAudioClipsBackUp;
-
     [SerializeField] private AudioSource soundsFXAudioSource;
+
+    [SerializeField] private List<AudioClip> soundstracksAudioClips;
     [SerializeField] private List<AudioClip> soundsFxAudioClips;
 
-    [SerializeField] private Dictionary<string, AudioClip> soundsFxAudioClipDictionary;
-    [SerializeField] private Dictionary<string, AudioClip> soundtracksAudioClipDictionary;
+    private Dictionary<string, AudioClip> soundtracksAudioClipDictionary;
+    private Dictionary<string, AudioClip> soundsFxAudioClipDictionary;
+
+    private List<AudioClip> soundstracksAudioClipsBackUp;
 
     void Start() {
         soundstracksAudioClipsBackUp = new List<AudioClip>(soundstracksAudioClips);
@@ -21,7 +22,6 @@ public class AudioManager : MonoBehaviour {
         if (instance == null) {
             SelectRandomMusic();
         }
-
     }
 
     private void Update() {
@@ -44,10 +44,11 @@ public class AudioManager : MonoBehaviour {
     }
 
     private void CreateAudioClipDictionaries() {
+        soundtracksAudioClipDictionary = new Dictionary<string, AudioClip>();
         soundsFxAudioClipDictionary = new Dictionary<string, AudioClip>();
 
         foreach (AudioClip sountrack in soundstracksAudioClips) {
-            soundsFxAudioClipDictionary.Add(sountrack.name, sountrack);
+            soundtracksAudioClipDictionary.Add(sountrack.name, sountrack);
         }
 
         foreach (AudioClip soundFx in soundsFxAudioClips) {
@@ -67,15 +68,14 @@ public class AudioManager : MonoBehaviour {
         }
     }
 
+    public void PlaySoundFx(string name) {
+        soundsFXAudioSource.PlayOneShot(soundsFxAudioClipDictionary[name]);
+    }
+
     public void PlaySountrack(string name) {
         soundstrackAudioSource.clip = soundsFxAudioClipDictionary[name];
         soundstrackAudioSource.Play();
         UIManager.instance.ShowMusicPlayerUI(name);
     }
-
-    public void PlaySoundFx(string name) {
-        soundsFXAudioSource.PlayOneShot(soundsFxAudioClipDictionary[name]);
-    }
-
 
 }

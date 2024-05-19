@@ -17,37 +17,24 @@ public class PlayerMovement : MonoBehaviour {
         playerHealthManager.OnPlayerDied += DisableScript;
     }
 
-    private void DisableScript() {
-        this.enabled = false;
-    }
-
     void Update() {
         Move();
+        LimitPlayerMovement();
         EmitPlayerPositionY();
         DestroyGround();
     }
 
     private Vector2 startTouchPosition, endTouchPosition;
-    private bool isDragging = false;
     private Vector2 currentTouchPosition;
 
     private void Move() {
-
-        if (transform.position.x <= -1f) {
-            transform.position = new Vector2(-1f, transform.position.y);
-        }
-
-        if (transform.position.x >= 1f) {
-            transform.position = new Vector2(1f, transform.position.y);
-        }
 
         // ================== Keyboard Controls ==================
 
         if (Input.GetButtonDown("Jump")) {
             rb.velocity = Vector2.up * jumpForce;
         }
-
-        if (Input.GetKeyDown(KeyCode.S) && isDownDashActive) {
+        else if (Input.GetKeyDown(KeyCode.S) && isDownDashActive) {
             playerHealthManager.SetInvencible(0.4f);
             rb.velocity = Vector2.down * jumpForce;
             Invoke(nameof(StopDownForce), 0.3f);
@@ -56,11 +43,8 @@ public class PlayerMovement : MonoBehaviour {
         //move to the left
         if (Input.GetKeyDown(KeyCode.A)) {
             rb.velocity = new Vector2(-1 * moveXForce, 1 * 2);
-
         }
-
-        //move to the rigth
-        if (Input.GetKeyDown(KeyCode.D)) {
+        else if (Input.GetKeyDown(KeyCode.D)) {
             rb.velocity = new Vector2(1 * moveXForce, 1 * 2);
         }
 
@@ -83,7 +67,6 @@ public class PlayerMovement : MonoBehaviour {
                 rb.velocity = Vector2.up * jumpForce;
             }
 
-
             if (endTouchPosition.x + 100 < startTouchPosition.x) {
                 // rb.velocity = Vector2.left * moveForce * Time.deltaTime;
                 rb.velocity = new Vector2(-1 * moveXForce, 1 * 2);
@@ -93,26 +76,17 @@ public class PlayerMovement : MonoBehaviour {
                 rb.velocity = new Vector2(1 * moveXForce, 1 * 2);
 
             }
-
         }
 
-        if (Input.touchCount > 0) {
-            Touch touch = Input.GetTouch(0);
+    }
 
-            if (touch.phase == TouchPhase.Began) {
-                isDragging = true;
-                startTouchPosition = touch.position;
-            }
-            else if (touch.phase == TouchPhase.Moved && isDragging) {
-                currentTouchPosition = touch.position;
-                Vector2 direction = currentTouchPosition - startTouchPosition;
-                // Mueve tu objeto en la dirección del arrastre aquí
-            }
-            else if (touch.phase == TouchPhase.Ended) {
-                isDragging = false;
-            }
+    private void LimitPlayerMovement() {
+        if (transform.position.x <= -1f) {
+            transform.position = new Vector2(-1f, transform.position.y);
         }
-
+        if (transform.position.x >= 1f) {
+            transform.position = new Vector2(1f, transform.position.y);
+        }
     }
 
     private void StopDownForce() {
@@ -145,6 +119,10 @@ public class PlayerMovement : MonoBehaviour {
         if (other.gameObject.TryGetComponent(out IDamageReceiver makeDamage) && other.transform.position.y < transform.position.y) {
             rb.velocity = Vector2.up * jumpForce;
         }
+    }
+
+    private void DisableScript() {
+        this.enabled = false;
     }
 }
 
