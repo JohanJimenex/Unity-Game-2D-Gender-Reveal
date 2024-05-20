@@ -148,13 +148,15 @@ public class UIManager : MonoBehaviour {
         users = await firebaseConnection.ReadRecords();
         users.Reverse();
 
-        if (users.Count < 35) {
+        int score = GameManager.instance.GetScore();
+
+        if (users.Count < 35 && score >= bestScore) {
             ShowNewWorldRecordPanel();
             return;
         }
 
         foreach (User user in users) {
-            if (GameManager.instance.GetScore() > user.data.score) {
+            if (score > user.data.score && score >= bestScore) {
                 userId = user.firebaseId;
                 ShowNewWorldRecordPanel();
                 break;

@@ -32,7 +32,9 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
-        SubscribeAndListenToEvent();
+        if (playerMovement != null) {
+            SubscribeAndListenToEvent();
+        }
     }
 
     private float actualPosition = 0;
@@ -58,7 +60,6 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-
     public int GetScore() {
         return score;
     }
@@ -66,7 +67,6 @@ public class GameManager : MonoBehaviour {
     public void MultiplyScoreBy(int multiplier, int durationInSeconds) {
         multiplierScoreBy = multiplier;
         instance.Invoke(nameof(ResetMultiplierScore), durationInSeconds);
-
     }
 
     private void ResetMultiplierScore() {
@@ -77,8 +77,8 @@ public class GameManager : MonoBehaviour {
         PlayerPrefs.SetInt("BestScore", score);
     }
 
-    public void StartGame() {
-        SceneManager.LoadScene("GameScene");
+    public void LoadScene(string sceneName) {
+        SceneManager.LoadScene(sceneName);
     }
 
 }
