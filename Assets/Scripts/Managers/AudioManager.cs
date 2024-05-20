@@ -15,13 +15,13 @@ public class AudioManager : MonoBehaviour {
 
     private List<AudioClip> soundstracksAudioClipsBackUp;
 
+    private void Awake() {
+        ApplySingletonPattern();
+    }
+
     void Start() {
         soundstracksAudioClipsBackUp = new List<AudioClip>(soundstracksAudioClips);
-        ApplySingletonPattern();
         CreateAudioClipDictionaries();
-        if (instance == null) {
-            SelectRandomMusic();
-        }
     }
 
     private void Update() {
@@ -54,6 +54,7 @@ public class AudioManager : MonoBehaviour {
         foreach (AudioClip soundFx in soundsFxAudioClips) {
             soundsFxAudioClipDictionary.Add(soundFx.name, soundFx);
         }
+
     }
 
     private void SelectRandomMusic() {
@@ -73,7 +74,7 @@ public class AudioManager : MonoBehaviour {
     }
 
     public void PlaySountrack(string name) {
-        soundstrackAudioSource.clip = soundsFxAudioClipDictionary[name];
+        soundstrackAudioSource.clip = soundtracksAudioClipDictionary[name];
         soundstrackAudioSource.Play();
         UIManager.instance.ShowMusicPlayerUI(name);
     }
