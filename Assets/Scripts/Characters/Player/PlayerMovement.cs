@@ -13,7 +13,17 @@ public class PlayerMovement : MonoBehaviour {
 
     [HideInInspector] public Action<float> OnPositionYChanged { get; set; }
 
+    public static PlayerMovement instance;
+
     private void Start() {
+
+        if (instance == null) {
+            instance = this;
+        }
+        else {
+            Destroy(gameObject);
+        }
+
         playerHealthManager.OnPlayerDied += DisableScript;
     }
 
@@ -123,6 +133,17 @@ public class PlayerMovement : MonoBehaviour {
 
     private void DisableScript() {
         this.enabled = false;
+        Invoke(nameof(FreezePosition), 1.5f);
+    }
+
+    private void FreezePosition() {
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+    }
+
+    public void ResetValues() {
+        this.enabled = true;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 1));
     }
 }
 

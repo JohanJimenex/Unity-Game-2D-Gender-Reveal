@@ -36,7 +36,6 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private GameObject newWorldRecordPanel;
     [SerializeField] private TMP_InputField inputField;
 
-
     private int bestScore;
     private List<User> users;
 
@@ -56,7 +55,7 @@ public class UIManager : MonoBehaviour {
 
     private void Start() {
         SubscribeAndListenEvents();
-        oxygenSlider.maxValue = playerHealthManager.MaxLifes;
+        oxygenSlider.maxValue = PlayerHealthManager.instance.maxLifes;
     }
 
     private void Update() {
@@ -173,7 +172,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public async void GetInputText() {
-        string inputText = Utils.FilterBadWords(inputField.text).Trim();
+        string inputText = Utils.BadWordsFilter(inputField.text).Trim();
         int score = GameManager.instance.GetScore();
 
         if (inputText.Length == 0) {
@@ -258,4 +257,8 @@ public class UIManager : MonoBehaviour {
     private void HideSwipeDownIndicator() {
         swipeDownIndicator.SetActive(false);
     }
+
+
+
+
 }

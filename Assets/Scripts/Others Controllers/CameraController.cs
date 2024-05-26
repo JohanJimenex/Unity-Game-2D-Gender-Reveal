@@ -5,15 +5,22 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
 
     [SerializeField] private PlayerMovement playerMovement;
-
-    [SerializeField] private PlayerHealthManager playerHealthManager; // Referencia al script del jugador
+    [SerializeField] private PlayerHealthManager playerHealthManager;
     // private readonly float smoothSpeed = 1f; // Añade una velocidad de suavizado a la camara
 
-    private float lastPlayerPositionY=0;
-    private readonly float distanceToDestroy = 5f;
-    private bool playerIsDead = false;
+    public bool playerIsDead = false;
+
+    public static CameraController instance;
 
     void Start() {
+
+        if (instance == null) {
+            instance = this;
+        }
+        else {
+            Destroy(gameObject);
+        }
+
         SubcribeAndListenToEvents();
         // lastPlayerPositionY = playerMovement.transform.position.y; // Añade un offse textra para que la cámara no siga al jugador al inicio del juego
     }
@@ -48,6 +55,9 @@ public class CameraController : MonoBehaviour {
         transform.position = originalPos;
     }
 
+    private float lastPlayerPositionY = 0;
+    private readonly float distanceToDestroy = 5f;
+
     private void FollowThePlayerPosition(float playerPositionY) {
         if (playerPositionY > lastPlayerPositionY) {
             //     Vector3 newPosition = new Vector3(transform.position.x, playerPositionY, transform.position.z);
@@ -57,9 +67,14 @@ public class CameraController : MonoBehaviour {
             lastPlayerPositionY = playerPositionY;
         }
 
+        CheckIfPlayerIsOutOfCam(playerPositionY);
 
+    }
+
+    private void CheckIfPlayerIsOutOfCam(float playerPositionY) {
         if (playerPositionY < transform.position.y - distanceToDestroy && !playerIsDead) {
-            playerHealthManager.ReceiveDamage(100); // Llama al método IsDead del script del jugador
+            playerHealthManager.EnableCanReciveHurt(); // Llama al método IsDead del script del jugador
+            playerHealthManager.ReceiveDamage(100);
             playerIsDead = true;
         }
     }
