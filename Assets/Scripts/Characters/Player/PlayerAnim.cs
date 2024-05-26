@@ -97,7 +97,6 @@ public class PlayerAnim : MonoBehaviour {
 
     private void SubscribeAndListenEvents() {
         playerHealthManager.OnPlayerGetDamage += PlayerGetDamage;
-        playerHealthManager.OnPlayerDied += HandlePlayerDied;
     }
 
     private void PlayerGetDamage(int _) {
@@ -159,12 +158,5 @@ public class PlayerAnim : MonoBehaviour {
             anim.SetTrigger("Player Landing");
         }
     }
-
-    private void HandlePlayerDied() {
-        // anim.SetTrigger("Player Died");
-        this.enabled = false;
-    }
-
-
 
 }
