@@ -6,17 +6,24 @@ using UnityEngine;
 public class PlayerHealthManager : MonoBehaviour, IDamageReceiver, ILifeIncreaser {
 
     [SerializeField] private int lifes;
-
     [SerializeField] private bool canReciveDamage = true;
 
     [HideInInspector] public Action<int> OnPlayerGetDamage { get; set; }
     [HideInInspector] public Action<int> OnPlayerIncreaseLife { get; set; }
     [HideInInspector] public Action OnPlayerDied { get; set; }
 
-    private int maxLifes;
-    public int MaxLifes { get { return lifes; } }
+    public int maxLifes;
+    public static PlayerHealthManager instance;
 
     private void Start() {
+
+        if (instance == null) {
+            instance = this;
+        }
+        else {
+            Destroy(gameObject);
+        }
+
         maxLifes = lifes;
     }
 
@@ -25,7 +32,7 @@ public class PlayerHealthManager : MonoBehaviour, IDamageReceiver, ILifeIncrease
         Invoke(nameof(EnableCanReciveHurt), duration);
     }
 
-    private void EnableCanReciveHurt() {
+    public void EnableCanReciveHurt() {
         canReciveDamage = true;
     }
 
@@ -49,6 +56,11 @@ public class PlayerHealthManager : MonoBehaviour, IDamageReceiver, ILifeIncrease
         if (lifes <= 0) {
             PlayerDead();
         }
+    }
+
+    public void RevivePlayer() {
+        lifes = maxLifes;
+        OnPlayerIncreaseLife?.Invoke(lifes);
     }
 
     private void PlayerDead() {
