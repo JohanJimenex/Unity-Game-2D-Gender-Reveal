@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemInvincible : AbstractItemBase {
+public class ItemShield : AbstractItemBase {
 
     [Header("Item Invincible")]
 
