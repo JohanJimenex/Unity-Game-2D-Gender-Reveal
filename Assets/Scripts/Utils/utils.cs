@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public static class Utils {
 
-    public static string FilterBadWords(string inputText) {
-        // Lista de palabras malas
+    public static string BadWordsFilter(string inputText) {
+        // Lista de malas palabras
         List<string> badWords = new List<string> {
             "mmg",
             "puta",
@@ -112,7 +112,7 @@ public static class Utils {
 
              };
 
-        // Reemplazar cada palabra mala con asteriscos
+        // Reemplazar cada mala palabra con asteriscos
         foreach (string badWord in badWords) {
             if (inputText.ToLower().Contains(badWord)) {
                 inputText = inputText.Replace(badWord, new string('*', badWord.Length));
