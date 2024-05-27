@@ -27,33 +27,8 @@ public class CameraController : MonoBehaviour {
 
     private void SubcribeAndListenToEvents() {
         playerMovement.OnPositionYChanged += FollowThePlayerPosition; // Suscríbete al evento OnPositionYChanged del script del jugador
-        playerHealthManager.OnPlayerGetDamage += ShakeCamera;
     }
 
-    private void ShakeCamera(int _) {
-        StartCoroutine(Shake());
-    }
-
-    private IEnumerator Shake() {
-
-        float elapsedTime = 0.0f;
-        float duration = 0.1f;
-        float magnitude = 0.01f;
-        Vector3 originalPos = transform.position;
-
-        while (elapsedTime < duration) {
-            float x = Random.Range(-1f, 1f) * magnitude;
-            float y = Random.Range(-1f, 1f) * magnitude;
-
-            transform.position = new Vector3(transform.position.x + x, transform.position.y + y, transform.position.z);
-
-            elapsedTime += Time.deltaTime;
-
-            yield return null;
-        }
-
-        transform.position = originalPos;
-    }
 
     private float lastPlayerPositionY = 0;
     private readonly float distanceToDestroy = 5f;
