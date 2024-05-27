@@ -49,8 +49,6 @@ public class PlayerHealthManager : MonoBehaviour, IDamageReceiver, ILifeIncrease
 
         lifes -= damage;
 
-        Handheld.Vibrate();
-
         OnPlayerGetDamage?.Invoke(damage);
 
         if (lifes <= 0) {
