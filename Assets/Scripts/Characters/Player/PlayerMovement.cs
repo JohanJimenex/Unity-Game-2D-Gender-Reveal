@@ -133,7 +133,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private void DisableScript() {
         this.enabled = false;
-        Invoke(nameof(FreezePosition), 1.5f);
+        Invoke(nameof(FreezePosition), 2f);
     }
 
     private void FreezePosition() {
