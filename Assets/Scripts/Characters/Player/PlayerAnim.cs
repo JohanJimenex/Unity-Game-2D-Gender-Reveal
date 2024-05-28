@@ -13,7 +13,16 @@ public class PlayerAnim : MonoBehaviour {
 
     private bool isDownDashActive = false;
 
+    public static PlayerAnim instance;
+
     void Start() {
+
+        if (instance == null) {
+            instance = this;
+        }
+        else {
+            Destroy(gameObject);
+        }
         SubscribeAndListenEvents();
     }
 
@@ -97,6 +106,7 @@ public class PlayerAnim : MonoBehaviour {
 
     private void SubscribeAndListenEvents() {
         playerHealthManager.OnPlayerGetDamage += PlayerGetDamage;
+        playerHealthManager.OnPlayerDied += PlayerDied;
     }
 
     private void PlayerGetDamage(int _) {
@@ -157,6 +167,14 @@ public class PlayerAnim : MonoBehaviour {
             AudioManager.instance.PlaySoundFx("Player Landing");
             anim.SetTrigger("Player Landing");
         }
+    }
+
+    private void PlayerDied() {
+        this.enabled = false;
+    }
+
+    public void ResetValues() {
+        this.enabled = true;
     }
 
 }
