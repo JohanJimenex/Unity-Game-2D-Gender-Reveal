@@ -15,15 +15,13 @@ public class PlayerHealthManager : MonoBehaviour, IDamageReceiver, ILifeIncrease
     public int maxLifes;
     public static PlayerHealthManager instance;
 
-    private void Start() {
-
+    private void Awake() {
         if (instance == null) {
             instance = this;
         }
         else {
             Destroy(gameObject);
         }
-
         maxLifes = lifes;
     }
 
