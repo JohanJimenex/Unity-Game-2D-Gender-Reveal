@@ -26,7 +26,7 @@ public class AudioManager : MonoBehaviour {
     }
 
     private void Update() {
-        if (!musicAudioSource.isPlaying) {
+        if (!musicAudioSource.isPlaying && musicAudioSource.mute == false) {
             SelectRandomMusic();
         }
     }
@@ -75,14 +75,6 @@ public class AudioManager : MonoBehaviour {
         musicAudioSource.clip = musicsAudioClipDictionary[name];
         musicAudioSource.Play();
         UIManager.instance.ShowMusicPlayerUI(name);
-    }
-
-    public void ToggleMutteMusic() {
-        musicAudioSource.mute = !musicAudioSource.mute;
-    }
-
-    public void ToggleMuteSoundFx() {
-        soundsFXAudioSource.mute = !soundsFXAudioSource.mute;
     }
 
 }

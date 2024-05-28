@@ -22,7 +22,7 @@ public class SettingsController : MonoBehaviour {
     }
 
     public void MuteSoundFx() {
-        AudioManager.instance.musicAudioSource.mute = !AudioManager.instance.soundsFXAudioSource.mute;
+        AudioManager.instance.soundsFXAudioSource.mute = !AudioManager.instance.soundsFXAudioSource.mute;
         toggle.SetIsOnWithoutNotify(AudioManager.instance.soundsFXAudioSource.mute);
     }
 
