@@ -258,7 +258,4 @@ public class UIManager : MonoBehaviour {
         swipeDownIndicator.SetActive(false);
     }
 
-
-
-
 }

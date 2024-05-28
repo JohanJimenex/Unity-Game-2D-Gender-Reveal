@@ -4,34 +4,32 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour {
 
-    [SerializeField] private AudioSource soundstrackAudioSource;
-    [SerializeField] private AudioSource soundsFXAudioSource;
+    public AudioSource musicAudioSource;
+    public AudioSource soundsFXAudioSource;
 
-    [SerializeField] private List<AudioClip> soundstracksAudioClips;
+    [SerializeField] private List<AudioClip> musicsAudioClips;
     [SerializeField] private List<AudioClip> soundsFxAudioClips;
 
-    private Dictionary<string, AudioClip> soundtracksAudioClipDictionary;
+    private Dictionary<string, AudioClip> musicsAudioClipDictionary;
     private Dictionary<string, AudioClip> soundsFxAudioClipDictionary;
+    private List<AudioClip> musicsAudioClipsBackUp;
 
-    private List<AudioClip> soundstracksAudioClipsBackUp;
+    public static AudioManager instance;
 
     private void Awake() {
         ApplySingletonPattern();
     }
 
     void Start() {
-        soundstracksAudioClipsBackUp = new List<AudioClip>(soundstracksAudioClips);
+        musicsAudioClipsBackUp = new List<AudioClip>(musicsAudioClips);
         CreateAudioClipDictionaries();
     }
 
     private void Update() {
-        if (!soundstrackAudioSource.isPlaying) {
+        if (!musicAudioSource.isPlaying) {
             SelectRandomMusic();
         }
     }
-
-    //Singleton Pattern
-    public static AudioManager instance;
 
     private void ApplySingletonPattern() {
         if (instance == null) {
@@ -44,11 +42,11 @@ public class AudioManager : MonoBehaviour {
     }
 
     private void CreateAudioClipDictionaries() {
-        soundtracksAudioClipDictionary = new Dictionary<string, AudioClip>();
+        musicsAudioClipDictionary = new Dictionary<string, AudioClip>();
         soundsFxAudioClipDictionary = new Dictionary<string, AudioClip>();
 
-        foreach (AudioClip sountrack in soundstracksAudioClips) {
-            soundtracksAudioClipDictionary.Add(sountrack.name, sountrack);
+        foreach (AudioClip sountrack in musicsAudioClips) {
+            musicsAudioClipDictionary.Add(sountrack.name, sountrack);
         }
 
         foreach (AudioClip soundFx in soundsFxAudioClips) {
@@ -58,14 +56,14 @@ public class AudioManager : MonoBehaviour {
     }
 
     private void SelectRandomMusic() {
-        int randomIndex = Random.Range(0, soundstracksAudioClips.Count);
+        int randomIndex = Random.Range(0, musicsAudioClips.Count);
 
-        PlaySountrack(soundstracksAudioClips[randomIndex].name);
+        PlaySountrack(musicsAudioClips[randomIndex].name);
 
-        soundstracksAudioClips.RemoveAt(randomIndex);
+        musicsAudioClips.RemoveAt(randomIndex);
 
-        if (soundstracksAudioClips.Count == 0) {
-            soundstracksAudioClips = soundstracksAudioClipsBackUp;
+        if (musicsAudioClips.Count == 0) {
+            musicsAudioClips = musicsAudioClipsBackUp;
         }
     }
 
@@ -74,9 +72,17 @@ public class AudioManager : MonoBehaviour {
     }
 
     public void PlaySountrack(string name) {
-        soundstrackAudioSource.clip = soundtracksAudioClipDictionary[name];
-        soundstrackAudioSource.Play();
+        musicAudioSource.clip = musicsAudioClipDictionary[name];
+        musicAudioSource.Play();
         UIManager.instance.ShowMusicPlayerUI(name);
+    }
+
+    public void ToggleMutteMusic() {
+        musicAudioSource.mute = !musicAudioSource.mute;
+    }
+
+    public void ToggleMuteSoundFx() {
+        soundsFXAudioSource.mute = !soundsFXAudioSource.mute;
     }
 
 }
