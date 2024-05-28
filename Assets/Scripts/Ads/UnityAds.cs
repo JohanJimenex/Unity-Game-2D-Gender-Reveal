@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class UnityAds : MonoBehaviour, IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener {
 
     [SerializeField] private bool _testMode = false;
-    [SerializeField] private Button showAdButton;
 
     private readonly string iOsGameId = "5625360";
     private readonly string androidGameId = "5625361";
@@ -123,9 +122,7 @@ public class UnityAds : MonoBehaviour, IUnityAdsInitializationListener, IUnityAd
         if (adUnitId.Equals(idRewardedToUse)) {
             // Configure the button to call the ShowAd() method when clicked:
             Debug.Log("Habilitamos el boton porque es el reward y escuchamos el evento de click");
-            // Enable the button for users to click:
-            showAdButton.interactable = true;
-            Debug.Log("Boton habilitado");
+            UIManager.instance.ShowRewardedButton();
         }
     }
 
@@ -140,6 +137,7 @@ public class UnityAds : MonoBehaviour, IUnityAdsInitializationListener, IUnityAd
     public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState) {
         if (adUnitId.Equals(idRewardedToUse) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED)) {
             Debug.Log("Unity Ads Rewarded Ad Completed klk");
+            PlayerAnim.instance.ResetValues();
             PlayerMovement.instance.ResetValues();
             PlayerHealthManager.instance.RevivePlayer();
             CameraController.instance.playerIsDead = false;

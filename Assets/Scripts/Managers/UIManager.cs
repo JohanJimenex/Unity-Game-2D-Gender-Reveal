@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private GameObject loadingPanel;
     [SerializeField] private GameObject MusicPlayerUI;
     [SerializeField] private GameObject swipeDownIndicator;
+    [SerializeField] private GameObject rewardedButton;
 
     [Header("Leaderboard UI")]
     [SerializeField] private GameObject leaderboardPanel;
@@ -256,6 +257,10 @@ public class UIManager : MonoBehaviour {
 
     private void HideSwipeDownIndicator() {
         swipeDownIndicator.SetActive(false);
+    }
+
+    public void ShowRewardedButton() {
+        rewardedButton.SetActive(true);
     }
 
 }
