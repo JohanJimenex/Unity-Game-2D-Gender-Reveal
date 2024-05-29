@@ -94,10 +94,17 @@ public class PlayerAnim : MonoBehaviour {
     }
 
     private void InstantiateSmokePropulsion(float rotation = 0, float scale = 1f) {
-        GameObject smoke = Instantiate(smokePropulsionEffect, transform.position, Quaternion.identity);
-        smoke.transform.rotation = Quaternion.Euler(0, 0, rotation);
+
+        GameObject smoke = SmokePool.instance.GetObjectFromPool();
+        smoke.transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0, 0, rotation));
         smoke.transform.localScale = new Vector3(scale, scale, scale);
-        Destroy(smoke, 3f);
+        StartCoroutine(StopSmokeEffect(smoke));
+
+    }
+
+    private IEnumerator StopSmokeEffect(GameObject smoke) {
+        yield return new WaitForSeconds(2f);
+        SmokePool.instance.ReturnObjectToPool(smoke);
     }
 
     private void StopGoDownAnim() {
