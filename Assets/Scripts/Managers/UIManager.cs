@@ -105,7 +105,7 @@ public class UIManager : MonoBehaviour {
         Invoke(nameof(CheckWorldRecord), 1.2f);
     }
 
-    private void ShowGameOverPanel() {
+    public void ShowGameOverPanel() {
         gameOverPanel.SetActive(true);
     }
 

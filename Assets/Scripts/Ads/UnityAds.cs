@@ -10,14 +10,14 @@ public class UnityAds : MonoBehaviour, IUnityAdsInitializationListener, IUnityAd
     private readonly string iOsGameId = "5625360";
     private readonly string androidGameId = "5625361";
 
-    private readonly string iOsBanner = "Banner_iOS";
-    private readonly string androidBanner = "Banner_Android";
+    private readonly string iOsBanner = "Banner_Ios2";
+    private readonly string androidBanner = "BannerAndroid";
 
     private readonly string iOsInterticial = "Interstitial_iOS";
     private readonly string androidInterticial = "Interstitial_Android";
 
     private readonly string iOsRewarded = "Rewarded_iOS";
-    private readonly string androidRewarded = "Rewarded_Android";
+    private readonly string androidRewarded = "Reward_Android";
 
     private string gameIdToUse;
     private string idBannerToUse;
@@ -135,12 +135,16 @@ public class UnityAds : MonoBehaviour, IUnityAdsInitializationListener, IUnityAd
 
     // Implement the Show Listener's OnUnityAdsShowComplete callback method to determine if the user gets a reward:
     public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState) {
-        if (adUnitId.Equals(idRewardedToUse) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED)) {
-            Debug.Log("Unity Ads Rewarded Ad Completed klk");
-            PlayerAnim.instance.ResetValues();
-            PlayerMovement.instance.ResetValues();
-            PlayerHealthManager.instance.RevivePlayer();
-            CameraController.instance.playerIsDead = false;
+        if (adUnitId.Equals(idRewardedToUse)) {
+            if (showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED) || showCompletionState.Equals(UnityAdsShowCompletionState.SKIPPED)) {
+                PlayerAnim.instance.ResetValues();
+                PlayerMovement.instance.ResetValues();
+                PlayerHealthManager.instance.RevivePlayer();
+                CameraController.instance.playerIsDead = false;
+            }
+            else {
+                UIManager.instance.ShowGameOverPanel();
+            }
         }
     }
 
