@@ -103,7 +103,7 @@ public class PlayerAnim : MonoBehaviour {
     }
 
     private IEnumerator StopSmokeEffect(GameObject smoke) {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         SmokePool.instance.ReturnObjectToPool(smoke);
     }
 
