@@ -29,6 +29,10 @@ public abstract class AbstractItemBase : MonoBehaviour {
 
     private void Move() {
 
+        if (verticalDirection > 0) {
+            verticalSpeedY = 1.3f;
+        }
+
         transform.Translate(new Vector3(horizontalSpeedX * horizontalDirection, verticalDirection * verticalSpeedY, 0) * Time.deltaTime);
 
         // Invertir la dirección horizontal cuando llegue a los límites
