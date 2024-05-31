@@ -57,8 +57,8 @@ public class UnityAds : MonoBehaviour, IUnityAdsInitializationListener, IUnityAd
         }
 
         if (Advertisement.isInitialized) {
-            LoadBannerAd();
-            LoadInterticialAd();
+            // LoadBannerAd();
+            // LoadInterticialAd();
             LoadRewardedAd();
         }
         else {
@@ -69,8 +69,8 @@ public class UnityAds : MonoBehaviour, IUnityAdsInitializationListener, IUnityAd
     //Cuando se complete la inicializacion de los servicios de anuncios este metodo se llama solo:
     public void OnInitializationComplete() {
         Debug.Log("Se inicializaron los anuncios");
-        LoadBannerAd();
-        LoadInterticialAd();
+        // LoadBannerAd();
+        // LoadInterticialAd();
         LoadRewardedAd();
     }
 
