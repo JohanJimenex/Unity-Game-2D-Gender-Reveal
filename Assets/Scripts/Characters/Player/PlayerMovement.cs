@@ -119,7 +119,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void DestroyGround() {
-        if (transform.position.y > 20) {
+        if (transform.position.y > 5.4f) {
             Destroy(ground);
         }
     }
