@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ItemDownDash : AbstractItemBase {
 
-    [Header("Item Down Dash")]
+    // [Header("Item Down Dash")]
 
-    [SerializeField] private int effectDurationInSeconds = 15;
+    // [SerializeField] private int effectDurationInSeconds = 15;
 
     private new void OnTriggerEnter2D(Collider2D other) {
 
@@ -17,7 +17,7 @@ public class ItemDownDash : AbstractItemBase {
             // playerMovement.ActiveDownDash(effectDurationInSeconds);
 
             PlayerAnim playerAnim = other.GetComponent<PlayerAnim>();
-            playerAnim.ActiveDownDash(effectDurationInSeconds);
+            // playerAnim.ActiveDownDash(effectDurationInSeconds);
             UIManager.instance.ShowSwipeDownIndicator();
         }
     }

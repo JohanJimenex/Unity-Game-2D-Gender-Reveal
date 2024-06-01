@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private Rigidbody2D rb;
 
     [HideInInspector] public Action<float> OnPositionYChanged { get; set; }
+    public bool useNewTouchControls;
 
     public static PlayerMovement instance;
 
@@ -24,6 +25,7 @@ public class PlayerMovement : MonoBehaviour {
             Destroy(gameObject);
         }
 
+        useNewTouchControls = PlayerPrefs.GetInt("UseNewTouchControls", 1) == 1;
         playerHealthManager.OnPlayerDied += DisableScript;
     }
 
@@ -58,52 +60,64 @@ public class PlayerMovement : MonoBehaviour {
             rb.velocity = new Vector2(1 * moveXForce, 1 * 2);
         }
 
-
         // ================== Touch Controls ==================
 
-        // if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) {
-        //     startTouchPosition = Input.GetTouch(0).position;
-        // }
-
-        // if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) {
-
-        //     endTouchPosition = Input.GetTouch(0).position;
-
-        //     if (endTouchPosition.y < startTouchPosition.y && isDownDashActive) {
-        //         rb.velocity = Vector2.down * jumpForce;
-        //         Invoke(nameof(StopDownForce), 0.3f);
-        //     }
-        //     else if (endTouchPosition.y >= startTouchPosition.y) {
-        //         rb.velocity = Vector2.up * jumpForce;
-        //     }
-
-        //     if (endTouchPosition.x + 100 < startTouchPosition.x) {
-        //         // rb.velocity = Vector2.left * moveForce * Time.deltaTime;
-        //         rb.velocity = new Vector2(-1 * moveXForce, 1 * 2);
-        //     }
-        //     else if (endTouchPosition.x - 100 > startTouchPosition.x) {
-        //         // rb.velocity = Vector2.right * moveForce * Time.deltaTime;
-        //         rb.velocity = new Vector2(1 * moveXForce, 1 * 2);
-
-        //     }
-        // }
-
-        if (Input.touchCount > 0) {
-            Touch touch = Input.GetTouch(0);
-            Vector2 touchPosition = touch.position;
-
-            if (touchPosition.x < Screen.width / 3) {
-                rb.velocity = new Vector2(-1 * moveXForce, 1 * 2);
-            }
-            else if (touchPosition.x > Screen.width / 3 + Screen.width / 3) {
-                rb.velocity = new Vector2(1 * moveXForce, 1 * 2);
-            }
-            else {
-                rb.velocity = Vector2.up * jumpForce;
-            }
-        }
+        ReadTouchControls();
 
     }
+
+
+    private void ReadTouchControls() {
+        // ================== New Touch Controls ==================
+        if (useNewTouchControls) {
+            if (Input.touchCount > 0) {
+                Touch touch = Input.GetTouch(0);
+                Vector2 touchPosition = touch.position;
+
+                if (touchPosition.x < Screen.width / 3 && touch.phase == TouchPhase.Began) {
+                    rb.velocity = new Vector2(-1 * moveXForce, 1 * 2);
+                }
+                else if (touchPosition.x > Screen.width / 3 + Screen.width / 3 && touch.phase == TouchPhase.Began) {
+                    rb.velocity = new Vector2(1 * moveXForce, 1 * 2);
+                }
+                else if (touch.phase == TouchPhase.Began) {
+                    rb.velocity = Vector2.up * jumpForce;
+                }
+            }
+            return;
+        }
+
+        // ================== Old Touch Controls ==================
+
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) {
+            startTouchPosition = Input.GetTouch(0).position;
+        }
+
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) {
+
+            endTouchPosition = Input.GetTouch(0).position;
+
+            // if (endTouchPosition.y < startTouchPosition.y && isDownDashActive) {
+            //     rb.velocity = Vector2.down * jumpForce;
+            //     Invoke(nameof(StopDownForce), 0.3f);
+            // }
+            // else
+            if (endTouchPosition.y >= startTouchPosition.y) {
+                rb.velocity = Vector2.up * jumpForce;
+            }
+
+            if (endTouchPosition.x + 100 < startTouchPosition.x) {
+                // rb.velocity = Vector2.left * moveForce * Time.deltaTime;
+                rb.velocity = new Vector2(-1 * moveXForce, 1 * 2);
+            }
+            else if (endTouchPosition.x - 100 > startTouchPosition.x) {
+                // rb.velocity = Vector2.right * moveForce * Time.deltaTime;
+                rb.velocity = new Vector2(1 * moveXForce, 1 * 2);
+
+            }
+        }
+    }
+
 
     private void LimitPlayerMovement() {
         if (transform.position.x <= -1f) {
@@ -134,7 +148,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void DestroyGround() {
-        if (transform.position.y > 6f) {
+        if (transform.position.y > 7.5f) {
             Destroy(ground);
         }
     }

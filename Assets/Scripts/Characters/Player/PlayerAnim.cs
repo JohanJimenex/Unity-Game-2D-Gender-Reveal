@@ -11,7 +11,8 @@ public class PlayerAnim : MonoBehaviour {
     [SerializeField] private GameObject smokePropulsionEffect;
     [SerializeField] private GameObject shield;
 
-    private bool isDownDashActive = false;
+    // private bool isDownDashActive = false;
+    public bool useNewTouchControls;
 
     public static PlayerAnim instance;
 
@@ -23,6 +24,7 @@ public class PlayerAnim : MonoBehaviour {
         else {
             Destroy(gameObject);
         }
+        useNewTouchControls = PlayerPrefs.GetInt("UseNewTouchControls", 1) == 1;
         SubscribeAndListenEvents();
     }
 
@@ -35,15 +37,14 @@ public class PlayerAnim : MonoBehaviour {
         if (Input.GetButtonDown("Jump")) {
             anim.SetTrigger("Float Up");
             AudioManager.instance.PlaySoundFx("Air Pressure Release");
-
             InstantiateSmokePropulsion();
         }
 
-        if (Input.GetKeyDown(KeyCode.S) && isDownDashActive) {
-            anim.SetBool("Dash Down", true);
-            AudioManager.instance.PlaySoundFx("Dash");
-            Invoke(nameof(StopGoDownAnim), 0.3f);
-        }
+        // if (Input.GetKeyDown(KeyCode.S) && isDownDashActive) {
+        //     anim.SetBool("Dash Down", true);
+        //     AudioManager.instance.PlaySoundFx("Dash");
+        //     Invoke(nameof(StopGoDownAnim), 0.3f);
+        // }
 
         //move to the left
         if (Input.GetKeyDown(KeyCode.A)) {
@@ -59,7 +60,41 @@ public class PlayerAnim : MonoBehaviour {
             InstantiateSmokePropulsion(-90, 0.40f);
         }
 
-        // ================== Touch Controls ==================
+        ReadTouchControls();
+
+
+    }
+
+    private void ReadTouchControls() {
+
+        // ================== New Touch Controls ==================
+
+        if (useNewTouchControls) {
+            if (Input.touchCount > 0) {
+                Touch touch = Input.GetTouch(0);
+                Vector2 touchPosition = touch.position;
+
+                if (touchPosition.x < Screen.width / 3 && touch.phase == TouchPhase.Began) {
+                    anim.SetTrigger("Move Left");
+                    AudioManager.instance.PlaySoundFx("Air Pressure Release 2");
+                    InstantiateSmokePropulsion(90, 0.40f);
+                }
+                else if (touchPosition.x > Screen.width / 3 + Screen.width / 3 && touch.phase == TouchPhase.Began) {
+                    anim.SetTrigger("Move Right");
+                    AudioManager.instance.PlaySoundFx("Air Pressure Release 2");
+                    InstantiateSmokePropulsion(-90, 0.40f);
+                }
+                else if (touch.phase == TouchPhase.Began) {
+                    anim.SetTrigger("Float Up");
+                    AudioManager.instance.PlaySoundFx("Air Pressure Release");
+                    InstantiateSmokePropulsion();
+                }
+            }
+
+            return;
+        }
+
+        // ================== Old Touch Controls ==================
 
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) {
             startTouchPosition = Input.GetTouch(0).position;
@@ -79,19 +114,22 @@ public class PlayerAnim : MonoBehaviour {
                 AudioManager.instance.PlaySoundFx("Air Pressure Release 2");
                 InstantiateSmokePropulsion(-90, 0.40f);
             }
-            else if (endTouchPosition.y < startTouchPosition.y && isDownDashActive) {
-                anim.SetBool("Dash Down", true);
-                AudioManager.instance.PlaySoundFx("Dash");
-                Invoke(nameof(StopGoDownAnim), 0.3f);
-            }
+            // else if (endTouchPosition.y < startTouchPosition.y && isDownDashActive) {
+            //     anim.SetBool("Dash Down", true);
+            //     AudioManager.instance.PlaySoundFx("Dash");
+            //     Invoke(nameof(StopGoDownAnim), 0.3f);
+            // }
             else if (endTouchPosition.y >= startTouchPosition.y) {
                 anim.SetTrigger("Float Up");
                 AudioManager.instance.PlaySoundFx("Air Pressure Release");
                 InstantiateSmokePropulsion();
             }
-
         }
+
+
     }
+
+
 
     private void InstantiateSmokePropulsion(float rotation = 0, float scale = 1f) {
 
@@ -121,15 +159,15 @@ public class PlayerAnim : MonoBehaviour {
         AudioManager.instance.PlaySoundFx("Hurt");
     }
 
-    public void ActiveDownDash(int durationInSeconds) {
-        isDownDashActive = true;
-        Invoke(nameof(DeactivateDownDash), durationInSeconds);
-        ActiveParticleEffect(durationInSeconds, new Color(0.7721053f, 0.514151f, 1, 1));
-    }
+    // public void ActiveDownDash(int durationInSeconds) {
+    //     isDownDashActive = true;
+    //     Invoke(nameof(DeactivateDownDash), durationInSeconds);
+    //     ActiveParticleEffect(durationInSeconds, new Color(0.7721053f, 0.514151f, 1, 1));
+    // }
 
-    private void DeactivateDownDash() {
-        isDownDashActive = false;
-    }
+    // private void DeactivateDownDash() {
+    //     isDownDashActive = false;
+    // }
 
     public void ActiveInvincibleEffect(int durationInSeconds) {
         shield.SetActive(true);
