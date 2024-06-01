@@ -52,6 +52,7 @@ class LandingPlatformController : MonoBehaviour {
             playerHealthManager.IncreaseLife(lifePointsToHealth);
             anim.SetBool("PlayerIsOn", true);
             AudioManager.instance.PlaySoundFx("Power Up");
+            GetComponentInChildren<ParticleSystem>().Play();
         }
     }
 
@@ -61,6 +62,7 @@ class LandingPlatformController : MonoBehaviour {
             extraScorePointToGive = 0;
             anim.SetBool("PlayerIsOn", true);
             anim.SetBool("PlayerIsOn", false);
+            GetComponentInChildren<ParticleSystem>().Stop();
         }
     }
 
