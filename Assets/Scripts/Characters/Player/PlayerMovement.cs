@@ -134,7 +134,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void DestroyGround() {
-        if (transform.position.y > 5.4f) {
+        if (transform.position.y > 6f) {
             Destroy(ground);
         }
     }
