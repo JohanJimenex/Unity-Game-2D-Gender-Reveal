@@ -114,9 +114,9 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
-    private void StopDownForce() {
-        rb.velocity = Vector2.up * 3;
-    }
+    // private void StopDownForce() {
+    //     rb.velocity = Vector2.up * 3;
+    // }
 
     // private bool isDownDashActive = false;
 

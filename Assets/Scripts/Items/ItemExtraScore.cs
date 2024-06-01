@@ -6,7 +6,6 @@ public class ItemExtraScore : AbstractItemBase {
 
     private new void Start() {
         base.Start();
-
     }
 
     private new void OnTriggerEnter2D(Collider2D other) {
