@@ -58,7 +58,7 @@ class LandingPlatformController : MonoBehaviour {
 
     private void OnCollisionExit2D(Collision2D other) {
         if (other.gameObject.CompareTag("Player")) {
-            lifePointsToHealth = 0;
+            // lifePointsToHealth = 0;
             extraScorePointToGive = 0;
             anim.SetBool("PlayerIsOn", true);
             anim.SetBool("PlayerIsOn", false);
