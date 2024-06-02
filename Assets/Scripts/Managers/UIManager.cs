@@ -67,7 +67,7 @@ public class UIManager : MonoBehaviour {
 
     private void ShowNewControllerWayPanel() {
 
-        if (PlayerPrefs.GetInt("FirstTimeUsingNewControllerWay") == 1) {
+        if (PlayerPrefs.GetInt("FirstTimeUsingNewControllerWay") == 1 || newControllerWayPanel == null) {
             return;
         }
 

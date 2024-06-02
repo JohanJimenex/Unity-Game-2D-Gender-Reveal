@@ -15,10 +15,14 @@ public class SettingsController : MonoBehaviour {
     }
 
     public void ChangeControls() {
-        PlayerMovement.instance.useNewTouchControls = !PlayerMovement.instance.useNewTouchControls;
-        PlayerAnim.instance.useNewTouchControls = !PlayerAnim.instance.useNewTouchControls;
-        toggle.SetIsOnWithoutNotify(PlayerMovement.instance.useNewTouchControls);
-        PlayerPrefs.SetInt("UseNewTouchControls", PlayerMovement.instance.useNewTouchControls ? 1 : 0);
+
+        if (PlayerMovement.instance != null && PlayerAnim.instance != null) {
+            PlayerMovement.instance.useNewTouchControls = !PlayerMovement.instance.useNewTouchControls;
+            PlayerAnim.instance.useNewTouchControls = !PlayerAnim.instance.useNewTouchControls;
+        }
+        Debug.Log(toggle.isOn);
+        toggle.SetIsOnWithoutNotify(toggle.isOn);
+        PlayerPrefs.SetInt("UseNewTouchControls", toggle.isOn ? 1 : 0);
     }
 
     public void MuteMusic() {
