@@ -47,9 +47,9 @@ public class EnemiesSpawner : MonoBehaviour {
     private void UpdateDifficultyPropability() {
 
         if (playerTransform.position.y >= heightGoalToIncreaseDifficulty) {
-            heightGoalToIncreaseDifficulty += 50f;
-            hardesEnemiesPropability += 15f;
-            descentEnemiesPropability += 1f;
+            heightGoalToIncreaseDifficulty += 60f;
+            hardesEnemiesPropability += 10f;
+            descentEnemiesPropability += 0.5f;
         }
 
         if (descentEnemiesPropability > 50) {
