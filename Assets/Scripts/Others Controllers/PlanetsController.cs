@@ -8,6 +8,11 @@ public class PlanetsController : MonoBehaviour {
 
     private readonly float limit = -5f;
 
+    private void Start() {
+        //Random orientation
+        horizontalSpeed = horizontalSpeed * Random.Range(0, 2) == 0 ? -1 : 1;
+    }
+
     void Update() {
         Move();
         DestroyIfOutOfLimits();

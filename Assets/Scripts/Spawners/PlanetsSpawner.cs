@@ -36,7 +36,7 @@ public class PlanetsSpawner : MonoBehaviour {
         GameObject randomGameObject = prefabPlanets[randomIndex];
         prefabPlanets.RemoveAt(randomIndex);
 
-        Vector3 spawnPosition = new Vector3(1.5f, CameraGameObject.transform.position.y + 6f, 0);
+        Vector3 spawnPosition = new Vector3(0, CameraGameObject.transform.position.y + 6f, 0);
 
         Instantiate(randomGameObject, spawnPosition, Quaternion.identity, CameraGameObject.transform);
 
