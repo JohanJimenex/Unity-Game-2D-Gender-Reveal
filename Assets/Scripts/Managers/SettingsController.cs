@@ -8,12 +8,10 @@ public class SettingsController : MonoBehaviour {
     [SerializeField] private Toggle toggle;
 
     private void Start() {
-
         if (gameObject.CompareTag("ToggleControls")) {
             bool changeControls = PlayerPrefs.GetInt("UseNewTouchControls", 1) == 1;
             toggle.SetIsOnWithoutNotify(changeControls);
         }
-
     }
 
     public void ChangeControls() {

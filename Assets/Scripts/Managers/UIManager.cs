@@ -30,6 +30,9 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private GameObject swipeDownIndicator;
     [SerializeField] private GameObject rewardedButton;
 
+    [SerializeField] private GameObject newControllerWayPanel;
+    [SerializeField] private GameObject SettingsPanel;
+
     [Header("Leaderboard UI")]
     [SerializeField] private GameObject leaderboardPanel;
     [SerializeField] private TextMeshProUGUI leadersNameUI;
@@ -57,10 +60,22 @@ public class UIManager : MonoBehaviour {
     private void Start() {
         SubscribeAndListenEvents();
         oxygenSlider.maxValue = PlayerHealthManager.instance.maxLifes;
+        ShowNewControllerWayPanel();
     }
 
     private void Update() {
         KeepScoreUIUpdated();
+    }
+
+    private void ShowNewControllerWayPanel() {
+
+        if (PlayerPrefs.GetInt("FirstTimeUsingNewControllerWay") == 1) {
+            return;
+        }
+
+        newControllerWayPanel.SetActive(true);
+        SettingsPanel.SetActive(true);
+        PlayerPrefs.SetInt("FirstTimeUsingNewControllerWay", 1);
     }
 
     private void SubscribeAndListenEvents() {
