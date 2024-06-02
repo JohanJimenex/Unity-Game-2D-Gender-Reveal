@@ -32,7 +32,8 @@ public class EnemiesSpawner : MonoBehaviour {
             }
 
             if (Random.Range(0, 100) < descentEnemiesPropability && Random.Range(0, 100) < 50) {
-                ShowAlert(descentEnemiesPrefabs[Random.Range(0, descentEnemiesPrefabs.Length)]);
+                // if (true) {
+                SetAlertPosition();
             }
         }
 
@@ -69,16 +70,18 @@ public class EnemiesSpawner : MonoBehaviour {
         }
     }
 
-    private void ShowAlert(GameObject objectToSpawn) {
+    private void SetAlertPosition() {
         float randomPositionX = Random.Range(-horizontalRangeToInstanciate, horizontalRangeToInstanciate);
-        Vector3 spawnPosition = new Vector3(randomPositionX, playerTransform.position.y + positionToSpawnInY, 0);
-        UIManager.instance.ShowAlertImage(spawnPosition);
+        UIManager.instance.ShowAlertImage(new Vector3(randomPositionX, 0, 0));
+
+        GameObject objectToSpawn = descentEnemiesPrefabs[Random.Range(0, descentEnemiesPrefabs.Length)];
         // Invoke(nameof(SpawDescendEnemy), 1.5f);
-        StartCoroutine(SpawDescendEnemy(objectToSpawn, spawnPosition));
+        StartCoroutine(SpawDescendEnemy(objectToSpawn, randomPositionX));
     }
 
-    private IEnumerator SpawDescendEnemy(GameObject objectToSpawn, Vector3 spawnPosition) {
+    private IEnumerator SpawDescendEnemy(GameObject objectToSpawn, float randomPositionX) {
         yield return new WaitForSeconds(1.5f);
+        Vector3 spawnPosition = new Vector3(randomPositionX, playerTransform.position.y + positionToSpawnInY, 0);
         Instantiate(objectToSpawn, spawnPosition, Quaternion.identity);
     }
 }
