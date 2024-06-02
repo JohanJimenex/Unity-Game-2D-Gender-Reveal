@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour {
         Move();
         LimitPlayerMovement();
         EmitPlayerPositionY();
-        DestroyGround();
+        DeactivateGround();
     }
 
     private Vector2 startTouchPosition, endTouchPosition;
@@ -147,14 +147,13 @@ public class PlayerMovement : MonoBehaviour {
         OnPositionYChanged?.Invoke(transform.position.y);
     }
 
-    private void DestroyGround() {
+    private void DeactivateGround() {
         if (transform.position.y > 7.5f) {
-            Destroy(ground);
+            ground.SetActive(false);
         }
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
-
         if (other.gameObject.TryGetComponent(out IDamageReceiver makeDamage) && other.transform.position.y < transform.position.y) {
             rb.velocity = Vector2.up * jumpForce;
         }
