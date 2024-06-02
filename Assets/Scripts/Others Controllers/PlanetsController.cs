@@ -10,7 +10,8 @@ public class PlanetsController : MonoBehaviour {
 
     private void Start() {
         //Random orientation
-        horizontalSpeed = horizontalSpeed * Random.Range(0, 2) == 0 ? -1 : 1;
+        horizontalSpeed = horizontalSpeed * Random.Range(-horizontalSpeed, horizontalSpeed);
+
     }
 
     void Update() {
