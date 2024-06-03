@@ -46,13 +46,7 @@ public class PlayerMovement : MonoBehaviour {
         if (Input.GetButtonDown("Jump")) {
             rb.velocity = Vector2.up * jumpForce;
         }
-        // else if (Input.GetKeyDown(KeyCode.S) && isDownDashActive) {
-        //     playerHealthManager.SetInvencible(0.4f);
-        //     rb.velocity = Vector2.down * jumpForce;
-        //     Invoke(nameof(StopDownForce), 0.3f);
-        // }
 
-        //move to the left
         if (Input.GetKeyDown(KeyCode.A)) {
             rb.velocity = new Vector2(-1 * moveXForce, 1 * 2);
         }
@@ -92,16 +86,10 @@ public class PlayerMovement : MonoBehaviour {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) {
             startTouchPosition = Input.GetTouch(0).position;
         }
-
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) {
+        else if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended) {
 
             endTouchPosition = Input.GetTouch(0).position;
 
-            // if (endTouchPosition.y < startTouchPosition.y && isDownDashActive) {
-            //     rb.velocity = Vector2.down * jumpForce;
-            //     Invoke(nameof(StopDownForce), 0.3f);
-            // }
-            // else
             if (endTouchPosition.y >= startTouchPosition.y) {
                 rb.velocity = Vector2.up * jumpForce;
             }
@@ -118,7 +106,6 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
-
     private void LimitPlayerMovement() {
         if (transform.position.x <= -1f) {
             transform.position = new Vector2(-1f, transform.position.y);
@@ -127,21 +114,6 @@ public class PlayerMovement : MonoBehaviour {
             transform.position = new Vector2(1f, transform.position.y);
         }
     }
-
-    // private void StopDownForce() {
-    //     rb.velocity = Vector2.up * 3;
-    // }
-
-    // private bool isDownDashActive = false;
-
-    // public void ActiveDownDash(int durationInSeconds) {
-    //     isDownDashActive = true;
-    //     Invoke(nameof(DeactivateDownDash), durationInSeconds);
-    // }
-
-    // private void DeactivateDownDash() {
-    //     isDownDashActive = false;
-    // }
 
     private void EmitPlayerPositionY() {
         OnPositionYChanged?.Invoke(transform.position.y);
@@ -172,6 +144,7 @@ public class PlayerMovement : MonoBehaviour {
         this.enabled = true;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 1));
+        rb.velocity = Vector2.up * jumpForce;
     }
 }
 
